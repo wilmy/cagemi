@@ -1,0 +1,46 @@
+{
+  "menu": [
+    {
+      "url": "/",
+      "name": "Dashboard",
+      "icon": "home",
+      "permission_rol": "dashboard.index",
+      "slug": "/"
+    },
+    {
+      "name": "Roles & Permission",
+      "icon": "shield",
+      "permission_rol": "roles.index",
+      "slug": "",
+      "submenu": [
+        {
+          "url": "admin/app/roles",
+          "name": "Roles",
+          "icon": "circle",
+          "slug": "app-access-roles"
+        },
+        {
+          "url": "admin/app/permission",
+          "name": "Permission",
+          "icon": "circle",
+          "slug": "app-access-permission"
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "icon": "user",
+      "permission_rol": "users.index",
+      "slug": "",
+      "submenu": [
+        {
+          "url": "admin/app/users",
+          "name": "List",
+          "icon": "circle",
+          "slug": "app-user-list"
+        }
+      ]
+    }
+    
+  ]
+}
