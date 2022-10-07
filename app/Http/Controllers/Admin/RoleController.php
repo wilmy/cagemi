@@ -181,7 +181,7 @@ class RoleController extends Controller
                             'alert' => 'success']);
     }
 
-    
+    /*Funcion para eliminar un registro */    
     public function destroy($id)
     {
         //
