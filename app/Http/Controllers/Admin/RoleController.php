@@ -187,5 +187,4 @@ class RoleController extends Controller
         //
     }
 
-    /*Estos cambios no se encuentran en la rama principal*/
 }

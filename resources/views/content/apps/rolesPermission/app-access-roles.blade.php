@@ -109,7 +109,7 @@
   @endcan
 </div>
 <!--/ Role cards -->
-
+{{--
 <h3 class="mt-50">Total users with their roles</h3>
 <p class="mb-2">Find all of your company’s administrator accounts and their associate roles.</p>
 <!-- table -->
@@ -131,6 +131,7 @@
     </table>
   </div>
 </div>
+--}}
 <!-- table -->
 
 @include('content/_partials/_modals/modal-add-role')
