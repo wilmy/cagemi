@@ -12,9 +12,9 @@ class RoleController extends Controller
     //Para aplicar los permisos para eviar vilaciones o ataques
     public function __construct()
     {
-        //$this->middleware('can:create', ['only' => ['create','store']]);
-        //$this->middleware('can:edit', ['only' => ['edit', 'update']]); 
-        //$this->middleware('can:destroy', ['only' => ['destroy']]); 
+        $this->middleware('can:roles.create', ['only' => ['create']]);
+        $this->middleware('can:roles.edit', ['only' => ['edit', 'update']]); 
+        $this->middleware('can:roles.destroy', ['only' => ['destroy']]); 
     }
 
     // Access Roles App

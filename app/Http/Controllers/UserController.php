@@ -17,6 +17,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     //Para aplicar los permisos para eviar vilaciones o ataques
+    public function __construct()
+    {
+        $this->middleware('can:users.create', ['only' => ['create']]);
+        $this->middleware('can:users.edit', ['only' => ['edit', 'update']]); 
+        $this->middleware('can:users.destroy', ['only' => ['destroy']]); 
+    }
+
     public function index()
     {
         $users = DB::table('users')
@@ -60,19 +69,23 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users']
         ]);
 
-     
-        $$user = User::create([
+        $password = Str::random(6);
+        $user = User::create([
             'name' => $request->nombre,
             'email' => $request->email,
-            'password' => Hash::make(Str::random(10)),
+            'password' => Hash::make($password),
             'estatus' => 'A'
         ]);
 
         $user->assignRole($request->rol);
         $users = User::all(); 
         $pageConfigs = ['pageHeader' => false];
+
+        return redirect('admin/app/users/')
+                    ->with(['message' => 'Usuario creado correctamente '. $password, 
+                            'alert' => 'success']);
         
-        return view('/content/apps/user/app-user-list', ['users' => $users, 'pageConfigs' => $pageConfigs]);
+        //return view('/content/apps/user/app-user-list', ['users' => $users, 'pageConfigs' => $pageConfigs]);
     }
 
     /**
