@@ -131,8 +131,11 @@
         </tbody>
       </table>
     </div>
-
-  </div>
+ </div>
+ <div class="mb-5">
+ {{ $users->links() }}
+</div>
+ 
   <!-- list and filter end -->
 </section>
 <!-- users list ends -->

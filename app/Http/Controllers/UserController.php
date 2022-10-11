@@ -32,7 +32,8 @@ class UserController extends Controller
                     ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
                     ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
                     ->select('users.*', 'roles.name as nombre_rol')
-                    ->get();
+                    ->orderBy('created_at', 'DESC')
+                    ->paginate(30);
 
         $total_user_acti = User::where('estatus', 'A')->count();
         $total_user_inac = User::where('estatus', 'I')->count();

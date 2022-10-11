@@ -20,7 +20,7 @@ class RoleController extends Controller
     // Access Roles App
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::withCount('users')->get();
         $pageConfigs = ['pageHeader' => false,];
 
         return view('/content/apps/rolesPermission/app-access-roles', ['roles' => $roles, 'pageConfigs' => $pageConfigs]);

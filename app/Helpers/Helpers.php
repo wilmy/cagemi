@@ -4,9 +4,16 @@ namespace App\Helpers;
 
 use Config;
 use Illuminate\Support\Str;
+use App\Http\Controllers\PantallaController;
 
 class Helpers
-{
+{    
+    public static function listMenu($id_padre = null)
+    {
+        $listMenu = PantallaController::listMenu($id_padre);
+        return $listMenu;
+    }
+
     public static function applClasses()
     {
 

@@ -1,5 +1,6 @@
-@php
+@php 
 $configData = Helper::applClasses();
+$listMenu = Helper::listMenu();
 @endphp
 <div
   class="main-menu menu-fixed {{ $configData['theme'] === 'dark' || $configData['theme'] === 'semi-dark' ? 'menu-dark' : 'menu-light' }} menu-accordion menu-shadow"
@@ -62,8 +63,8 @@ $configData = Helper::applClasses();
       </li>
       @endrole
       {{-- Foreach menu item starts --}}
-      @if (isset($menuData[0]))
-        @foreach ($menuData[0]->menu as $menu)
+      @if (count($listMenu) >0) 
+        @foreach ($listMenu as $menu)
           @if (isset($menu->navheader))
             <li class="navigation-header">
               <span>{{ __($menu->navheader) }}</span>
@@ -77,25 +78,29 @@ $configData = Helper::applClasses();
                   $custom_classes = $menu->classlist;
               }
             @endphp
-            
-            @if(Auth::user()->hasPermissionTo($menu->permission_rol))
+           
+            @if(Auth::user()->can($menu->ver))
             
             <li
               class="nav-item {{ $custom_classes }} {{ Route::currentRouteName() === $menu->slug ? 'active' : '' }}">
-              <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0)' }}" class="d-flex align-items-center"
+              <a href="{{ ($menu->url != '') ? url($menu->url) : 'javascript:void(0)' }}" class="d-flex align-items-center"
                 target="{{ isset($menu->newTab) ? '_blank' : '_self' }}">
-                <i data-feather="{{ $menu->icon }}"></i>
-                <span class="menu-title text-truncate">{{ __($menu->name) }}</span>
+                <i data-feather="{{ $menu->icono }}"></i>
+                <span class="menu-title text-truncate">{{ __($menu->nombre) }}</span>
                 @if (isset($menu->badge))
                   <?php $badgeClasses = 'badge rounded-pill badge-light-primary ms-auto me-1'; ?>
                   <span
                     class="{{ isset($menu->badgeClass) ? $menu->badgeClass : $badgeClasses }}">{{ $menu->badge }}</span>
                 @endif
               </a>
-              @if (isset($menu->submenu))
-                @include('panels/submenu', ['menu' => $menu->submenu])
+              @php 
+                $listMenuHijos = Helper::listMenu($menu->id);
+              @endphp
+              @if (count($listMenuHijos) > 0)
+                @include('panels/submenu', ['menu' => $listMenuHijos])
               @endif
-            </li>@endif
+            </li>
+            @endif
           @endif
         @endforeach
       @endif

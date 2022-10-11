@@ -23,7 +23,7 @@
     <div class="card">
       <div class="card-body">
         <div class="d-flex justify-content-between">
-          <span>Total 4 users</span>
+          <span>Total {{$role->users_count}} users</span>
           <ul class="list-unstyled d-flex align-items-center avatar-group mb-0">
             <li
               data-bs-toggle="tooltip"
@@ -63,19 +63,21 @@
             </li>
           </ul>
         </div>
-        @can('roles.edit')
+       
           <div class="d-flex justify-content-between align-items-end mt-1 pt-25">
             <div class="role-heading">
               <h4 class="fw-bolder">{{$role->name}}</h4>
+              @can('roles.edit')
                 <a href="{{route('admin.roles.edit', $role->id)}}" class="role-edit-modal">
                   <small class="fw-bolder">Editar</small>
                 </a>
+              @endcan
             </div>
             <a href="javascript:void(0);" class="text-body">
               <i data-feather="copy" class="font-medium-5"></i>
             </a>
           </div>
-        @endcan
+        
       </div>
     </div>
   </div>

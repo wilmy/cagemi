@@ -66,34 +66,77 @@
                     <td>
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="selectAll" />
-                        <label class="form-check-label" for="selectAll"> Select All </label>
+                        <label class="form-check-label" for="selectAll"> Seleccionar todos</label>
                       </div>
                     </td>
                   </tr>
                   
-                  @foreach($pantallas as $perm)
+                  @php 
+                    $listMenu = Helper::listMenu('all');
+                  @endphp
+                  @foreach($listMenu as $perm)
                     <tr>
-                        <td class="text-nowrap fw-bolder">{{$perm['name']}}</td>
-                          
+                        <td class="text-nowrap fw-bolder">{{ $perm->nombre }}</td>
                         <td>
                             <div class="d-flex">
-                              @if(count($perm['tipo_permisos_pantallas']) >0)
-                                @foreach($perm['tipo_permisos_pantallas'] as $tipo_perm)
+                              @if($perm->ver == 'S')
                                   <div class="form-check me-3 me-lg-5">
                                       <input 
                                         class="form-check-input" 
                                         type="checkbox" 
                                         name="permission[]" 
-                                        value="{{$tipo_perm['value']}}" 
-                                        id="{{$tipo_perm['id']}}" />
-                                      <label class="form-check-label" for="userManagementRead"> {{$tipo_perm['name']}} </label>
+                                        value="{{ $perm->slug }}" 
+                                        id="ver-{{ $perm->id }}" />
+
+                                      <label class="form-check-label" for="userManagementRead"> 
+                                        Ver
+                                      </label>
                                   </div>
-                                @endforeach
-                              @else 
-                                <div class="form-check me-3 me-lg-5">
-                                    <input class="form-check-input" type="checkbox" name="permission[]" value="{{$perm['value']}}" id="userManagementRead" />
-                                    <label class="form-check-label" for="userManagementRead"> Ver </label>
-                                </div>
+                              @endif
+
+                              @if($perm->crear == 'S')
+                                  <div class="form-check me-3 me-lg-5">
+                                      <input 
+                                        class="form-check-input" 
+                                        type="checkbox" 
+                                        name="permission[]" 
+                                        value="{{ $perm->slug }}" 
+                                        id="crear-{{ $perm->id }}" />
+
+                                      <label class="form-check-label" for="userManagementRead"> 
+                                        Crear
+                                      </label>
+                                  </div>
+                              @endif
+
+                              @if($perm->editar == 'S')
+                                  <div class="form-check me-3 me-lg-5">
+                                      <input 
+                                        class="form-check-input" 
+                                        type="checkbox" 
+                                        name="permission[]" 
+                                        value="{{ $perm->slug }}" 
+                                        id="edit-{{ $perm->id }}" />
+
+                                      <label class="form-check-label" for="userManagementRead"> 
+                                        Editar
+                                      </label>
+                                  </div>
+                              @endif
+
+                              @if($perm->eliminar == 'S')
+                                  <div class="form-check me-3 me-lg-5">
+                                      <input 
+                                        class="form-check-input" 
+                                        type="checkbox" 
+                                        name="permission[]" 
+                                        value="{{ $perm->slug }}" 
+                                        id="elimi-{{ $perm->id }}" />
+
+                                      <label class="form-check-label" for="userManagementRead"> 
+                                        Eliminar
+                                      </label>
+                                  </div>
                               @endif
                             </div>
                         </td>
