@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Editar Usuarios')
+@section('title', 'Editar '.$grupo_empresarial->nombre)
 
 @section('vendor-style')
   <!-- Vendor css files -->
@@ -18,10 +18,10 @@
     <div class="modal-content">
       <div class="modal-body px-5 pb-5">
         <div class="text-left mb-4">
-          <h1 class="role-title">Actualizar Usuario</h1>
+          <h1 class="role-title">Actualizar Grupo Empresarial</h1>
         </div>
        
-        <form id="addRoleForm" method="POST" class="row" action="{{route('admin.users.update', $user->id)}}">
+        <form id="addRoleForm" method="POST" class="row" enctype="multipart/form-data" action="{{route('admin.grupoEmpresarial.update', $grupo_empresarial->id)}}">
           @csrf
           @method('PUT')
             @if ($errors->any())
@@ -39,7 +39,7 @@
                   <label for="register-nombre" class="form-label">Nombre</label>
                   <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="register-nombre"
                     name="nombre" placeholder="" aria-describedby="register-nombre" tabindex="1" autofocus
-                    value="{{ old('nombre', $user->name) }}" />
+                    value="{{ old('nombre', $grupo_empresarial->nombre) }}" />
                   @error('name')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
@@ -48,64 +48,11 @@
                 </div> 
             </div>
 
-            {{--
-            <div class="form-group row">
-                <div class="mb-1 col-md-4">
-                  <label for="register-apellido" class="form-label">Apellido</label>
-                  <input type="text" class="form-control @error('apellido') is-invalid @enderror" id="register-apellido"
-                    name="apellido" placeholder="" aria-describedby="register-apellido" tabindex="1" autofocus
-                    value="{{ old('apellido') }}" />
-                  @error('name')
-                    <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div> 
-            </div> --}}
-
             <div class="form-group row">
               <div class="mb-1 col-md-4">
-                <label for="register-email" class="form-label">Email</label>
-                <input type="text" class="form-control @error('email') is-invalid @enderror" id="register-email"
-                  name="email" placeholder="john@example.com" aria-describedby="register-email" tabindex="2" readonly
-                  value="{{ old('email', $user->email) }}" />
-                @error('email')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            </div>
-
-            @if(Auth::user()->super_usuario == 'S')
-              <div class="form-group row">
-                <div class="mb-1 col-md-4">
-                  <label for="register-email" class="form-label">Grupo empresarial</label>
-                  <select name="grupo_empresarial" class="form-select">
-                    <option value="">Seleccione</option>
-                    @foreach ($grupo_empresarial as $grupo)
-                      <option value="{{ $grupo->id }}" {{($grupo->id == $user->cod_grupo_empresarial ? 'selected' : '')}}>{{ $grupo->nombre }}</option>
-                    @endforeach
-                  </select>
-                  @error('email')
-                    <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
-              </div>
-            @endif
-
-            <div class="form-group row">
-              <div class="mb-1 col-md-4">
-                <label for="register-email" class="form-label">Rol</label>
-                <select name="rol" class="form-select">
-                  <option value="">Seleccione</option>
-                  @foreach ($roles as $role)
-                    <option value="{{ $role->id }}" {{($role->id == $user->rol ? 'selected' : '')}}>{{ $role->name }}</option>
-                  @endforeach
-                </select>
-                @error('email')
+                <label for="register-email" class="form-label">Logo</label>
+                <input type="file" class="form-control" id="logo" name="logo" />
+                @error('logo')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                   </span>
@@ -117,8 +64,8 @@
               <div class="mb-1 col-md-4">
                 <label for="register-email" class="form-label">Estatus</label>
                 <select name="estatus" class="form-select">
-                  <option value="A" {{('A' == $user->estatus ? 'selected' : '')}}>Activo</option>
-                  <option value="I" {{('I' == $user->estatus ? 'selected' : '')}}>Inactivo</option>
+                  <option value="A" {{('A' == $grupo_empresarial->estatus ? 'selected' : '')}}>Activo</option>
+                  <option value="I" {{('I' == $grupo_empresarial->estatus ? 'selected' : '')}}>Inactivo</option>
                 </select>
                 @error('estatus')
                   <span class="invalid-feedback" role="alert">
@@ -130,7 +77,7 @@
 
           <div class="col-4 text-center mt-2">
             <button type="submit" class="btn btn-primary me-1">Actualizar</button>
-            <a href="{{route('admin.users.index')}}" class="btn btn-outline-danger">
+            <a href="{{route('admin.grupoEmpresarial.index')}}" class="btn btn-outline-danger">
               Cancelar
             </a>
           </div>

@@ -36,5 +36,10 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'roles.create'])->syncRoles([$admin]);
         Permission::create(['name' => 'roles.edit'])->syncRoles([$admin]);
         Permission::create(['name' => 'roles.destroy'])->syncRoles([$admin]);
+
+        //Permisos para el administrador del los grupos empresariales 
+        Permission::create(['name' => 'grupo_empresarial.index'])->syncRoles([$admin]);
+        Permission::create(['name' => 'grupo_empresarial.create'])->syncRoles([$admin]);
+        Permission::create(['name' => 'grupo_empresarial.edit'])->syncRoles([$admin]);
     }
 }

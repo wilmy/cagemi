@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\GrupoEmpresarial;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
@@ -26,24 +27,58 @@ class UserController extends Controller
         $this->middleware('can:users.destroy', ['only' => ['destroy']]); 
     }
 
-    public function index()
-    {
-        $users = DB::table('users')
-                    ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-                    ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
-                    ->select('users.*', 'roles.name as nombre_rol')
-                    ->orderBy('created_at', 'DESC')
-                    ->paginate(30);
+    public function index(Request $request)
+    { 
+        $buscar         = (isset($request->buscar) ? $request->buscar : '');
+        $tipo_usuario   = (isset($request->tipo_usuario) ? $request->tipo_usuario : '');
+        $mostrar        = (isset($request->mostrar) ? $request->mostrar : 100);
+
+        if($tipo_usuario != '' && $buscar != '')
+        {
+            $users = DB::table('users')
+                        ->leftjoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                        ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                        ->select('users.*', 'roles.name as nombre_rol')
+                        ->where([['users.name', 'LIKE', '%'.$buscar.'%'], ['users.tipo_usuario', $tipo_usuario]])
+                        ->orWhere(function($query) use ($buscar, $tipo_usuario) {
+                            $query->where([['users.email', 'LIKE', '%'.$buscar.'%'], ['users.tipo_usuario', $tipo_usuario]]);
+                        })
+                        ->orderBy('created_at', 'DESC')
+                        ->paginate($mostrar);
+        }
+        else if($buscar != '')
+        {
+            $users = DB::table('users')
+                        ->leftjoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                        ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                        ->select('users.*', 'roles.name as nombre_rol')
+                        ->where([['users.name', 'LIKE', '%'.$buscar.'%']])
+                        ->orWhere(function($query) use ($buscar) {
+                            $query->where([['users.email', 'LIKE', '%'.$buscar.'%']]);
+                        })
+                        ->orderBy('created_at', 'DESC')
+                        ->paginate($mostrar);
+        }
+        else
+        {
+            $users = DB::table('users')
+                        ->leftjoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                        ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
+                        ->select('users.*', 'roles.name as nombre_rol')
+                        ->orderBy('created_at', 'DESC')
+                        ->paginate($mostrar);
+        }
 
         $total_user_acti = User::where('estatus', 'A')->count();
         $total_user_inac = User::where('estatus', 'I')->count();
-        $pageConfigs = ['pageHeader' => false];
+        $pageConfigs = ['pageHeader' => true];
         
         return view('/content/apps/user/app-user-list', ['users' => $users, 
                                                         'total_user_acti' => $total_user_acti, 
                                                         'total_user_inac' => $total_user_inac, 
-                                                        'pageConfigs' => $pageConfigs]);
-    }
+                                                        'pageConfigs' => $pageConfigs,
+                                                        'request'=>$request]);
+    }    
 
     /**
      * Show the form for creating a new resource.
@@ -54,7 +89,11 @@ class UserController extends Controller
     {
         $pageConfigs = ['pageHeader' => false];
         $roles = Role::all();
-        return view('/content/apps/user/create', ['roles' => $roles, 'pageConfigs' => $pageConfigs]);
+        $grupo_empresarial = GrupoEmpresarial::where('estatus', 'A')->get();
+
+        return view('/content/apps/user/create', ['roles' => $roles, 
+                                                  'grupo_empresarial' => $grupo_empresarial, 
+                                                  'pageConfigs' => $pageConfigs]);
     }
 
     /**
@@ -70,8 +109,10 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users']
         ]);
 
+        $cod_grupo_empresarial = (isset($request->grupo_empresarial) ? $request->grupo_empresarial : auth()->user()->cod_grupo_empresarial);
         $password = Str::random(6);
         $user = User::create([
+            'cod_grupo_empresarial' => $cod_grupo_empresarial,
             'name' => $request->nombre,
             'email' => $request->email,
             'password' => Hash::make($password),
@@ -114,9 +155,13 @@ class UserController extends Controller
                     ->find($id);
 
         $roles = Role::all();
+        $grupo_empresarial = GrupoEmpresarial::where('estatus', 'A')->get();
         $pageConfigs = ['pageHeader' => true,];
 
-        return view('/content/apps/user/edit', ['user' => $user, 'roles' => $roles, 'pageConfigs' => $pageConfigs]);
+        return view('/content/apps/user/edit', ['user' => $user, 
+                                                'roles' => $roles, 
+                                                'grupo_empresarial' => $grupo_empresarial,
+                                                'pageConfigs' => $pageConfigs]);
     }
 
     /**
@@ -133,9 +178,13 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255']
         ]);
 
+
+        $cod_grupo_empresarial = (isset($request->grupo_empresarial) ? $request->grupo_empresarial : auth()->user()->cod_grupo_empresarial);
+
         //Actualizamos los datos del usuario enviado
         User::where('id', $id)
             ->update([
+                    'cod_grupo_empresarial' => $cod_grupo_empresarial,
                     'name' => $request->nombre,
                     'estatus' => $request->estatus,
                 ]);

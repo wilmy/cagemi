@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Lista de Usuarios')
+@section('title', 'Grupos Empresariales')
 
 @section('vendor-style')
   {{-- Page Css files --}}
@@ -18,15 +18,15 @@
 
 @section('content')
 
-<!-- users list start -->
+<!-- GruposEmpresarial list start -->
 <section class="app-user-list">
   <div class="row">
     <div class="col-lg-3 col-sm-6">
       <div class="card">
         <div class="card-body d-flex align-items-center justify-content-between">
           <div>
-            <h3 class="fw-bolder mb-75">{{count($users)}}</h3>
-            <span>Total de Usuarios</span>
+            <h3 class="fw-bolder mb-75">{{count($GruposEmpresarial)}}</h3>
+            <span>Total de Grupos</span>
           </div>
           <div class="avatar bg-light-primary p-50">
             <span class="avatar-content">
@@ -40,8 +40,8 @@
       <div class="card">
         <div class="card-body d-flex align-items-center justify-content-between">
           <div>
-            <h3 class="fw-bolder mb-75">{{$total_user_inac}}</h3>
-            <span>Usuarios Inactivos</span>
+            <h3 class="fw-bolder mb-75">{{$total_grupo_inac}}</h3>
+            <span>Grupos Inactivos</span>
           </div>
           <div class="avatar bg-light-danger p-50">
             <span class="avatar-content">
@@ -55,8 +55,8 @@
       <div class="card">
         <div class="card-body d-flex align-items-center justify-content-between">
           <div>
-            <h3 class="fw-bolder mb-75">{{$total_user_acti}}</h3>
-            <span>Usuarios activos</span>
+            <h3 class="fw-bolder mb-75">{{$total_grupo_acti}}</h3>
+            <span>Grupos activos</span>
           </div>
           <div class="avatar bg-light-success p-50">
             <span class="avatar-content">
@@ -68,11 +68,11 @@
     </div>
   </div>
 
-  @can('users.create')
+  @can('grupo_empresarial.create')
     <div class="row">
       <div class="col-lg-3 col-sm-6">
-        <a href="{{route('admin.users.create')}}">
-          <span class="btn btn-primary mb-1">Nuevo Usuario</span>
+        <a href="{{route('admin.grupoEmpresarial.create')}}">
+          <span class="btn btn-primary mb-1">Nuevo Grupo</span>
         </a>
       </div>
     </div>
@@ -97,17 +97,6 @@
                   </select> 
                 </label>
                 </div>
-
-                
-                <div class="dataTables_length" id="DataTables_Table_0_length">
-                  <label>Tipo de Usuario:
-                    <select class="form-select" name="tipo_usuario" aria-controls="DataTables_Table_0">
-                      <option value=""> Todos</option>
-                      <option value="B" class="text-capitalize" {{(isset($request->tipo_usuario) ? ($request->tipo_usuario == 'B' ? 'selected' : '') : '')}}>Backoffice</option>
-                      <option value="F" class="text-capitalize" {{(isset($request->tipo_usuario) ? ($request->tipo_usuario == 'B' ? 'selected' : '') : '')}}>Frontend</option>
-                    </select></label>
-                </div>
-
               </div>
 
                 <div class="col-sm-12 col-lg-8 ps-0">
@@ -140,52 +129,41 @@
       <table class="user-list-table table">
         <thead class="table-light">
           <tr>
-            <th></th>
+            <th>Logo</th>
             <th>Nombre</th>
-            <th>Email</th>
-            <th>Rol</th>
             <th>Estatus</th>
-            @canany(['users.edit', 'users.destroy'])
+            @canany(['grupo_empresarial.edit'])
               <th>Acci&oacute;n</th>
             @endcan
           </tr>
         </thead>
         <tbody>
-          @foreach($users as $user)
-            @if($user->super_usuario != 'S')
-              <tr>
+          @foreach($GruposEmpresarial as $grupo)
+            <tr>
+              <td>
+                  <div class="avatar">
+                    {!! ($grupo->logo != '' ? '<img style="width: 75px; height: 75px;" src="/images/gruposEmpresariales/'.$grupo->logo.'">' : '')!!}
+                  </div>
+              </td>
+              <td>{{ $grupo->nombre }}</td>
+              <td>
+                @if($grupo->estatus == 'A')
+                  <span class="badge rounded-pill badge-light-success">Activo</span>
+                @else
+                  <span class="badge rounded-pill badge-light-danger">Inactivo</span>
+                @endif
+              </td>
+              
+              @canany(['grupo_empresarial.edit'])
                 <td>
-                  <span class="avatar-content">
-                    <i data-feather="user" class="font-medium-4"></i>
-                  </span>
+                  @can('grupo_empresarial.edit')
+                    <a href="{{route('admin.grupoEmpresarial.edit', $grupo->id)}}" class="btn btn-sm btn-primary role-edit-modal">
+                      <small class="fw-bolder">Editar</small>
+                    </a> 
+                  @endcan
                 </td>
-                <td>{{ $user->name }}</td>
-                <td>{{ $user->email }}</td>
-                <td>{{ $user->nombre_rol }}</td>
-                <td>
-                  @if($user->estatus == 'A')
-                    <span class="badge rounded-pill badge-light-success">Activo</span>
-                  @else
-                    <span class="badge rounded-pill badge-light-danger">Inactivo</span>
-                  @endif
-                </td>
-                
-                @canany(['users.edit', 'users.destroy'])
-                  <td>
-                    @can('users.edit')
-                      <a href="{{route('admin.users.edit', $user->id)}}" class="btn btn-sm btn-primary role-edit-modal">
-                        <small class="fw-bolder">Editar</small>
-                      </a> 
-                    @endcan
-                    @can('users.destroy')
-                      <button type="button" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Destroy">
-                        Eliminar
-                      </button>
-                    @endcan
-                  </td>
-                @endcan
-              </tr>
-              @endif
+              @endcan
+            </tr>
           @endforeach
         </tbody>
       </table>
@@ -194,10 +172,9 @@
     </div>
  </div>
  <div class="mb-5">
- {{ $users->appends(['page' => $request->page, 
-                     'mostrar' => $request->mostrar, 
-                     'tipo_usuario' => $request->tipo_usuario, 
-                     'buscar'=> $request->buscar])->links() }}
+ {{ $GruposEmpresarial->appends(['page' => $request->page, 
+                                'mostrar' => $request->mostrar, 
+                                'buscar'=> $request->buscar])->links() }}
 </div>
  
   <!-- list and filter end -->

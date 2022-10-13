@@ -80,26 +80,49 @@ $listMenu = Helper::listMenu();
             @endphp
            
             @if(Auth::user()->can($menu->ver))
-            
-            <li
-              class="nav-item {{ $custom_classes }} {{ Route::currentRouteName() === $menu->slug ? 'active' : '' }}">
-              <a href="{{ ($menu->url != '') ? url($menu->url) : 'javascript:void(0)' }}" class="d-flex align-items-center"
-                target="{{ isset($menu->newTab) ? '_blank' : '_self' }}">
-                <i data-feather="{{ $menu->icono }}"></i>
-                <span class="menu-title text-truncate">{{ __($menu->nombre) }}</span>
-                @if (isset($menu->badge))
-                  <?php $badgeClasses = 'badge rounded-pill badge-light-primary ms-auto me-1'; ?>
-                  <span
-                    class="{{ isset($menu->badgeClass) ? $menu->badgeClass : $badgeClasses }}">{{ $menu->badge }}</span>
+              @if($menu->slug == 'grupo-empresarial')
+                @if(Auth::user()->super_usuario == 'S')
+                <li
+                  class="nav-item {{ $custom_classes }} {{ Route::currentRouteName() === $menu->slug ? 'active' : '' }}">
+                  <a href="{{ ($menu->url != '') ? url($menu->url) : 'javascript:void(0)' }}" class="d-flex align-items-center"
+                    target="{{ isset($menu->newTab) ? '_blank' : '_self' }}">
+                    <i data-feather="{{ $menu->icono }}"></i>
+                    <span class="menu-title text-truncate">{{ __($menu->nombre) }}</span>
+                    @if (isset($menu->badge))
+                      <?php $badgeClasses = 'badge rounded-pill badge-light-primary ms-auto me-1'; ?>
+                      <span
+                        class="{{ isset($menu->badgeClass) ? $menu->badgeClass : $badgeClasses }}">{{ $menu->badge }}</span>
+                    @endif
+                  </a>
+                  @php 
+                    $listMenuHijos = Helper::listMenu($menu->id);
+                  @endphp
+                  @if (count($listMenuHijos) > 0)
+                    @include('panels/submenu', ['menu' => $listMenuHijos])
+                  @endif
+                </li>
                 @endif
-              </a>
-              @php 
-                $listMenuHijos = Helper::listMenu($menu->id);
-              @endphp
-              @if (count($listMenuHijos) > 0)
-                @include('panels/submenu', ['menu' => $listMenuHijos])
+              @else
+                <li
+                  class="nav-item {{ $custom_classes }} {{ Route::currentRouteName() === $menu->slug ? 'active' : '' }}">
+                  <a href="{{ ($menu->url != '') ? url($menu->url) : 'javascript:void(0)' }}" class="d-flex align-items-center"
+                    target="{{ isset($menu->newTab) ? '_blank' : '_self' }}">
+                    <i data-feather="{{ $menu->icono }}"></i>
+                    <span class="menu-title text-truncate">{{ __($menu->nombre) }}</span>
+                    @if (isset($menu->badge))
+                      <?php $badgeClasses = 'badge rounded-pill badge-light-primary ms-auto me-1'; ?>
+                      <span
+                        class="{{ isset($menu->badgeClass) ? $menu->badgeClass : $badgeClasses }}">{{ $menu->badge }}</span>
+                    @endif
+                  </a>
+                  @php 
+                    $listMenuHijos = Helper::listMenu($menu->id);
+                  @endphp
+                  @if (count($listMenuHijos) > 0)
+                    @include('panels/submenu', ['menu' => $listMenuHijos])
+                  @endif
+                </li>
               @endif
-            </li>
             @endif
           @endif
         @endforeach
