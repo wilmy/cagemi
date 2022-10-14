@@ -89,5 +89,16 @@ class PantallasSeeder extends Seeder
                             'estatus'  => 'A'
                             ]);
 
+        Pantallas::create([
+                            'nombre' => 'Carga de Datos',
+                            'slug' => 'carga-datos', 
+                            'url' => '/admin/app/cargaDatos',
+                            'descripcion' => 'Carga de datos temporales',
+                            'orden' => 6,
+                            'icono' => 'download',
+                            'ver' => 'cargadatos.index',
+                            'estatus'  => 'A'
+                            ]);
+
     }
 }

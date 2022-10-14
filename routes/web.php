@@ -12,6 +12,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\CargaDatosController;
 use App\Http\Controllers\ComponentsController;
 use App\Http\Controllers\PageLayoutController;
 use App\Http\Controllers\MiscellaneousController;
@@ -52,6 +53,10 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function(){
 
         //GrupoEmpresarial 
         Route::resource('/grupoEmpresarial', GrupoEmpresarialController::class);
+
+
+        //Carga de datos temp
+        Route::resource('/cargaDatos', CargaDatosController::class);
     });
 });
 
