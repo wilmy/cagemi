@@ -55,94 +55,79 @@
             <h4 class="mt-2 pt-50">Permisos del Rol</h4>
             <!-- Permission table -->
             <div class="table-responsive">
-              <table class="table table-flush-spacing">
-                <tbody>
+
+              <table class="table table-border">
+                <thead>
                   <tr>
-                    <td class="text-nowrap fw-bolder">
-                      Administrador de Accesos
-                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="Allows a full access to the system">
-                        <i data-feather="info"></i>
-                      </span>
-                    </td>
-                    <td>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="selectAll" />
-                        <label class="form-check-label" for="selectAll"> Seleccionar todos</label>
-                      </div>
-                    </td>
+                    <th class="text-nowrap fw-bolder">
+                      Aplicaci&oacute;n
+                    </th>
+                    <th class="text-nowrap fw-bolder">
+                      Funci&oacute;n
+                    </th>
+                    <th>Ver</th>
+                    <th>Crear</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
                   </tr>
+                </thead>
+                <tbody>
                   @php 
                     $listMenu = Helper::listMenu('all');
                   @endphp
                   @foreach($listMenu as $perm)
                     <tr>
-                        <td class="text-nowrap fw-bolder">{{ $perm->nombre }}</td>
+                        <td>{{ $perm->nombre }}</td>
                         <td>
-                            <div class="d-flex">
-                              @if($perm->ver != '')
-                                  <div class="form-check me-3 me-lg-5">
-                                      <input 
-                                        class="form-check-input" 
-                                        type="checkbox" 
-                                        name="permission[]" 
-                                        value="{{ $perm->ver }}" 
-                                        {{($rol->hasPermissionTo($perm->ver) ? 'checked="checked"' : '')}}
-                                        id="ver-{{ $perm->id }}" />
-
-                                      <label class="form-check-label" for="userManagementRead"> 
-                                        Ver
-                                      </label>
-                                  </div>
-                              @endif
-
-                              @if($perm->crear != '')
-                                  <div class="form-check me-3 me-lg-5">
-                                      <input 
-                                        class="form-check-input" 
-                                        type="checkbox" 
-                                        name="permission[]" 
-                                        value="{{ $perm->crear }}" 
-                                        {{($rol->hasPermissionTo($perm->crear) ? 'checked="checked"' : '')}}
-                                        id="crear-{{ $perm->id }}" />
-
-                                      <label class="form-check-label" for="userManagementRead"> 
-                                        Crear
-                                      </label>
-                                  </div>
-                              @endif
-
-                              @if($perm->editar != '')
-                                  <div class="form-check me-3 me-lg-5">
-                                      <input 
-                                        class="form-check-input" 
-                                        type="checkbox" 
-                                        name="permission[]" 
-                                        value="{{ $perm->editar }}" 
-                                        {{($rol->hasPermissionTo($perm->editar) ? 'checked="checked"' : '')}}
-                                        id="edit-{{ $perm->id }}" />
-
-                                      <label class="form-check-label" for="userManagementRead"> 
-                                        Editar
-                                      </label>
-                                  </div>
-                              @endif
-
-                              @if($perm->eliminar != '')
-                                  <div class="form-check me-3 me-lg-5">
-                                      <input 
-                                        class="form-check-input" 
-                                        type="checkbox" 
-                                        name="permission[]" 
-                                        value="{{ $perm->eliminar }}" 
-                                        {{($rol->hasPermissionTo($perm->eliminar) ? 'checked="checked"' : '')}}
-                                        id="elimi-{{ $perm->id }}" />
-
-                                      <label class="form-check-label" for="userManagementRead"> 
-                                        Eliminar
-                                      </label>
-                                  </div>
-                              @endif
-                            </div>
+                          @if( $perm->aplicaion == 'B' || $perm->aplicaion == '')
+                            Backoffice
+                          @elseif( $perm->aplicaion == 'A')
+                            App
+                          @endif
+                        </td>
+                        <td>
+                          @if($perm->ver != '')
+                            <input 
+                              class="form-check-input" 
+                              type="checkbox" 
+                              name="permission[]" 
+                              value="{{ $perm->slug }}" 
+                              {{($rol->hasPermissionTo($perm->ver) ? 'checked="checked"' : '')}}
+                              id="ver-{{ $perm->id }}" />
+                          @endif
+                        </td>
+                        <td>
+                          @if($perm->crear != '')
+                            <input 
+                              class="form-check-input" 
+                              type="checkbox" 
+                              name="permission[]" 
+                              value="{{ $perm->slug }}" 
+                              {{($rol->hasPermissionTo($perm->crear) ? 'checked="checked"' : '')}}
+                              id="crear-{{ $perm->id }}" />
+                          @endif
+                        </td>
+                        <td>
+                          @if($perm->editar != '')
+                            <input 
+                              class="form-check-input" 
+                              type="checkbox" 
+                              name="permission[]" 
+                              value="{{ $perm->slug }}" 
+                              {{($rol->hasPermissionTo($perm->editar) ? 'checked="checked"' : '')}}
+                              id="edit-{{ $perm->id }}" />
+                          @endif
+                        </td>
+                        <td>
+                          @if($perm->eliminar != '')
+                            <input 
+                              class="form-check-input" 
+                              type="checkbox" 
+                              name="permission[]" 
+                              value="{{ $perm->slug }}" 
+                              {{($rol->hasPermissionTo($perm->eliminar) ? 'checked="checked"' : '')}}
+                              id="elimi-{{ $perm->id }}" />
+                          @endif
                         </td>
                     </tr>
                   @endforeach

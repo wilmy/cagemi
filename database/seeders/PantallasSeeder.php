@@ -17,16 +17,16 @@ class PantallasSeeder extends Seeder
     {
         
         /**Creamos las pantallas por defecto */
-        $result_new_pantll = Pantallas::create([
-                                            'nombre' => 'Dashboard',
-                                            'slug' => 'dashboard', 
-                                            'url' => '/',
-                                            'descripcion' => 'Dashboard - pantalla inicial del sistema',
-                                            'orden' => 1,
-                                            'icono' => 'home',
-                                            'ver' => 'dashboard.index',
-                                            'estatus'  => 'A'
-                                            ]);
+        Pantallas::create([
+                        'nombre' => 'Dashboard',
+                        'slug' => 'dashboard', 
+                        'url' => '/',
+                        'descripcion' => 'Dashboard - pantalla inicial del sistema',
+                        'orden' => 1,
+                        'icono' => 'home',
+                        'ver' => 'dashboard.index',
+                        'estatus'  => 'A'
+                        ]);
 
         $resul_new_user = Pantallas::create([ 
                                         'nombre' => 'Usuarios',
@@ -75,6 +75,28 @@ class PantallasSeeder extends Seeder
                             'crear' => 'roles.create',
                             'editar' => 'roles.edit',
                             'eliminar' => 'roles.destroy',
+                            'estatus'  => 'A'
+                            ]);
+
+        Pantallas::create([
+                            'nombre' => 'Grupos Empresariales',
+                            'slug' => 'grupo-empresarial', 
+                            'url' => '/admin/app/grupoEmpresarial',
+                            'descripcion' => 'Grupos de Empresas',
+                            'orden' => 6,
+                            'icono' => 'home',
+                            'ver' => 'grupo_empresarial.index',
+                            'estatus'  => 'A'
+                            ]);
+
+        Pantallas::create([
+                            'nombre' => 'Carga de Datos',
+                            'slug' => 'carga-datos', 
+                            'url' => '/admin/app/cargaDatos',
+                            'descripcion' => 'Carga de datos temporales',
+                            'orden' => 6,
+                            'icono' => 'download',
+                            'ver' => 'cargadatos.index',
                             'estatus'  => 'A'
                             ]);
 

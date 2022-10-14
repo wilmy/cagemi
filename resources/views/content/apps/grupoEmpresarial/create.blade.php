@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Nuevo Usuario')
+@section('title', 'Nuevo Grupo Empresarial')
 
 @section('vendor-style')
   <!-- Vendor css files -->
@@ -18,10 +18,10 @@
     <div class="modal-content">
       <div class="modal-body px-5 pb-5">
         <div class="text-left mb-4">
-          <h1 class="role-title">Nuevo Usuario</h1>
+          <h1 class="role-title">Nuevo Grupo Empresarial</h1>
         </div>
        
-        <form id="addRoleForm" method="POST" class="row" action="{{route('admin.users.store')}}">
+        <form id="addRoleForm" method="POST" class="row" enctype="multipart/form-data" action="{{route('admin.grupoEmpresarial.store')}}">
           @csrf
 
             @if ($errors->any())
@@ -50,11 +50,9 @@
 
             <div class="form-group row">
                 <div class="mb-1 col-md-4">
-                  <label for="register-apellido" class="form-label">Apellido</label>
-                  <input type="text" class="form-control @error('apellido') is-invalid @enderror" id="register-apellido"
-                    name="apellido" placeholder="" aria-describedby="register-apellido" tabindex="1" autofocus
-                    value="{{ old('apellido') }}" />
-                  @error('name')
+                  <label for="register-apellido" class="form-label">Logo</label>
+                  <input type="file" class="form-control" id="logo" name="logo" />
+                  @error('logo')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
                     </span>
@@ -62,59 +60,9 @@
                 </div> 
             </div>
 
-            <div class="form-group row">
-              <div class="mb-1 col-md-4">
-                <label for="register-email" class="form-label">Email</label>
-                <input type="text" class="form-control @error('email') is-invalid @enderror" id="register-email"
-                  name="email" placeholder="john@example.com" aria-describedby="register-email" tabindex="2"
-                  value="{{ old('email') }}" />
-                @error('email')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            </div>
-
-            @if(Auth::user()->super_usuario == 'S')
-              <div class="form-group row">
-                <div class="mb-1 col-md-4">
-                  <label for="register-email" class="form-label">Grupo empresarial</label>
-                  <select name="grupo_empresarial" class="form-select">
-                    <option value="">Seleccione</option>
-                    @foreach ($grupo_empresarial as $grupo)
-                      <option value="{{ $grupo->id }}">{{ $grupo->nombre }}</option>
-                    @endforeach
-                  </select>
-                  @error('grupo_empresarial')
-                    <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
-                </div>
-              </div>
-            @endif
-
-            <div class="form-group row">
-              <div class="mb-1 col-md-4">
-                <label for="register-email" class="form-label">Rol</label>
-                <select name="rol" class="form-select">
-                  <option value="">Seleccione</option>
-                  @foreach ($roles as $role)
-                    <option value="{{ $role->id }}">{{ $role->name }}</option>
-                  @endforeach
-                </select>
-                @error('email')
-                  <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                  </span>
-                @enderror
-              </div>
-            </div>
-
           <div class="col-4 text-center mt-2">
             <button type="submit" class="btn btn-primary me-1">Guardar</button>
-            <a href="{{route('admin.users.index')}}" class="btn btn-outline-danger">
+            <a href="{{route('admin.grupoEmpresarial.index')}}" class="btn btn-outline-danger">
               Cancelar
             </a>
           </div>
