@@ -124,7 +124,7 @@ class UserController extends Controller
         $pageConfigs = ['pageHeader' => false];
 
         return redirect('admin/app/users/')
-                    ->with(['message' => 'Usuario creado correctamente '. $password, 
+                    ->with(['message' => 'Usuario creado correctamente ', 
                             'alert' => 'success']);
         
         //return view('/content/apps/user/app-user-list', ['users' => $users, 'pageConfigs' => $pageConfigs]);

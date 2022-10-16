@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_grupos_empresariales', function (Blueprint $table) {
-            $table->id('cod_grupo_empresarial');
-            $table->string('nombre');
-            $table->string('estatus', 1);
-            $table->string('logo', 100)->nullable();
+        Schema::create('tb_empleados_x_departamentos', function (Blueprint $table) {
+            $table->id('cod_empleado');
+            $table->integer('cod_posicon');
+            $table->integer('cod_departamento');
+            $table->string('nombre_posicion');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_grupos_empresariales');
+        Schema::dropIfExists('tb_empleados_x_departamentos');
     }
 };

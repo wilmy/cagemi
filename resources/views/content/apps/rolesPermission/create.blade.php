@@ -89,8 +89,8 @@
                               class="form-check-input" 
                               type="checkbox" 
                               name="permission[]" 
-                              value="{{ $perm->slug }}" 
-                              id="ver-{{ $perm->id }}" />
+                              value="{{ $perm->ver }}" 
+                              id="ver-{{ $perm->cod_pantalla }}" />
                           @endif
                         </td>
                         <td>
@@ -99,8 +99,8 @@
                               class="form-check-input" 
                               type="checkbox" 
                               name="permission[]" 
-                              value="{{ $perm->slug }}" 
-                              id="crear-{{ $perm->id }}" />
+                              value="{{ $perm->crear }}" 
+                              id="crear-{{ $perm->cod_pantalla }}" />
                           @endif
                         </td>
                         <td>
@@ -109,8 +109,8 @@
                               class="form-check-input" 
                               type="checkbox" 
                               name="permission[]" 
-                              value="{{ $perm->slug }}" 
-                              id="edit-{{ $perm->id }}" />
+                              value="{{ $perm->editar }}" 
+                              id="edit-{{ $perm->cod_pantalla }}" />
                           @endif
                         </td>
                         <td>
@@ -119,8 +119,8 @@
                               class="form-check-input" 
                               type="checkbox" 
                               name="permission[]" 
-                              value="{{ $perm->slug }}" 
-                              id="elimi-{{ $perm->id }}" />
+                              value="{{ $perm->eliminar }}" 
+                              id="elimi-{{ $perm->cod_pantalla }}" />
                           @endif
                         </td>
                     </tr>

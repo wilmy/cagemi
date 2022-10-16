@@ -87,7 +87,7 @@
                                         name="permission[]" 
                                         value="{{ $perm->slug }}" 
                                         {{($rol->hasPermissionTo($perm->slug) ? 'checked="checked"' : '')}}
-                                        id="ver-{{ $perm->id }}" />
+                                        id="ver-{{ $perm->cod_pantalla }}" />
 
                                       <label class="form-check-label" for="userManagementRead"> 
                                         Ver
@@ -103,7 +103,7 @@
                                         name="permission[]" 
                                         value="{{ $perm->slug }}" 
                                         {{($rol->hasPermissionTo($perm->slug) ? 'checked="checked"' : '')}}
-                                        id="crear-{{ $perm->id }}" />
+                                        id="crear-{{ $perm->cod_pantalla }}" />
 
                                       <label class="form-check-label" for="userManagementRead"> 
                                         Crear
@@ -119,7 +119,7 @@
                                         name="permission[]" 
                                         value="{{ $perm->slug }}" 
                                         {{($rol->hasPermissionTo($perm->slug) ? 'checked="checked"' : '')}}
-                                        id="edit-{{ $perm->id }}" />
+                                        id="edit-{{ $perm->cod_pantalla }}" />
 
                                       <label class="form-check-label" for="userManagementRead"> 
                                         Editar
@@ -135,7 +135,7 @@
                                         name="permission[]" 
                                         value="{{ $perm->slug }}" 
                                         {{($rol->hasPermissionTo($perm->slug) ? 'checked="checked"' : '')}}
-                                        id="elimi-{{ $perm->id }}" />
+                                        id="elimi-{{ $perm->cod_pantalla }}" />
 
                                       <label class="form-check-label" for="userManagementRead"> 
                                         Eliminar
@@ -162,7 +162,7 @@
                                         name="permission[]" 
                                         value="{{$tipo_perm['value']}}" 
                                         {{($rol->hasPermissionTo($tipo_perm['value']) ? 'checked="checked"' : '')}}
-                                        id="{{$tipo_perm['id']}}" />
+                                        id="{{$tipo_perm['cod_pantalla']}}" />
                                       <label class="form-check-label" for="userManagementRead"> {{$tipo_perm['name']}} </label>
                                   </div>
                                 @endforeach

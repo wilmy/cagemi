@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ParametrosController extends Controller
+class EmpresasXGruposEmpresarialesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,8 +13,7 @@ class ParametrosController extends Controller
      */
     public function index()
     {
-        //$array_data = CargaDatos::paginate(10);
-        return view('/content/apps/comunidad/index');
+        //
     }
 
     /**

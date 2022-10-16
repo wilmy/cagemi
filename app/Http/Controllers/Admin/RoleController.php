@@ -116,7 +116,7 @@ class RoleController extends Controller
 
         $nombre = $request->get('nombreRol');
         $rol_asing = Role::create(['name' => $nombre]);
-
+        
         if(isset($request->permission))
         {
             $permisos = $request->permission;
@@ -144,13 +144,12 @@ class RoleController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
         $validator = $request->validate([
             'nombreRol' => ['required', 'string', 'max:255']
         ]);
         
         $rol_asing = Role::where('id', '=', $id)->update(['name' => $request->nombreRol]);
-
+    
         $data_rol_asing = Role::find($id);
         if(isset($request->permission))
         {

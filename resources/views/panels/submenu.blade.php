@@ -14,7 +14,7 @@
           </a>
           
           @php 
-            $listMenuHijos_hijos = Helper::listMenu($submenu->id);
+            $listMenuHijos_hijos = Helper::listMenu($submenu->cod_pantalla);
           @endphp
           @if (count($listMenuHijos_hijos) > 0)
             @include('panels/submenu', ['menu' => $listMenuHijos_hijos])

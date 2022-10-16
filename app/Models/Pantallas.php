@@ -11,7 +11,7 @@ class Pantallas extends Model
 
     protected $table = 'pantallas';
     protected $fillable = [
-        'id',
+        'cod_pantalla',
         'id_padre',
         'nombre',
         'slug', 
