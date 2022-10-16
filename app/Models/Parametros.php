@@ -9,6 +9,8 @@ class Parametros extends Model
 {
     use HasFactory;
     protected $table = 'tb_parametros';
+
+    protected $primaryKey = 'cod_parametro';
     protected $fillable = [
         'cod_parametro',
         'cod_grupo_empresarial',

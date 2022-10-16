@@ -157,7 +157,7 @@
               @canany(['grupo_empresarial.edit'])
                 <td>
                   @can('grupo_empresarial.edit')
-                    <a href="{{route('admin.grupoEmpresarial.edit', $grupo->id)}}" class="btn btn-sm btn-primary role-edit-modal">
+                    <a href="{{route('admin.grupoEmpresarial.edit', $grupo->cod_grupo_empresarial)}}" class="btn btn-sm btn-primary role-edit-modal">
                       <small class="fw-bolder">Editar</small>
                     </a> 
                   @endcan

@@ -84,7 +84,7 @@
                   <select name="grupo_empresarial" class="form-select">
                     <option value="">Seleccione</option>
                     @foreach ($grupo_empresarial as $grupo)
-                      <option value="{{ $grupo->id }}" {{($grupo->id == $user->cod_grupo_empresarial ? 'selected' : '')}}>{{ $grupo->nombre }}</option>
+                      <option value="{{ $grupo->cod_grupo_empresarial }}" {{($grupo->id == $user->cod_grupo_empresarial ? 'selected' : '')}}>{{ $grupo->nombre }}</option>
                     @endforeach
                   </select>
                   @error('email')

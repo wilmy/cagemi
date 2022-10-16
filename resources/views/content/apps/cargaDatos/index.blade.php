@@ -61,8 +61,6 @@
               <table class="table table-striped table-bordered table-hover table-responsive">
                 <thead>
                   <tr>
-                    <th>cod_grupo_empresarial</th>
-                    <th>cod_empresa</th>
                     <th>empresa</th>
                     <th>cod_empleado</th>
                     <th>nombres</th>
@@ -77,23 +75,10 @@
                     <th>documento</th>
                     <th>fecha_nacimiento</th>
                     <th>codigo_superfisor</th>
-                    <th>estautus</th>
-                    <th>validacion_empresa</th>
-                    <th>validacion_VP</th>
-                    <th>validacion_departamento</th>
-                    <th>validacion_posicon</th>
-                    <th>validacion_empleados</th>
-                    <th>empresa_agregada</th>
-                    <th>vicepresidencia_agregada</th>
-                    <th>departamento_agregado</th>
-                    <th>posicion_agregada</th>
-                    <th>empleado_agregado</th>
                   </tr>
                 </thead>
                 @foreach($array_data as $valores)
                   <tr>
-                    <th>{{$valores->cod_grupo_empresarial}}</th>
-                    <th>{{$valores->cod_empresa}}</th>
                     <th>{{$valores->empresa}}</th>
                     <th>{{$valores->cod_empleado}}</th>
                     <th>{{$valores->nombres}}</th>
@@ -108,17 +93,6 @@
                     <th>{{$valores->documento}}</th>
                     <th>{{$valores->fecha_nacimiento}}</th>
                     <th>{{$valores->codigo_superfisor}}</th>
-                    <th>{{$valores->estautus}}</th>
-                    <th>{{$valores->validacion_empresa}}</th>
-                    <th>{{$valores->validacion_VP}}</th>
-                    <th>{{$valores->validacion_departamento}}</th>
-                    <th>{{$valores->validacion_posicon}}</th>
-                    <th>{{$valores->validacion_empleados}}</th>
-                    <th>{{$valores->empresa_agregada}}</th>
-                    <th>{{$valores->vicepresidencia_agregada}}</th>
-                    <th>{{$valores->departamento_agregado}}</th>
-                    <th>{{$valores->posicion_agregada}}</th>
-                    <th>{{$valores->empleado_agregado}}</th>
                   </tr>
                 @endforeach
               </table>

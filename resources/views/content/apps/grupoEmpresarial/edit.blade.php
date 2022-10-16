@@ -21,7 +21,7 @@
           <h1 class="role-title">Actualizar Grupo Empresarial</h1>
         </div>
        
-        <form id="addRoleForm" method="POST" class="row" enctype="multipart/form-data" action="{{route('admin.grupoEmpresarial.update', $grupo_empresarial->id)}}">
+        <form id="addRoleForm" method="POST" class="row" enctype="multipart/form-data" action="{{route('admin.grupoEmpresarial.update', $grupo_empresarial->cod_grupo_empresarial)}}">
           @csrf
           @method('PUT')
             @if ($errors->any())

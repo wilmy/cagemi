@@ -123,9 +123,9 @@ class GrupoEmpresarialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($cod_grupo_empresarial)
     {
-        $grupo_empresarial = GrupoEmpresarial::find($id);
+        $grupo_empresarial = GrupoEmpresarial::find($cod_grupo_empresarial);
         $pageConfigs = ['pageHeader' => true,];
 
         return view('/content/apps/grupoEmpresarial/edit', ['grupo_empresarial' => $grupo_empresarial, 
@@ -139,7 +139,7 @@ class GrupoEmpresarialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $cod_grupo_empresarial)
     {
         $validator = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
@@ -167,7 +167,7 @@ class GrupoEmpresarialController extends Controller
         }
 
         //Actualizamos los datos del usuario enviado
-        GrupoEmpresarial::where('id', $id)
+        GrupoEmpresarial::where('cod_grupo_empresarial', $cod_grupo_empresarial)
                         ->update([
                                 'nombre' => $request->nombre,
                                 'logo' => $logo,

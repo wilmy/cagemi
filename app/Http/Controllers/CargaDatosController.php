@@ -39,6 +39,11 @@ class CargaDatosController extends Controller
      */
     public function store(Request $request)
     {
+        if(empty(auth()->user()->cod_grupo_empresarial))
+        {
+            return view('/content/apps/cargaDatos/index', ['message'=> ['El usuario no tiene grupo empresarial definido'.auth()->user()->cod_grupo_empresarial]]);
+        }
+
         $file_archivo = $request->archivo;
         
         $nombre_archivo = $file_archivo->getPathname();
@@ -50,6 +55,10 @@ class CargaDatosController extends Controller
         $array_data = array();
         if (!empty($sheetData)) 
         {
+            //Eiminamos los datos si es del mismo grupo empresarial 
+            $delet = CargaDatos::where('cod_grupo_empresarial', auth()->user()->cod_grupo_empresarial);
+            
+            //Validamos y cargamos los datos
             $hojaActual = $spreadsheet->getSheet(0);
             $numeroMayorDeFila = $hojaActual->getHighestRow(); // Numérico
             $letraMayorDeColumna = $hojaActual->getHighestColumn(); // Letra
@@ -95,7 +104,7 @@ class CargaDatosController extends Controller
                         continue;
                     }
 
-                    $cargaDatos->cod_grupo_empresarial  = (auth()->user()->cod_grupo_empresarial != '' ? auth()->user()->cod_grupo_empresarial : 0);    
+                    $cargaDatos->cod_grupo_empresarial  = auth()->user()->cod_grupo_empresarial;    
                     $cargaDatos->cod_empresa            = $cod_empresa;
                     $cargaDatos->empresa                = $empresa;
                     $cargaDatos->cod_empleado           = $cod_empleado;
