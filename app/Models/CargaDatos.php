@@ -24,7 +24,6 @@ class CargaDatos extends Model
         'correo_instutucional',
         'correo_personal',
         'documento',
-
         'fecha_nacimiento',
         'codigo_superfisor',
         'estautus',

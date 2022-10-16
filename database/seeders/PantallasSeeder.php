@@ -28,7 +28,7 @@ class PantallasSeeder extends Seeder
                         'estatus'  => 'A'
                         ]);
 
-        $resul_new_user = Pantallas::create([ 
+        $result_new_pantalla1 = Pantallas::create([ 
                                         'nombre' => 'Usuarios',
                                         'slug' => 'users', 
                                         'url' => '',
@@ -39,7 +39,7 @@ class PantallasSeeder extends Seeder
                                         'estatus'  => 'A'
                                     ]);
 
-        Pantallas::create([ 'id_padre' => $resul_new_user->id,
+        Pantallas::create([ 'id_padre' => $result_new_pantalla1->id,
                             'nombre' => 'Lista de Usuarios',
                             'slug' => 'users', 
                             'url' => 'admin/app/users',
@@ -53,7 +53,7 @@ class PantallasSeeder extends Seeder
                             'estatus'  => 'A'
                             ]);
 
-        $result_new_rol = Pantallas::create([
+        $result_new_pantalla = Pantallas::create([
                                         'nombre' => 'Roles Y Permisos',
                                         'slug' => 'roles', 
                                         'url' => '',
@@ -64,7 +64,7 @@ class PantallasSeeder extends Seeder
                                         'estatus'  => 'A'
                                         ]);
 
-        Pantallas::create(['id_padre' => $result_new_rol->id,
+        Pantallas::create(['id_padre' => $result_new_pantalla->id,
                             'nombre' => 'Roles',
                             'slug' => 'roles', 
                             'url' => 'admin/app/roles',

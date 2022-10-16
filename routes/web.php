@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\CargaDatosController;
 use App\Http\Controllers\ComponentsController;
 use App\Http\Controllers\PageLayoutController;
+use App\Http\Controllers\ParametrosController;
 use App\Http\Controllers\MiscellaneousController;
 use App\Http\Controllers\UserInterfaceController;
 use App\Http\Controllers\AuthenticationController;
@@ -57,6 +58,10 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function(){
 
         //Carga de datos temp
         Route::resource('/cargaDatos', CargaDatosController::class);
+
+
+        //Comunidad del usuario
+        Route::resource('/comunidad', ParametrosController::class);
     });
 });
 

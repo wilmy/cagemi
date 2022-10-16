@@ -91,9 +91,9 @@
                               class="form-check-input" 
                               type="checkbox" 
                               name="permission[]" 
-                              value="{{ $perm->slug }}" 
+                              value="{{ $perm->ver }}" 
                               {{($rol->hasPermissionTo($perm->ver) ? 'checked="checked"' : '')}}
-                              id="ver-{{ $perm->id }}" />
+                              id="ver-{{ $perm->cod_pantalla }}" />
                           @endif
                         </td>
                         <td>
@@ -102,9 +102,9 @@
                               class="form-check-input" 
                               type="checkbox" 
                               name="permission[]" 
-                              value="{{ $perm->slug }}" 
+                              value="{{ $perm->crear }}" 
                               {{($rol->hasPermissionTo($perm->crear) ? 'checked="checked"' : '')}}
-                              id="crear-{{ $perm->id }}" />
+                              id="crear-{{ $perm->cod_pantalla }}" />
                           @endif
                         </td>
                         <td>
@@ -113,9 +113,9 @@
                               class="form-check-input" 
                               type="checkbox" 
                               name="permission[]" 
-                              value="{{ $perm->slug }}" 
+                              value="{{ $perm->editar }}" 
                               {{($rol->hasPermissionTo($perm->editar) ? 'checked="checked"' : '')}}
-                              id="edit-{{ $perm->id }}" />
+                              id="edit-{{ $perm->cod_pantalla }}" />
                           @endif
                         </td>
                         <td>
@@ -124,9 +124,9 @@
                               class="form-check-input" 
                               type="checkbox" 
                               name="permission[]" 
-                              value="{{ $perm->slug }}" 
+                              value="{{ $perm->eliminar }}" 
                               {{($rol->hasPermissionTo($perm->eliminar) ? 'checked="checked"' : '')}}
-                              id="elimi-{{ $perm->id }}" />
+                              id="elimi-{{ $perm->cod_pantalla }}" />
                           @endif
                         </td>
                     </tr>

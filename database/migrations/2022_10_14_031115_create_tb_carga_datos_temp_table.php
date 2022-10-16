@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('posicion');
             $table->string('direccion_vp');
             $table->string('departamento');
-            $table->string('elefono_movil');
+            $table->string('telefono_movil');
             $table->string('extencion');
             $table->string('correo_instutucional');
             $table->string('correo_personal');

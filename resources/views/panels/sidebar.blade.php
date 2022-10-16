@@ -95,7 +95,7 @@ $listMenu = Helper::listMenu();
                     @endif
                   </a>
                   @php 
-                    $listMenuHijos = Helper::listMenu($menu->id);
+                    $listMenuHijos = Helper::listMenu($menu->cod_pantalla);
                   @endphp
                   @if (count($listMenuHijos) > 0)
                     @include('panels/submenu', ['menu' => $listMenuHijos])
@@ -116,7 +116,7 @@ $listMenu = Helper::listMenu();
                     @endif
                   </a>
                   @php 
-                    $listMenuHijos = Helper::listMenu($menu->id);
+                    $listMenuHijos = Helper::listMenu($menu->cod_pantalla);
                   @endphp
                   @if (count($listMenuHijos) > 0)
                     @include('panels/submenu', ['menu' => $listMenuHijos])

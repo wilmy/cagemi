@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('pantallas', function (Blueprint $table) {
-            $table->id();
+            $table->id('cod_pantalla');
             $table->integer('id_padre')->nullable();
             $table->string('aplicacion', 1)->nullable();
             $table->string('nombre', 80);

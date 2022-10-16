@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('tb_parametros', function (Blueprint $table) {
-            $table->id();
+            $table->id('cod_parametro');
             $table->integer('cod_grupo_empresarial');
             $table->string('parametro');
             $table->string('valor');

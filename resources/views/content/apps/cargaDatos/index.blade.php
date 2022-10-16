@@ -24,10 +24,10 @@
         <form id="addRoleForm" method="POST" class="row" enctype="multipart/form-data" action="{{route('admin.cargaDatos.store')}}">
           @csrf
 
-            @if ($errors->any())
+            @if (isset($message))
                 <div class="alert alert-danger">
                     <ul>
-                        @foreach ($errors->all() as $error)
+                        @foreach ($message as $error)
                             <li>{{ $error }}</li>
                         @endforeach
                     </ul>
@@ -38,11 +38,7 @@
                 <div class="mb-1 col-md-4">
                   <label for="register-apellido" class="form-label">Plantilla</label>
                   <input type="file" class="form-control" id="logo" name="archivo" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-                  @error('logo')
-                    <span class="invalid-feedback" role="alert">
-                      <strong>{{ $message }}</strong>
-                    </span>
-                  @enderror
+                  
                 </div> 
             </div>
 
@@ -59,11 +55,79 @@
       @if(isset($array_data))
         @if(count($array_data) > 0)
           <hr>
-          <pre>
-          {{
-            print_r($array_data);
-          }}
-          </pre>
+          <div class="card-body mt-2">
+            <h2>Lista de datos cargados</h2>
+            <div class="col-md-12 mb-10 table-responsive">
+              <table class="table table-striped table-bordered table-hover table-responsive">
+                <thead>
+                  <tr>
+                    <th>cod_grupo_empresarial</th>
+                    <th>cod_empresa</th>
+                    <th>empresa</th>
+                    <th>cod_empleado</th>
+                    <th>nombres</th>
+                    <th>apellidos</th>
+                    <th>posicion</th>
+                    <th>direccion_vp</th>
+                    <th>departamento</th>
+                    <th>telefono_movil</th>
+                    <th>extencion</th>
+                    <th>correo_instutucional</th>
+                    <th>correo_personal</th>
+                    <th>documento</th>
+                    <th>fecha_nacimiento</th>
+                    <th>codigo_superfisor</th>
+                    <th>estautus</th>
+                    <th>validacion_empresa</th>
+                    <th>validacion_VP</th>
+                    <th>validacion_departamento</th>
+                    <th>validacion_posicon</th>
+                    <th>validacion_empleados</th>
+                    <th>empresa_agregada</th>
+                    <th>vicepresidencia_agregada</th>
+                    <th>departamento_agregado</th>
+                    <th>posicion_agregada</th>
+                    <th>empleado_agregado</th>
+                  </tr>
+                </thead>
+                @foreach($array_data as $valores)
+                  <tr>
+                    <th>{{$valores->cod_grupo_empresarial}}</th>
+                    <th>{{$valores->cod_empresa}}</th>
+                    <th>{{$valores->empresa}}</th>
+                    <th>{{$valores->cod_empleado}}</th>
+                    <th>{{$valores->nombres}}</th>
+                    <th>{{$valores->apellidos}}</th>
+                    <th>{{$valores->posicion}}</th>
+                    <th>{{$valores->direccion_vp}}</th>
+                    <th>{{$valores->departamento}}</th>
+                    <th>{{$valores->telefono_movil}}</th>
+                    <th>{{$valores->extencion}}</th>
+                    <th>{{$valores->correo_instutucional}}</th>
+                    <th>{{$valores->correo_personal}}</th>
+                    <th>{{$valores->documento}}</th>
+                    <th>{{$valores->fecha_nacimiento}}</th>
+                    <th>{{$valores->codigo_superfisor}}</th>
+                    <th>{{$valores->estautus}}</th>
+                    <th>{{$valores->validacion_empresa}}</th>
+                    <th>{{$valores->validacion_VP}}</th>
+                    <th>{{$valores->validacion_departamento}}</th>
+                    <th>{{$valores->validacion_posicon}}</th>
+                    <th>{{$valores->validacion_empleados}}</th>
+                    <th>{{$valores->empresa_agregada}}</th>
+                    <th>{{$valores->vicepresidencia_agregada}}</th>
+                    <th>{{$valores->departamento_agregado}}</th>
+                    <th>{{$valores->posicion_agregada}}</th>
+                    <th>{{$valores->empleado_agregado}}</th>
+                  </tr>
+                @endforeach
+              </table>
+            </div>
+          <br><br>
+          <div class="col-md-12 mt-20">
+            {{$array_data->render()}}
+          </div> 
+        </div>
         @endif
       @endif
     </div>
