@@ -131,6 +131,7 @@
           <tr>
             <th>Logo</th>
             <th>Nombre</th>
+            <th>Tipo de Comunidad</th>
             <th>Estatus</th>
             @canany(['grupo_empresarial.edit'])
               <th>Acci&oacute;n</th>
@@ -147,6 +148,11 @@
               </td>
               <td>{{ $grupo->nombre }}</td>
               <td>
+                  @if($grupo['parametros'][0]['parametro'] == 'TIPO_COMUNIDAD')
+                    {{($grupo['parametros'][0]['valor'] == 'A' ? 'Abierta' : ($grupo['parametros'][0]['valor'] == 'C' ? 'Cerrada': ''))}}
+                  @endif
+              </td>
+              <td>
                 @if($grupo->estatus == 'A')
                   <span class="badge rounded-pill badge-light-success">Activo</span>
                 @else
@@ -157,7 +163,7 @@
               @canany(['grupo_empresarial.edit'])
                 <td>
                   @can('grupo_empresarial.edit')
-                    <a href="{{route('admin.grupoEmpresarial.edit', $grupo->id)}}" class="btn btn-sm btn-primary role-edit-modal">
+                    <a href="{{route('admin.grupoEmpresarial.edit', $grupo->cod_grupo_empresarial)}}" class="btn btn-sm btn-primary role-edit-modal">
                       <small class="fw-bolder">Editar</small>
                     </a> 
                   @endcan

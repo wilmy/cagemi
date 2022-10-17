@@ -39,7 +39,7 @@ class PantallasSeeder extends Seeder
                                         'estatus'  => 'A'
                                     ]);
 
-        Pantallas::create([ 'id_padre' => $result_new_pantalla1->id,
+        Pantallas::create([ 'id_padre' => $result_new_pantalla1->cod_pantalla,
                             'nombre' => 'Lista de Usuarios',
                             'slug' => 'users', 
                             'url' => 'admin/app/users',
@@ -64,7 +64,7 @@ class PantallasSeeder extends Seeder
                                         'estatus'  => 'A'
                                         ]);
 
-        Pantallas::create(['id_padre' => $result_new_pantalla->id,
+        Pantallas::create(['id_padre' => $result_new_pantalla->cod_pantalla,
                             'nombre' => 'Roles',
                             'slug' => 'roles', 
                             'url' => 'admin/app/roles',
@@ -88,6 +88,7 @@ class PantallasSeeder extends Seeder
                             'ver' => 'grupo_empresarial.index',
                             'estatus'  => 'A'
                             ]);
+            
 
         Pantallas::create([
                             'nombre' => 'Carga de Datos',
@@ -99,6 +100,18 @@ class PantallasSeeder extends Seeder
                             'ver' => 'cargadatos.index',
                             'estatus'  => 'A'
                             ]);
+
+        
+        Pantallas::create([
+                        'nombre' => 'Validacion de Datos',
+                        'slug' => 'validacion-datos', 
+                        'url' => '/admin/app/validacionDatos',
+                        'descripcion' => 'Validacion de datos temporales',
+                        'orden' => 7,
+                        'icono' => 'home',
+                        'ver' => 'validaciondatos.index',
+                        'estatus'  => 'A'
+                        ]);
 
     }
 }

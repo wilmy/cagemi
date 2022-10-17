@@ -10,6 +10,7 @@ class Pantallas extends Model
     use HasFactory;
 
     protected $table = 'pantallas';
+    protected $primaryKey = 'cod_pantalla';
     protected $fillable = [
         'cod_pantalla',
         'id_padre',

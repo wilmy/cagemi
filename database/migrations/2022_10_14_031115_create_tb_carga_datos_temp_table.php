@@ -16,22 +16,21 @@ return new class extends Migration
         Schema::create('tb_carga_datos_temp', function (Blueprint $table) {
             $table->id();
             $table->integer('cod_grupo_empresarial');
-            $table->integer('cod_empresa');
-            $table->string('empresa');
-            $table->integer('cod_empleado');
-            $table->string('nombres');
-            $table->string('apellidos');
-            $table->string('posicion');
-            $table->string('direccion_vp');
-            $table->string('departamento');
-            $table->string('telefono_movil');
-            $table->string('extencion');
-            $table->string('correo_instutucional');
-            $table->string('correo_personal');
-            $table->string('documento');
+            $table->string('empresa')->nullable();
+            $table->integer('cod_empleado')->nullable();
+            $table->string('nombres')->nullable();
+            $table->string('apellidos')->nullable();
+            $table->string('posicion')->nullable();
+            $table->string('direccion_vp')->nullable();
+            $table->string('departamento')->nullable();
+            $table->string('telefono_movil')->nullable();
+            $table->string('extencion')->nullable();
+            $table->string('correo_instutucional')->nullable();
+            $table->string('correo_personal')->nullable();
+            $table->string('documento')->nullable();
 
-            $table->datetime('fecha_nacimiento');
-            $table->string('codigo_superfisor');
+            $table->datetime('fecha_nacimiento')->nullable();
+            $table->string('codigo_superfisor')->nullable();
             $table->string('estautus', 1)->default('A');
             $table->string('validacion_empresa', 1)->default('N');
             $table->string('validacion_VP', 1)->default('N');

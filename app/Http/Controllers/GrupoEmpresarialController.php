@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Parametros;
 use Illuminate\Http\Request;
 use App\Models\GrupoEmpresarial;
 
@@ -91,11 +92,20 @@ class GrupoEmpresarialController extends Controller
             $logo = '';
         }
 
-        GrupoEmpresarial::create([
-                                'nombre' => $request->nombre,
-                                'logo' => $logo,
-                                'estatus' => 'A'
-                            ]);
+
+        $grupo_empresarial = GrupoEmpresarial::create([
+                                            'nombre' => $request->nombre,
+                                            'logo' => $logo,
+                                            'estatus' => 'A'
+                                        ]);
+        
+        //Creamos el parametro de del grupo empresarial si es A o C
+        Parametros::create([
+                            'cod_grupo_empresarial' => $grupo_empresarial->cod_grupo_empresarial,
+                            'parametro' => 'TIPO_COMUNIDAD',
+                            'valor' => $request->comunidad,
+                            'estatus' => 'A'
+                        ]);
 
         $pageConfigs = ['pageHeader' => false];
 
@@ -103,7 +113,6 @@ class GrupoEmpresarialController extends Controller
                     ->with(['message' => 'Registro creado correctamente ', 
                             'alert' => 'success']);
         
-        //return view('/content/apps/user/app-user-list', ['users' => $users, 'pageConfigs' => $pageConfigs]);
     }
 
     /**
@@ -123,9 +132,9 @@ class GrupoEmpresarialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($cod_grupo_empresarial)
     {
-        $grupo_empresarial = GrupoEmpresarial::find($id);
+        $grupo_empresarial = GrupoEmpresarial::find($cod_grupo_empresarial);
         $pageConfigs = ['pageHeader' => true,];
 
         return view('/content/apps/grupoEmpresarial/edit', ['grupo_empresarial' => $grupo_empresarial, 
@@ -139,7 +148,7 @@ class GrupoEmpresarialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $cod_grupo_empresarial)
     {
         $validator = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
@@ -167,15 +176,30 @@ class GrupoEmpresarialController extends Controller
         }
 
         //Actualizamos los datos del usuario enviado
-        GrupoEmpresarial::where('id', $id)
+        GrupoEmpresarial::where('cod_grupo_empresarial', $cod_grupo_empresarial)
                         ->update([
                                 'nombre' => $request->nombre,
                                 'logo' => $logo,
                                 'estatus' => $request->estatus,
                             ]);
         
-        
-        
+        $datos_valid = Parametros::where([['cod_grupo_empresarial', $cod_grupo_empresarial], ['parametro', 'TIPO_COMUNIDAD']])->get();
+        if(count($datos_valid) > 0)
+        {
+            Parametros::where([['cod_grupo_empresarial', $cod_grupo_empresarial], ['parametro', 'TIPO_COMUNIDAD']])
+                        ->update(['valor' => $request->comunidad]);
+        }
+        else
+        {
+            //Creamos el parametro de del grupo empresarial si es A o C
+            Parametros::create([
+                'cod_grupo_empresarial' => $cod_grupo_empresarial,
+                'parametro' => 'TIPO_COMUNIDAD',
+                'valor' => $request->comunidad,
+                'estatus' => 'A'
+            ]);
+        }
+
         return redirect('admin/app/grupoEmpresarial/')
                     ->with(['message' => 'Regisro actualizado correctamente ', 
                             'alert' => 'success']);
