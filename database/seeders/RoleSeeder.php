@@ -41,11 +41,15 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'grupo_empresarial.index'])->syncRoles([$admin]);
         Permission::create(['name' => 'grupo_empresarial.create'])->syncRoles([$admin]);
         Permission::create(['name' => 'grupo_empresarial.edit'])->syncRoles([$admin]);
-
         
         //Permisos para la carga de datos temporales
         Permission::create(['name' => 'cargadatos.index'])->syncRoles([$admin]);
         Permission::create(['name' => 'cargadatos.create'])->syncRoles([$admin]);
         Permission::create(['name' => 'cargadatos.edit'])->syncRoles([$admin]);
+
+        //Pantalla para validar los datos cargados en el temporal
+        Permission::create(['name' => 'validaciondatos.index'])->syncRoles([$admin]);
+        Permission::create(['name' => 'validaciondatos.create'])->syncRoles([$admin]);
+        Permission::create(['name' => 'validaciondatos.edit'])->syncRoles([$admin]);
     }
 }

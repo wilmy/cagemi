@@ -11,7 +11,6 @@ class CargaDatos extends Model
     protected $table = 'tb_carga_datos_temp';
     protected $fillable = [
         'cod_grupo_empresarial',
-        'cod_empresa',
         'empresa',
         'cod_empleado',
         'nombres',

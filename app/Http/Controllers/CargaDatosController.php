@@ -17,7 +17,7 @@ class CargaDatosController extends Controller
      */
     public function index()
     {
-        $array_data = CargaDatos::paginate(10);
+        $array_data = CargaDatos::paginate(100);
         return view('/content/apps/cargaDatos/index', ['array_data' => $array_data]);
     }
 
@@ -56,7 +56,7 @@ class CargaDatosController extends Controller
         if (!empty($sheetData)) 
         {
             //Eiminamos los datos si es del mismo grupo empresarial 
-            $delet = CargaDatos::where('cod_grupo_empresarial', auth()->user()->cod_grupo_empresarial);
+            $delet = CargaDatos::where('cod_grupo_empresarial', auth()->user()->cod_grupo_empresarial)->delete();
             
             //Validamos y cargamos los datos
             $hojaActual = $spreadsheet->getSheet(0);
@@ -75,25 +75,24 @@ class CargaDatosController extends Controller
                 # límite de nuestro ciclo
                 $numeroMayorDeFila = $hojaActual->getHighestRow(); // Numérico
 
-                for ($indiceFila = 4; $indiceFila <= $numeroMayorDeFila; $indiceFila++) 
+                for ($indiceFila = 2; $indiceFila <= $numeroMayorDeFila; $indiceFila++) 
                 {
                     $cargaDatos = new CargaDatos();
-                    $cod_empresa        = $hojaActual->getCellByColumnAndRow(1, $indiceFila)->getValue();
-                    $empresa	        = $hojaActual->getCellByColumnAndRow(2, $indiceFila)->getValue();
-                    $cod_empleado	    = $hojaActual->getCellByColumnAndRow(3, $indiceFila)->getValue();
-                    $nombres	        = $hojaActual->getCellByColumnAndRow(4, $indiceFila)->getValue();
-                    $apellidos	        = $hojaActual->getCellByColumnAndRow(5, $indiceFila)->getValue();
-                    $posición	        = $hojaActual->getCellByColumnAndRow(6, $indiceFila)->getValue();
-                    $dirección_vicepresidencia	= $hojaActual->getCellByColumnAndRow(7, $indiceFila)->getValue();
-                    $departamento	    = $hojaActual->getCellByColumnAndRow(8, $indiceFila)->getValue();
-                    $correo	            = $hojaActual->getCellByColumnAndRow(9, $indiceFila)->getValue();
-                    $celular	        = $hojaActual->getCellByColumnAndRow(10, $indiceFila)->getValue();
-                    $numeroDocumento	= $hojaActual->getCellByColumnAndRow(11, $indiceFila)->getValue();
-                    $fecha_nacimiento	= $hojaActual->getCellByColumnAndRow(12, $indiceFila)->getValue();
-                    $cod_superviso      = $hojaActual->getCellByColumnAndRow(13, $indiceFila)->getValue();
+                    $empresa	        = $hojaActual->getCellByColumnAndRow(1, $indiceFila)->getValue();
+                    $cod_empleado	    = $hojaActual->getCellByColumnAndRow(2, $indiceFila)->getValue();
+                    $nombres	        = $hojaActual->getCellByColumnAndRow(3, $indiceFila)->getValue();
+                    $apellidos	        = $hojaActual->getCellByColumnAndRow(4, $indiceFila)->getValue();
+                    $posición	        = $hojaActual->getCellByColumnAndRow(5, $indiceFila)->getValue();
+                    $dirección_vicepresidencia	= $hojaActual->getCellByColumnAndRow(6, $indiceFila)->getValue();
+                    $departamento	    = $hojaActual->getCellByColumnAndRow(7, $indiceFila)->getValue();
+                    $correo	            = $hojaActual->getCellByColumnAndRow(8, $indiceFila)->getValue();
+                    $celular	        = $hojaActual->getCellByColumnAndRow(9, $indiceFila)->getValue();
+                    $numeroDocumento	= $hojaActual->getCellByColumnAndRow(10, $indiceFila)->getValue();
+                    $fecha_nacimiento	= $hojaActual->getCellByColumnAndRow(11, $indiceFila)->getValue();
+                    $cod_superviso      = $hojaActual->getCellByColumnAndRow(12, $indiceFila)->getValue();
+                    $extencion          = '';
 
-                    if(empty(trim($cod_empresa)) || empty(trim($empresa)) ||
-                        empty(trim($cod_empleado)) || empty(trim($cod_empleado)) ||
+                    /*if(empty(trim($empresa)) || empty(trim($cod_empleado)) ||
                         empty(trim($nombres)) || empty(trim($apellidos)) ||
                         empty(trim($posición)) || empty(trim($dirección_vicepresidencia)) ||
                         empty(trim($departamento)) || empty(trim($correo)) ||
@@ -102,24 +101,23 @@ class CargaDatosController extends Controller
                     {
                         //return view('/content/apps/cargaDatos/index', ['errors'=> ['Lo sentimos existen datos vacios o incorrectos']]);
                         continue;
-                    }
+                    }*/
 
-                    $cargaDatos->cod_grupo_empresarial  = auth()->user()->cod_grupo_empresarial;    
-                    $cargaDatos->cod_empresa            = $cod_empresa;
-                    $cargaDatos->empresa                = $empresa;
-                    $cargaDatos->cod_empleado           = $cod_empleado;
-                    $cargaDatos->nombres                = $nombres;
-                    $cargaDatos->apellidos              = $apellidos;
-                    $cargaDatos->posicion               = $posición;
-                    $cargaDatos->direccion_vp           = $dirección_vicepresidencia;
-                    $cargaDatos->departamento           = $departamento;
-                    $cargaDatos->telefono_movil         = $celular;
-                    $cargaDatos->extencion              = '0000';
-                    $cargaDatos->correo_instutucional   = $correo;
-                    $cargaDatos->correo_personal        = $correo;
-                    $cargaDatos->documento              = $numeroDocumento;
-                    $cargaDatos->fecha_nacimiento       = $fecha_nacimiento;
-                    $cargaDatos->codigo_superfisor      = $cod_superviso;
+                    $cargaDatos->cod_grupo_empresarial  = auth()->user()->cod_grupo_empresarial;
+                    $this->validateValue($cargaDatos, 'empresa', $empresa);
+                    $this->validateValue($cargaDatos, 'cod_empleado', $cod_empleado);
+                    $this->validateValue($cargaDatos, 'nombres', $nombres);
+                    $this->validateValue($cargaDatos, 'apellidos', $apellidos);
+                    $this->validateValue($cargaDatos, 'posicion', $posición);
+                    $this->validateValue($cargaDatos, 'direccion_vp', $dirección_vicepresidencia);
+                    $this->validateValue($cargaDatos, 'departamento', $departamento);
+                    $this->validateValue($cargaDatos, 'telefono_movil', $celular);
+                    $this->validateValue($cargaDatos, 'extencion', $extencion);
+                    $this->validateValue($cargaDatos, 'correo_instutucional', '');
+                    $this->validateValue($cargaDatos, 'correo_personal', $correo);
+                    $this->validateValue($cargaDatos, 'documento', $numeroDocumento);
+                    $this->validateValue($cargaDatos, 'fecha_nacimiento', $fecha_nacimiento);
+                    $this->validateValue($cargaDatos, 'codigo_superfisor', $cod_superviso);
 
                     $cargaDatos->save();
                 }
@@ -129,6 +127,14 @@ class CargaDatosController extends Controller
         return redirect('admin/app/cargaDatos/')
                     ->with(['message' => 'Datos cargados correctamente ', 
                             'alert' => 'success']);
+    }
+
+    public function validateValue($model, $input, $dataImput)
+    {
+        if($dataImput != '')
+        {
+            $model->$input = $dataImput;
+        }
     }
 
     /**

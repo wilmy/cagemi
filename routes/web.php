@@ -19,6 +19,7 @@ use App\Http\Controllers\ParametrosController;
 use App\Http\Controllers\MiscellaneousController;
 use App\Http\Controllers\UserInterfaceController;
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\ValidacionDatosController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\GrupoEmpresarialController;
 
@@ -55,6 +56,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function(){
         //GrupoEmpresarial 
         Route::resource('/grupoEmpresarial', GrupoEmpresarialController::class);
 
+        
 
         //Carga de datos temp
         Route::resource('/cargaDatos', CargaDatosController::class);
@@ -62,6 +64,10 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function(){
 
         //Comunidad del usuario
         Route::resource('/comunidad', ParametrosController::class);
+
+
+        //Validacion de datos temporales
+        Route::resource('/validacionDatos', ValidacionDatosController::class);
     });
 });
 

@@ -42,7 +42,7 @@
                 </div> 
             </div>
 
-          <div class="col-4 text-center mt-2">
+          <div class="col-4  mt-2">
             <button type="submit" class="btn btn-primary me-1">Guardar</button>
             <a href="{{route('admin.grupoEmpresarial.index')}}" class="btn btn-outline-danger">
               Cancelar
@@ -58,9 +58,10 @@
           <div class="card-body mt-2">
             <h2>Lista de datos cargados</h2>
             <div class="col-md-12 mb-10 table-responsive">
-              <table class="table table-striped table-bordered table-hover table-responsive">
+              <table class="table table-striped- table-bordered table-hover table-responsive">
                 <thead>
                   <tr>
+                    <th>Fila</th>
                     <th>empresa</th>
                     <th>cod_empleado</th>
                     <th>nombres</th>
@@ -77,8 +78,20 @@
                     <th>codigo_superfisor</th>
                   </tr>
                 </thead>
+                @php $fila = 2; @endphp
                 @foreach($array_data as $valores)
-                  <tr>
+                  @php
+                    $colorClass = '';
+                    if($valores->empresa == '' || $valores->cod_empleado == '' ||
+                       $valores->nombres == '' || $valores->apellidos == '' ||
+                       $valores->posicion == '' || $valores->direccion_vp == '' ||
+                       $valores->departamento == '' || $valores->documento == '') 
+                    {
+                      $colorClass = 'class="alert-danger" style="color: red"';
+                    }
+                  @endphp
+                  <tr {!!$colorClass!!}>
+                    <th>{{$fila}}</th>
                     <th>{{$valores->empresa}}</th>
                     <th>{{$valores->cod_empleado}}</th>
                     <th>{{$valores->nombres}}</th>
@@ -94,6 +107,7 @@
                     <th>{{$valores->fecha_nacimiento}}</th>
                     <th>{{$valores->codigo_superfisor}}</th>
                   </tr>
+                  @php $fila++; @endphp
                 @endforeach
               </table>
             </div>
