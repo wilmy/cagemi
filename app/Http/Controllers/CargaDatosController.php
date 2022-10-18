@@ -85,12 +85,14 @@ class CargaDatosController extends Controller
                     $posición	        = $hojaActual->getCellByColumnAndRow(5, $indiceFila)->getValue();
                     $dirección_vicepresidencia	= $hojaActual->getCellByColumnAndRow(6, $indiceFila)->getValue();
                     $departamento	    = $hojaActual->getCellByColumnAndRow(7, $indiceFila)->getValue();
-                    $correo	            = $hojaActual->getCellByColumnAndRow(8, $indiceFila)->getValue();
-                    $celular	        = $hojaActual->getCellByColumnAndRow(9, $indiceFila)->getValue();
-                    $numeroDocumento	= $hojaActual->getCellByColumnAndRow(10, $indiceFila)->getValue();
-                    $fecha_nacimiento	= $hojaActual->getCellByColumnAndRow(11, $indiceFila)->getValue();
+                    $numeroDocumento	= $hojaActual->getCellByColumnAndRow(8, $indiceFila)->getValue();
+                    $correo	            = $hojaActual->getCellByColumnAndRow(9, $indiceFila)->getValue();
+                    $celular	        = $hojaActual->getCellByColumnAndRow(10, $indiceFila)->getValue();
+                    $fecha_nacimiento_no_formt	= $hojaActual->getCellByColumnAndRow(11, $indiceFila)->getValue();
                     $cod_superviso      = $hojaActual->getCellByColumnAndRow(12, $indiceFila)->getValue();
                     $extencion          = '';
+
+                    $fecha_nacimiento = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($fecha_nacimiento_no_formt)->format('Y-m-d');
 
                     /*if(empty(trim($empresa)) || empty(trim($cod_empleado)) ||
                         empty(trim($nombres)) || empty(trim($apellidos)) ||

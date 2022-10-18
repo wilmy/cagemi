@@ -294,14 +294,44 @@
                       </tr>
                     </thead>
                     @foreach($data_empleados as $valores)
-                      <tr>
+                    @php
+                      $colorClass = '';
+                      $no_check = true;
+                      if($valores->empresa == '' || $valores->cod_empleado == '' ||
+                        $valores->nombres == '' || $valores->apellidos == '' ||
+                        $valores->posicion == '' || $valores->direccion_vp == '' ||
+                        $valores->departamento == '' || $valores->documento == '') 
+                      {
+                        $colorClass = 'class="alert-danger" style="color: red"';
+                        $no_check = false;
+                      }
+
+                      $title = '';
+                      foreach($data_empleados as $valida)
+                      {
+                        if($valida->id != $valores->id)
+                        {
+                          if(($valida->empresa == $valores->empresa && $valida->cod_empleado == $valores->cod_empleado) ||
+                            ($valida->empresa == $valores->empresa && $valida->documento == $valores->documento))
+                          {
+                            $colorClass = 'class="alert-danger" style="color: red"';
+                            $title = ' title="Existen datos repetidos para la misma empresa"';
+                            $no_check = false;
+                            break;
+                          }
+                        }
+                      }
+                    @endphp
+                      <tr {!! $colorClass !!} {!! $title !!}>
                         <th>
+                          @if($no_check)
                             <input 
                               class="form-check-input" 
                               type="checkbox" 
                               name="empleados[]" 
                               checked="checked"
                               value="{{ $valores->id }}"/>
+                            @endif
                         </th>
                         <th>{{$valores->nombres}} {{$valores->apellidos}}</th>
                       </tr>

@@ -89,8 +89,23 @@
                     {
                       $colorClass = 'class="alert-danger" style="color: red"';
                     }
+
+                    $title = '';
+                    foreach($array_data as $valida)
+                    {
+                      if($valida->id != $valores->id)
+                      {
+                        if(($valida->empresa == $valores->empresa && $valida->cod_empleado == $valores->cod_empleado) ||
+                          ($valida->empresa == $valores->empresa && $valida->documento == $valores->documento))
+                        {
+                          $colorClass = 'class="alert-danger" style="color: red"';
+                          $title = ' title="Existen datos repetidos para la misma empresa"';
+                          break;
+                        }
+                      }
+                    }
                   @endphp
-                  <tr {!!$colorClass!!}>
+                  <tr {!!$colorClass!!} {!!$title!!}>
                     <th>{{$fila}}</th>
                     <th>{{$valores->empresa}}</th>
                     <th>{{$valores->cod_empleado}}</th>
@@ -104,7 +119,7 @@
                     <th>{{$valores->correo_instutucional}}</th>
                     <th>{{$valores->correo_personal}}</th>
                     <th>{{$valores->documento}}</th>
-                    <th>{{$valores->fecha_nacimiento}}</th>
+                    <th>{{$valores->fecha_nacimiento->format('d/m/Y')}}</th>
                     <th>{{$valores->codigo_superfisor}}</th>
                   </tr>
                   @php $fila++; @endphp

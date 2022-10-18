@@ -37,4 +37,8 @@ class CargaDatos extends Model
         'posicion_agregada',
         'empleado_agregado',
     ];
+
+    protected $dates = [
+        'fecha_nacimiento',
+    ];
 }
