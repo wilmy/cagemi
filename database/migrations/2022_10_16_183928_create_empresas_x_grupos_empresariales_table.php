@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id('cod_empresa');
             $table->integer('cod_grupo_empresarial');
             $table->string('nombre');
-            $table->integer('cod_pais');
+            $table->integer('cod_pais')->nullable();
             $table->string('estatus', 1)->default('A');
-            $table->string('logo');
+            $table->string('logo')->nullable();
             $table->timestamps();
         });
     }

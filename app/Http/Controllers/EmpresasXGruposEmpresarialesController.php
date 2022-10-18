@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\EmpresasXGruposEmpresariales;
 
 class EmpresasXGruposEmpresarialesController extends Controller
 {
@@ -34,7 +35,31 @@ class EmpresasXGruposEmpresarialesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $nombre_empresas = $request->empresas;
+        if(count($nombre_empresas) > 0)
+        {
+            //Eliminmos los datos para insertar de nuevo las nuevas empresas o existentes
+            EmpresasXGruposEmpresariales::where('cod_grupo_empresarial', auth()->user()->cod_grupo_empresarial)->delete();
+
+            for($x = 0; $x < count($nombre_empresas); $x++)
+            {
+                $data_in_empresa = new EmpresasXGruposEmpresariales();
+                $data_in_empresa->cod_grupo_empresarial = auth()->user()->cod_grupo_empresarial;
+                $data_in_empresa->nombre = $nombre_empresas[$x];
+                $data_in_empresa->save();
+            }
+        
+            return redirect('admin/app/validacionDatos?vicp=1')
+                        ->with(['message' => 'Datos de empresas cargados correctamente', 
+                                'alert' => 'success'
+                                ]);
+        }
+        else
+        {
+            return redirect('admin/app/validacionDatos')
+                        ->with(['message' => 'Error al guardar las empresas', 
+                                'alert' => 'danger']);
+        }
     }
 
     /**

@@ -78,9 +78,13 @@
                     <th>codigo_superfisor</th>
                   </tr>
                 </thead>
-                @php $fila = 2; @endphp
+                @php 
+                  $fila = 2; 
+                  $mensaje_alert =''; 
+                @endphp
                 @foreach($array_data as $valores)
                   @php
+                    
                     $colorClass = '';
                     if($valores->empresa == '' || $valores->cod_empleado == '' ||
                        $valores->nombres == '' || $valores->apellidos == '' ||
@@ -89,8 +93,24 @@
                     {
                       $colorClass = 'class="alert-danger" style="color: red"';
                     }
+
+                    $title = '';
+                    foreach($array_data as $valida)
+                    {
+                      if($valida->id != $valores->id)
+                      {
+                        if(($valida->empresa == $valores->empresa && $valida->cod_empleado == $valores->cod_empleado) ||
+                          ($valida->empresa == $valores->empresa && $valida->documento == $valores->documento))
+                        {
+                          $colorClass = 'class="alert-danger" style="color: red"';
+                          $title = ' title="Existen datos repetidos para la misma empresa"';
+                          $mensaje_alert .= '<li>-El registro de la fila ('.$fila.'), esta con el mismo codigo de empleado ('.$valida->cod_empleado .'), o mismo documento ('.$valida->documento .') en la misma empresa.</li>';
+                          break;
+                        }
+                      }
+                    }
                   @endphp
-                  <tr {!!$colorClass!!}>
+                  <tr {!!$colorClass!!} {!!$title!!}>
                     <th>{{$fila}}</th>
                     <th>{{$valores->empresa}}</th>
                     <th>{{$valores->cod_empleado}}</th>
@@ -104,11 +124,17 @@
                     <th>{{$valores->correo_instutucional}}</th>
                     <th>{{$valores->correo_personal}}</th>
                     <th>{{$valores->documento}}</th>
-                    <th>{{$valores->fecha_nacimiento}}</th>
+                    <th>{{$valores->fecha_nacimiento->format('d/m/Y')}}</th>
                     <th>{{$valores->codigo_superfisor}}</th>
                   </tr>
                   @php $fila++; @endphp
                 @endforeach
+
+                @if($mensaje_alert != '')
+                  <div class="alert alert-danger p-1" role="alert">
+                    {!! $mensaje_alert !!}
+                  </div>
+                @endif
               </table>
             </div>
           <br><br>
