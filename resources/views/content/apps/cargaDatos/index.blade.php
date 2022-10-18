@@ -78,9 +78,13 @@
                     <th>codigo_superfisor</th>
                   </tr>
                 </thead>
-                @php $fila = 2; @endphp
+                @php 
+                  $fila = 2; 
+                  $mensaje_alert =''; 
+                @endphp
                 @foreach($array_data as $valores)
                   @php
+                    
                     $colorClass = '';
                     if($valores->empresa == '' || $valores->cod_empleado == '' ||
                        $valores->nombres == '' || $valores->apellidos == '' ||
@@ -100,6 +104,7 @@
                         {
                           $colorClass = 'class="alert-danger" style="color: red"';
                           $title = ' title="Existen datos repetidos para la misma empresa"';
+                          $mensaje_alert .= '<li>-El registro de la fila ('.$fila.'), esta con el mismo codigo de empleado ('.$valida->cod_empleado .'), o mismo documento ('.$valida->documento .') en la misma empresa.</li>';
                           break;
                         }
                       }
@@ -124,6 +129,12 @@
                   </tr>
                   @php $fila++; @endphp
                 @endforeach
+
+                @if($mensaje_alert != '')
+                  <div class="alert alert-danger p-1" role="alert">
+                    {!! $mensaje_alert !!}
+                  </div>
+                @endif
               </table>
             </div>
           <br><br>
