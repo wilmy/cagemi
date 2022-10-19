@@ -22,7 +22,9 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ValidacionDatosController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\GrupoEmpresarialController;
+use App\Http\Controllers\DireccionesVicepresidenciasController;
 use App\Http\Controllers\EmpresasXGruposEmpresarialesController;
+use App\Http\Controllers\DepartamentosXVicepresidenciasController;
 
 
 /*
@@ -60,6 +62,14 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function(){
         
         //Empresas por grupos empresariales 
         Route::resource('/empresas', EmpresasXGruposEmpresarialesController::class);
+
+        //Direcciones y vicepresidencias
+        Route::resource('/vicepresidencias', DireccionesVicepresidenciasController::class);
+
+
+        //Departamentos
+        Route::resource('/departamentosxvicepresidencias', DepartamentosXVicepresidenciasController::class);
+        
 
         //Carga de datos temp
         Route::resource('/cargaDatos', CargaDatosController::class);

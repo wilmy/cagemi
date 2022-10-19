@@ -58,6 +58,13 @@
           <div class="card-body mt-2">
             <h2>Lista de datos cargados</h2>
             <div class="col-md-12 mb-10 table-responsive">
+
+                @if($mensaje_alert != '')
+                  <div class="alert alert-danger p-1" role="alert">
+                    {!! $mensaje_alert !!}
+                  </div>
+                @endif
+
               <table class="table table-striped- table-bordered table-hover table-responsive">
                 <thead>
                   <tr>
@@ -78,20 +85,57 @@
                     <th>codigo_superfisor</th>
                   </tr>
                 </thead>
-                @php 
-                  $fila = 2; 
-                  $mensaje_alert =''; 
-                @endphp
                 @foreach($array_data as $valores)
                   @php
-                    
+                    $fila = $valores->fila;
                     $colorClass = '';
-                    if($valores->empresa == '' || $valores->cod_empleado == '' ||
-                       $valores->nombres == '' || $valores->apellidos == '' ||
-                       $valores->posicion == '' || $valores->direccion_vp == '' ||
-                       $valores->departamento == '' || $valores->documento == '') 
+                    if($valores->empresa == '') 
                     {
                       $colorClass = 'class="alert-danger" style="color: red"';
+                      $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>empresa</b> vacio.';
+                      $title = ' title="'.$messs.'"';
+                    }
+
+                    if($valores->cod_empleado == '') 
+                    {
+                      $colorClass = 'class="alert-danger" style="color: red"';
+                      $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>codigo de empleado</b> vacio.';
+                      $title = ' title="'.$messs.'"';
+                    }
+
+                    if($valores->nombres == '') 
+                    {
+                      $colorClass = 'class="alert-danger" style="color: red"';
+                      $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>nombre</b> vacio.';
+                      $title = ' title="'.$messs.'"';
+                    }
+
+                    if($valores->apellidos == '') 
+                    {
+                      $colorClass = 'class="alert-danger" style="color: red"';
+                      $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>apellido</b>  vacio.';
+                      $title = ' title="'.$messs.'"';
+                    }
+
+                    if($valores->direccion_vp == '') 
+                    {
+                      $colorClass = 'class="alert-danger" style="color: red"';
+                      $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>direccion o vicepresidencia</b>  vacio.';
+                      $title = ' title="'.$messs.'"';
+                    }
+
+                    if($valores->departamento == '') 
+                    {
+                      $colorClass = 'class="alert-danger" style="color: red"';
+                      $messs = 'El registro de la fila ('.$fila.'), tiene el campo de departamento vacio.';
+                      $title = ' title="'.$messs.'"';
+                    }
+
+                    if($valores->documento == '') 
+                    {
+                      $colorClass = 'class="alert-danger" style="color: red"';
+                      $messs = 'El registro de la fila ('.$fila.'), tiene el campo de documento vacio.';
+                      $title = ' title="'.$messs.'"';
                     }
 
                     $title = '';
@@ -104,7 +148,6 @@
                         {
                           $colorClass = 'class="alert-danger" style="color: red"';
                           $title = ' title="Existen datos repetidos para la misma empresa"';
-                          $mensaje_alert .= '<li>-El registro de la fila ('.$fila.'), esta con el mismo codigo de empleado ('.$valida->cod_empleado .'), o mismo documento ('.$valida->documento .') en la misma empresa.</li>';
                           break;
                         }
                       }
@@ -129,12 +172,6 @@
                   </tr>
                   @php $fila++; @endphp
                 @endforeach
-
-                @if($mensaje_alert != '')
-                  <div class="alert alert-danger p-1" role="alert">
-                    {!! $mensaje_alert !!}
-                  </div>
-                @endif
               </table>
             </div>
           <br><br>

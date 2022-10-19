@@ -18,7 +18,76 @@ class CargaDatosController extends Controller
     public function index()
     {
         $array_data = CargaDatos::paginate(100);
-        return view('/content/apps/cargaDatos/index', ['array_data' => $array_data]);
+        $mensaje_alert = $this->validacionesDataTmp();
+        return view('/content/apps/cargaDatos/index', ['array_data' => $array_data, 'mensaje_alert' => $mensaje_alert]);
+    }
+
+    public function validacionesDataTmp()
+    {
+        $array_data_all = CargaDatos::all();
+        $mensaje_alert = '';
+        foreach($array_data_all as $valores)
+        {
+            $fila = $valores->fila;
+            $colorClass = '';
+            if($valores->empresa == '') 
+            {
+                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>empresa</b> vacio.';
+                $mensaje_alert .= '<li>-'.$messs.'</li>';
+            }
+
+            if($valores->cod_empleado == '') 
+            {
+                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>codigo de empleado</b> vacio.';
+                $mensaje_alert .= '<li>-'.$messs.'</li>';
+            }
+
+            if($valores->nombres == '') 
+            {
+                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>nombre</b> vacio.';
+                $mensaje_alert .= '<li>-'.$messs.'</li>';
+            }
+
+            if($valores->apellidos == '') 
+            {
+                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>apellido</b>  vacio.';
+                $mensaje_alert .= '<li>-'.$messs.'</li>';
+            }
+
+            if($valores->direccion_vp == '') 
+            {
+                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>direccion o vicepresidencia</b>  vacio.';
+                $mensaje_alert .= '<li>-'.$messs.'</li>';
+            }
+
+            if($valores->departamento == '') 
+            {
+                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de departamento vacio.';
+                $mensaje_alert .= '<li>-'.$messs.'</li>';
+            }
+
+            if($valores->documento == '') 
+            {
+                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de documento vacio.';
+                $mensaje_alert .= '<li>-'.$messs.'</li>';
+            }
+
+            $title = '';
+            foreach($array_data_all as $valida)
+            {
+                if($valida->id != $valores->id)
+                {
+                    if(($valida->empresa == $valores->empresa && $valida->cod_empleado == $valores->cod_empleado) ||
+                        ($valida->empresa == $valores->empresa && $valida->documento == $valores->documento))
+                    {
+                        $mensaje_alert .= '<li>-El registro de la fila ('.$fila.'), esta con el mismo codigo de empleado ('.$valida->cod_empleado .'), o mismo documento ('.$valida->documento .') en la misma empresa.</li>';
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $mensaje_alert;
     }
 
     /**
@@ -74,7 +143,7 @@ class CargaDatosController extends Controller
                 # Calcular el máximo valor de la fila como entero, es decir, el
                 # límite de nuestro ciclo
                 $numeroMayorDeFila = $hojaActual->getHighestRow(); // Numérico
-
+    
                 for ($indiceFila = 2; $indiceFila <= $numeroMayorDeFila; $indiceFila++) 
                 {
                     $cargaDatos = new CargaDatos();
@@ -94,17 +163,6 @@ class CargaDatosController extends Controller
 
                     $fecha_nacimiento = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($fecha_nacimiento_no_formt)->format('Y-m-d');
 
-                    /*if(empty(trim($empresa)) || empty(trim($cod_empleado)) ||
-                        empty(trim($nombres)) || empty(trim($apellidos)) ||
-                        empty(trim($posición)) || empty(trim($dirección_vicepresidencia)) ||
-                        empty(trim($departamento)) || empty(trim($correo)) ||
-                        empty(trim($celular)) || empty(trim($numeroDocumento)) ||
-                        empty(trim($fecha_nacimiento)) || empty(trim($cod_superviso))) 
-                    {
-                        //return view('/content/apps/cargaDatos/index', ['errors'=> ['Lo sentimos existen datos vacios o incorrectos']]);
-                        continue;
-                    }*/
-
                     $cargaDatos->cod_grupo_empresarial  = auth()->user()->cod_grupo_empresarial;
                     $this->validateValue($cargaDatos, 'empresa', $empresa);
                     $this->validateValue($cargaDatos, 'cod_empleado', $cod_empleado);
@@ -120,6 +178,7 @@ class CargaDatosController extends Controller
                     $this->validateValue($cargaDatos, 'documento', $numeroDocumento);
                     $this->validateValue($cargaDatos, 'fecha_nacimiento', $fecha_nacimiento);
                     $this->validateValue($cargaDatos, 'codigo_superfisor', $cod_superviso);
+                    $this->validateValue($cargaDatos, 'fila', $indiceFila);
 
                     $cargaDatos->save();
                 }
