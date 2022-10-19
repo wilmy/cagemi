@@ -141,17 +141,20 @@ else
                       </tr>
                     </thead>
                     @foreach($data_empresas as $valores)
-                      <tr>
-                        <th>
-                          <input 
-                            class="form-check-input" 
-                            type="checkbox" 
-                            name="empresas[]" 
-                            checked="checked"
-                            value="{{ $valores->empresa }}"/>
-                        </th>
-                        <th>{{$valores->empresa}}</th>
-                      </tr>
+                      @if(trim($valores->empresa) != '')
+                        <tr>
+                          <th>
+
+                            <input 
+                              class="form-check-input" 
+                              type="checkbox" 
+                              name="empresas[]" 
+                              checked="checked"
+                              value="{{ $valores->empresa }}"/>
+                          </th>
+                          <th>{{$valores->empresa}}</th>
+                        </tr>
+                        @endif
                     @endforeach
                   </table>
                 </div>
@@ -176,7 +179,7 @@ else
           <h5 class="mb-0">Direcciones/Vicepresidencias</h5>
           <small>Enter Your Personal Info.</small>
         </div>
-        <form id="addRoleForm" method="POST" class="row" action="">
+        <form id="addRoleForm" method="POST" class="row" action="{{route('admin.vicepresidencias.store')}}">
           @csrf
 
           @if(isset($data_direcciones_vicepre))
@@ -195,9 +198,9 @@ else
                             <input 
                               class="form-check-input" 
                               type="checkbox" 
-                              name="direccion_vp[]" 
+                              name="vicepresidencias[]" 
                               checked="checked"
-                              value="{{ $valores->id }}"/>
+                              value="{{ $valores->direccion_vp }}"/>
                         </th>
                         <th>{{$valores->direccion_vp}}</th>
                       </tr>
@@ -206,17 +209,18 @@ else
                 </div>
             @endif
           @endif
+        
+          <div class="d-flex justify-content-between">
+            <a href="?vicp=0" class="btn btn-primary btn-prev">
+              <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+              <span class="align-middle d-sm-inline-block d-none">Previous</span>
+            </a>
+            <button class="btn btn-primary btn-next">
+              <span class="align-middle d-sm-inline-block d-none">Next</span>
+              <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
+            </button>
+          </div>
         </form>
-        <div class="d-flex justify-content-between">
-          <a href="?vicp=0" class="btn btn-primary btn-prev">
-            <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-          </a>
-          <button class="btn btn-primary btn-next">
-            <span class="align-middle d-sm-inline-block d-none">Next</span>
-            <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
-          </button>
-        </div>
       </div>
 
       <div id="address-step" class="content departamentos {{$lis_depart}}" role="tabpanel" aria-labelledby="address-step-trigger">
@@ -224,7 +228,7 @@ else
           <h5 class="mb-0">Departamentos</h5>
           <small>Enter Your Address.</small>
         </div>
-        <form id="addRoleForm" method="POST" class="row" action="">
+        <form id="addRoleForm" method="POST" class="row" action="{{route('admin.departamentosxvicepresidencias.store')}}">
           @csrf
 
           @if(isset($data_departamentos))
@@ -254,17 +258,18 @@ else
                 </div>
             @endif
           @endif
+        
+          <div class="d-flex justify-content-between">
+            <a href="?vicp=1" class="btn btn-primary btn-prev">
+              <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+              <span class="align-middle d-sm-inline-block d-none">Previous</span>
+            </a>
+            <button class="btn btn-primary btn-next">
+              <span class="align-middle d-sm-inline-block d-none">Next</span>
+              <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
+            </button>
+          </div>
         </form>
-        <div class="d-flex justify-content-between">
-          <a href="?vicp=1" class="btn btn-primary btn-prev">
-            <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-          </a>
-          <button class="btn btn-primary btn-next">
-            <span class="align-middle d-sm-inline-block d-none">Next</span>
-            <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
-          </button>
-        </div>
       </div>
 
       

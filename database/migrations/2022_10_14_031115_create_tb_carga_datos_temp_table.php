@@ -42,6 +42,7 @@ return new class extends Migration
             $table->string('departamento_agregado', 1)->default('N');
             $table->string('posicion_agregada', 1)->default('N');
             $table->string('empleado_agregado', 1)->default('N');
+            $table->integer('fila')->nullable();
             $table->timestamps();
         });
     }
