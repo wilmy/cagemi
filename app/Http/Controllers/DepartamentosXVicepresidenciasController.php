@@ -78,14 +78,14 @@ class DepartamentosXVicepresidenciasController extends Controller
             
         
             return redirect('admin/app/validacionDatos?vicp=3')
-                        ->with(['message' => 'Datos de departamentos cargados correctamente', 
+                        ->with(['message' => __('Department data loaded correctly'), 
                                 'alert' => 'success'
                                 ]);
         }
         else
         {
             return redirect('admin/app/validacionDatos')
-                        ->with(['message' => 'Error al guardar las departamentos', 
+                        ->with(['message' => __('Error saving departments'),  
                                 'alert' => 'danger']);
         }
     }

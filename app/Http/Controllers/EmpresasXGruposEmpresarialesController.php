@@ -61,14 +61,14 @@ class EmpresasXGruposEmpresarialesController extends Controller
             }
         
             return redirect('admin/app/validacionDatos?vicp=1')
-                        ->with(['message' => 'Datos de empresas cargados correctamente', 
+                        ->with(['message' => __('Company data loaded correctly'), 
                                 'alert' => 'success'
                                 ]);
         }
         else
         {
             return redirect('admin/app/validacionDatos')
-                        ->with(['message' => 'Error al guardar las empresas', 
+                        ->with(['message' => __('Error saving companies'), 
                                 'alert' => 'danger']);
         }
     }

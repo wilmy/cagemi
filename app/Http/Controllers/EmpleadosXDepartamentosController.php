@@ -109,14 +109,14 @@ class EmpleadosXDepartamentosController extends Controller
             }
         
             return redirect('admin/app/validacionDatos')
-                        ->with(['message' => 'Datos de empleados cargados correctamente', 
+                        ->with(['message' => __('Employee data uploaded successfully'),
                                 'alert' => 'success'
                                 ]);
         }
         else
         {
             return redirect('admin/app/validacionDatos')
-                        ->with(['message' => 'Error al guardar los empleados', 
+                        ->with(['message' => __('Error saving employees'), 
                                 'alert' => 'danger']);
         }
     }

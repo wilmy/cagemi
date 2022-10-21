@@ -76,14 +76,14 @@ class DireccionesVicepresidenciasController extends Controller
             }
         
             return redirect('admin/app/validacionDatos?vicp=2')
-                        ->with(['message' => 'Datos de vicepresidencia cargados correctamente', 
+                        ->with(['message' => __('Vice-presidency data loaded correctly'), 
                                 'alert' => 'success'
                                 ]);
         }
         else
         {
             return redirect('admin/app/validacionDatos')
-                        ->with(['message' => 'Error al guardar las vicepresidencias', 
+                        ->with(['message' => __('Error saving vice presidencies'),
                                 'alert' => 'danger']);
         }
     }

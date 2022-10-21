@@ -52,14 +52,14 @@ class PosicionesXDepartamentosController extends Controller
             }
         
             return redirect('admin/app/validacionDatos?vicp=4')
-                        ->with(['message' => 'Datos de posiciones cargados correctamente', 
+                        ->with(['message' => __('Position data uploaded successfully'), 
                                 'alert' => 'success'
                                 ]);
         }
         else
         {
             return redirect('admin/app/validacionDatos')
-                        ->with(['message' => 'Error al guardar las posiciones', 
+                        ->with(['message' => __('Failed to save positions'),
                                 'alert' => 'danger']);
         }
     }
