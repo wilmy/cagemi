@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Editar Usuarios')
+@section('title', __('Edit user'))
 
 @section('vendor-style')
   <!-- Vendor css files -->
@@ -18,9 +18,9 @@
     <div class="modal-content">
       <div class="modal-body px-5 pb-5">
         <div class="text-left mb-4">
-          <h1 class="role-title">Actualizar Usuario</h1>
+          <h1 class="role-title">{{__('Update user')}}</h1>
         </div>
-       
+        
         <form id="addRoleForm" method="POST" class="row" action="{{route('admin.users.update', $user->id)}}">
           @csrf
           @method('PUT')
@@ -36,7 +36,7 @@
 
             <div class="form-group row">
                 <div class="mb-1 col-md-4">
-                  <label for="register-nombre" class="form-label">Nombre</label>
+                  <label for="register-nombre" class="form-label">{{__('Name')}}</label>
                   <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="register-nombre"
                     name="nombre" placeholder="" aria-describedby="register-nombre" tabindex="1" autofocus
                     value="{{ old('nombre', $user->name) }}" />
@@ -65,7 +65,7 @@
 
             <div class="form-group row">
               <div class="mb-1 col-md-4">
-                <label for="register-email" class="form-label">Email</label>
+                <label for="register-email" class="form-label">{{__('Email')}}</label>
                 <input type="text" class="form-control @error('email') is-invalid @enderror" id="register-email"
                   name="email" placeholder="john@example.com" aria-describedby="register-email" tabindex="2" readonly
                   value="{{ old('email', $user->email) }}" />
@@ -80,9 +80,9 @@
             @if(Auth::user()->super_usuario == 'S')
               <div class="form-group row">
                 <div class="mb-1 col-md-4">
-                  <label for="register-email" class="form-label">Grupo empresarial</label>
+                  <label for="register-email" class="form-label">{{__('Business group')}}</label>
                   <select name="grupo_empresarial" class="form-select">
-                    <option value="">Seleccione</option>
+                    <option value="">{{__('Select')}}</option>
                     @foreach ($grupo_empresarial as $grupo)
                       <option value="{{ $grupo->cod_grupo_empresarial }}" {{($grupo->id == $user->cod_grupo_empresarial ? 'selected' : '')}}>{{ $grupo->nombre }}</option>
                     @endforeach
@@ -100,7 +100,7 @@
               <div class="mb-1 col-md-4">
                 <label for="register-email" class="form-label">Rol</label>
                 <select name="rol" class="form-select">
-                  <option value="">Seleccione</option>
+                  <option value="">{{__('Select')}}</option>
                   @foreach ($roles as $role)
                     <option value="{{ $role->id }}" {{($role->id == $user->rol ? 'selected' : '')}}>{{ $role->name }}</option>
                   @endforeach
@@ -115,7 +115,7 @@
 
             <div class="form-group row">
               <div class="mb-1 col-md-4">
-                <label for="register-email" class="form-label">Estatus</label>
+                <label for="register-email" class="form-label">{{__('Status')}}</label>
                 <select name="estatus" class="form-select">
                   <option value="A" {{('A' == $user->estatus ? 'selected' : '')}}>Activo</option>
                   <option value="I" {{('I' == $user->estatus ? 'selected' : '')}}>Inactivo</option>
@@ -129,9 +129,9 @@
             </div>
 
           <div class="col-4 text-center mt-2">
-            <button type="submit" class="btn btn-primary me-1">Actualizar</button>
+            <button type="submit" class="btn btn-primary me-1">{{__('Update')}}</button>
             <a href="{{route('admin.users.index')}}" class="btn btn-outline-danger">
-              Cancelar
+              {{__('Cancel')}}
             </a>
           </div>
         </form>

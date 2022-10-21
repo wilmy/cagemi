@@ -18,7 +18,7 @@
     <div class="modal-content">
       <div class="modal-body px-5 pb-5">
         <div class="text-left mb-4">
-          <h1 class="role-title">Nuevo Grupo Empresarial</h1>
+          <h1 class="role-title">{{__('New Business Group')}}</h1>
         </div>
        
         <form id="addRoleForm" method="POST" class="row" enctype="multipart/form-data" action="{{route('admin.grupoEmpresarial.store')}}">
@@ -36,7 +36,7 @@
 
             <div class="form-group row">
                 <div class="mb-1 col-md-4">
-                  <label for="register-nombre" class="form-label">Nombre</label>
+                  <label for="register-nombre" class="form-label">{{__('Name')}}</label>
                   <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="register-nombre"
                     name="nombre" placeholder="" aria-describedby="register-nombre" tabindex="1" autofocus
                     value="{{ old('nombre') }}" />
@@ -50,10 +50,10 @@
 
             <div class="form-group row">
               <div class="mb-1 col-md-4">
-                <label for="register-comunidad" class="form-label">Comunidad</label>
+                <label for="register-comunidad" class="form-label">{{__('Community')}}</label>
                 <select name="comunidad" class="form-select">
-                  <option value="A">Abierta</option>
-                  <option value="C">Cerrada</option>
+                  <option value="A">{{__('open')}}</option>
+                  <option value="C">{{__('Closed')}}</option>
                 </select>
                 @error('cominidad')
                   <span class="invalid-feedback" role="alert">
@@ -65,7 +65,7 @@
 
             <div class="form-group row">
                 <div class="mb-1 col-md-4">
-                  <label for="register-apellido" class="form-label">Logo</label>
+                  <label for="register-apellido" class="form-label">{{__('Logo')}}{</label>
                   <input type="file" class="form-control" id="logo" name="logo" />
                   @error('logo')
                     <span class="invalid-feedback" role="alert">
@@ -76,9 +76,9 @@
             </div>
 
           <div class="col-4 text-center mt-2">
-            <button type="submit" class="btn btn-primary me-1">Guardar</button>
+            <button type="submit" class="btn btn-primary me-1">{{__('Save')}}</button>
             <a href="{{route('admin.grupoEmpresarial.index')}}" class="btn btn-outline-danger">
-              Cancelar
+              {{__('Cancel')}}
             </a>
           </div>
         </form>

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\CargaDatos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Models\EmpleadosXDepartamentos;
 use App\Models\PosicionesXDepartamentos;
 
@@ -67,6 +69,7 @@ class EmpleadosXDepartamentosController extends Controller
                 $extencion              = $dda_arr[5];
                 $correo_instutucional   = $dda_arr[6];
                 $correo_personal        = $dda_arr[7];
+                $cod_empleado           = $dda_arr[8];
                 $estatus                = 'A';
                 $activo_hasta           = date('Y-m-d H:i:s');
                 
@@ -92,6 +95,16 @@ class EmpleadosXDepartamentosController extends Controller
                     $data_temp = CargaDatos::where('documento', $documento)
                                             ->update(['validacion_empleados' => 'S',
                                                       'empleado_agregado' => 'S']);
+
+                    //Registro de usuarios 
+                    $cod_grupo_empresarial =  auth()->user()->cod_grupo_empresarial;
+                    $user = User::create([
+                        'cod_grupo_empresarial' => $cod_grupo_empresarial,
+                        'name' => $nombres,
+                        'cod_empleado' => $cod_empleado,
+                        'password' => Hash::make($documento),
+                        'estatus' => 'A'
+                    ]);
                 }
             }
         

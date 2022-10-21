@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Lista de Usuarios')
+@section('title', __('User List'))
 
 @section('vendor-style')
   {{-- Page Css files --}}
@@ -26,7 +26,7 @@
         <div class="card-body d-flex align-items-center justify-content-between">
           <div>
             <h3 class="fw-bolder mb-75">{{count($users)}}</h3>
-            <span>Total de Usuarios</span>
+            <span>{{ __('Total Users') }}</span>
           </div>
           <div class="avatar bg-light-primary p-50">
             <span class="avatar-content">
@@ -41,7 +41,7 @@
         <div class="card-body d-flex align-items-center justify-content-between">
           <div>
             <h3 class="fw-bolder mb-75">{{$total_user_inac}}</h3>
-            <span>Usuarios Inactivos</span>
+            <span>{{ __('Inactive users') }}</span>
           </div>
           <div class="avatar bg-light-danger p-50">
             <span class="avatar-content">
@@ -56,7 +56,7 @@
         <div class="card-body d-flex align-items-center justify-content-between">
           <div>
             <h3 class="fw-bolder mb-75">{{$total_user_acti}}</h3>
-            <span>Usuarios activos</span>
+            <span>{{ __('Active users') }}</span>
           </div>
           <div class="avatar bg-light-success p-50">
             <span class="avatar-content">
@@ -72,7 +72,7 @@
     <div class="row">
       <div class="col-lg-3 col-sm-6">
         <a href="{{route('admin.users.create')}}">
-          <span class="btn btn-primary mb-1">Nuevo Usuario</span>
+          <span class="btn btn-primary mb-1">{{ __('New user') }}</span>
         </a>
       </div>
     </div>
@@ -88,7 +88,7 @@
           <div class="d-flex justify-content-between align-items-center header-actions mx-2 row mt-75">
             <div class="col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start">
               <div class="dataTables_length" id="DataTables_Table_0_length">
-                <label>Mostrar 
+                <label>{{ __('To Show') }} 
                   <select name="mostrar" aria-controls="DataTables_Table_0" class="form-select">
                     <option value="100" {{(isset($request->mostrar) ? ($request->mostrar == 100 ? 'selected' : '') : '')}}>100</option>
                     <option value="50" {{(isset($request->mostrar) ? ($request->mostrar == 50 ? 'selected' : '') : '')}}>50</option>
@@ -97,12 +97,11 @@
                   </select> 
                 </label>
                 </div>
-
                 
                 <div class="dataTables_length" id="DataTables_Table_0_length">
-                  <label>Tipo de Usuario:
+                  <label>{{ __('Type of user') }}:
                     <select class="form-select" name="tipo_usuario" aria-controls="DataTables_Table_0">
-                      <option value=""> Todos</option>
+                      <option value=""> {{ __('All') }}</option>
                       <option value="B" class="text-capitalize" {{(isset($request->tipo_usuario) ? ($request->tipo_usuario == 'B' ? 'selected' : '') : '')}}>Backoffice</option>
                       <option value="F" class="text-capitalize" {{(isset($request->tipo_usuario) ? ($request->tipo_usuario == 'B' ? 'selected' : '') : '')}}>Frontend</option>
                     </select></label>
@@ -114,7 +113,7 @@
                   <div class="dt-action-buttons d-flex align-items-center justify-content-center- justify-content-lg-end flex-lg-nowrap flex-wrap">
                       <div class="me-2">
                         <div id="DataTables_Table_1_filter" class="dataTables_filter">
-                          <label>Buscar:</label>
+                          <label>{{ __('Search') }}:</label>
                             <input 
                               type="search" 
                               name="buscar" 
@@ -127,7 +126,7 @@
 
                       <div class="dt-buttons d-inline-flex mt-80"> 
                         <button type="submit" class="dt-button buttons-collection btn btn-primary me-2">
-                          Buscar
+                          {{ __('Search') }}
                         </button>
                       </div>
                   </div>
@@ -141,12 +140,12 @@
         <thead class="table-light">
           <tr>
             <th></th>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Rol</th>
-            <th>Estatus</th>
+            <th>{{ __('Name') }}</th>
+            <th>{{ __('Email') }}</th>
+            <th>{{ __('Rol') }}</th>
+            <th>{{ __('Status') }}</th>
             @canany(['users.edit', 'users.destroy'])
-              <th>Acci&oacute;n</th>
+              <th>{{ __('Action') }}</th>
             @endcan
           </tr>
         </thead>
@@ -164,9 +163,9 @@
                 <td>{{ $user->nombre_rol }}</td>
                 <td>
                   @if($user->estatus == 'A')
-                    <span class="badge rounded-pill badge-light-success">Activo</span>
+                    <span class="badge rounded-pill badge-light-success">{{ __('Active') }}</span>
                   @else
-                    <span class="badge rounded-pill badge-light-danger">Inactivo</span>
+                    <span class="badge rounded-pill badge-light-danger">{{ __('Inactive') }}</span>
                   @endif
                 </td>
                 
@@ -174,12 +173,12 @@
                   <td>
                     @can('users.edit')
                       <a href="{{route('admin.users.edit', $user->id)}}" class="btn btn-sm btn-primary role-edit-modal">
-                        <small class="fw-bolder">Editar</small>
+                        <small class="fw-bolder">{{ __('Edit') }}</small>
                       </a> 
                     @endcan
                     @can('users.destroy')
                       <button type="button" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Destroy">
-                        Eliminar
+                        {{ __('Delete') }}
                       </button>
                     @endcan
                   </td>

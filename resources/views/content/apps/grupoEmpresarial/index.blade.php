@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Grupos Empresariales')
+@section('title', __('Business Groups'))
 
 @section('vendor-style')
   {{-- Page Css files --}}
@@ -26,7 +26,7 @@
         <div class="card-body d-flex align-items-center justify-content-between">
           <div>
             <h3 class="fw-bolder mb-75">{{count($GruposEmpresarial)}}</h3>
-            <span>Total de Grupos</span>
+            <span>{{__('Total Groups')}}</span>
           </div>
           <div class="avatar bg-light-primary p-50">
             <span class="avatar-content">
@@ -41,7 +41,7 @@
         <div class="card-body d-flex align-items-center justify-content-between">
           <div>
             <h3 class="fw-bolder mb-75">{{$total_grupo_inac}}</h3>
-            <span>Grupos Inactivos</span>
+            <span>{{__('Inactive groups')}}</span>
           </div>
           <div class="avatar bg-light-danger p-50">
             <span class="avatar-content">
@@ -56,7 +56,7 @@
         <div class="card-body d-flex align-items-center justify-content-between">
           <div>
             <h3 class="fw-bolder mb-75">{{$total_grupo_acti}}</h3>
-            <span>Grupos activos</span>
+            <span>{{__('Active groups')}}</span>
           </div>
           <div class="avatar bg-light-success p-50">
             <span class="avatar-content">
@@ -72,7 +72,7 @@
     <div class="row">
       <div class="col-lg-3 col-sm-6">
         <a href="{{route('admin.grupoEmpresarial.create')}}">
-          <span class="btn btn-primary mb-1">Nuevo Grupo</span>
+          <span class="btn btn-primary mb-1">{{__('New group')}}</span>
         </a>
       </div>
     </div>
@@ -88,7 +88,7 @@
           <div class="d-flex justify-content-between align-items-center header-actions mx-2 row mt-75">
             <div class="col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start">
               <div class="dataTables_length" id="DataTables_Table_0_length">
-                <label>Mostrar 
+                <label>{{__('To show')}} 
                   <select name="mostrar" aria-controls="DataTables_Table_0" class="form-select">
                     <option value="100" {{(isset($request->mostrar) ? ($request->mostrar == 100 ? 'selected' : '') : '')}}>100</option>
                     <option value="50" {{(isset($request->mostrar) ? ($request->mostrar == 50 ? 'selected' : '') : '')}}>50</option>
@@ -103,7 +103,7 @@
                   <div class="dt-action-buttons d-flex align-items-center justify-content-center- justify-content-lg-end flex-lg-nowrap flex-wrap">
                       <div class="me-2">
                         <div id="DataTables_Table_1_filter" class="dataTables_filter">
-                          <label>Buscar:</label>
+                          <label>{{__('Searsh')}}:</label>
                             <input 
                               type="search" 
                               name="buscar" 
@@ -116,7 +116,7 @@
 
                       <div class="dt-buttons d-inline-flex mt-80"> 
                         <button type="submit" class="dt-button buttons-collection btn btn-primary me-2">
-                          Buscar
+                          {{__('Searsh')}}
                         </button>
                       </div>
                   </div>
@@ -129,12 +129,12 @@
       <table class="user-list-table table">
         <thead class="table-light">
           <tr>
-            <th>Logo</th>
-            <th>Nombre</th>
-            <th>Tipo de Comunidad</th>
-            <th>Estatus</th>
+            <th>{{__('Logo')}}</th>
+            <th>{{__('Name')}}</th>
+            <th>{{__('Community Type')}}</th>
+            <th>{{__('Status')}}</th>
             @canany(['grupo_empresarial.edit'])
-              <th>Acci&oacute;n</th>
+              <th>{{__('Action')}}</th>
             @endcan
           </tr>
         </thead>
@@ -154,9 +154,9 @@
               </td>
               <td>
                 @if($grupo->estatus == 'A')
-                  <span class="badge rounded-pill badge-light-success">Activo</span>
+                  <span class="badge rounded-pill badge-light-success">{{__('Active')}}</span>
                 @else
-                  <span class="badge rounded-pill badge-light-danger">Inactivo</span>
+                  <span class="badge rounded-pill badge-light-danger">{{__('Inactive')}}</span>
                 @endif
               </td>
               
@@ -164,7 +164,7 @@
                 <td>
                   @can('grupo_empresarial.edit')
                     <a href="{{route('admin.grupoEmpresarial.edit', $grupo->cod_grupo_empresarial)}}" class="btn btn-sm btn-primary role-edit-modal">
-                      <small class="fw-bolder">Editar</small>
+                      <small class="fw-bolder">{{__('Edit')}}</small>
                     </a> 
                   @endcan
                 </td>

@@ -150,7 +150,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = DB::table('users')
-                    ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                    ->leftjoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
                     ->select('users.*', 'model_has_roles.role_id as rol')
                     ->find($id);
 

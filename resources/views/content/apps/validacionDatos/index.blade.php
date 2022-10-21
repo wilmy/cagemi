@@ -85,7 +85,7 @@ else
         <button type="button" class="step-trigger">
           <span class="bs-stepper-box">1</span>
           <span class="bs-stepper-label">
-            <span class="bs-stepper-title">Empresas</span>
+            <span class="bs-stepper-title">{{__('Companies')}}</span>
             <span class="bs-stepper-subtitle">Setup Account Details</span>
           </span>
         </button>
@@ -97,7 +97,7 @@ else
         <button type="button" class="step-trigger">
           <span class="bs-stepper-box">2</span>
           <span class="bs-stepper-label">
-            <span class="bs-stepper-title">Direcciones / Vicepresidencias</span>
+            <span class="bs-stepper-title">{{__('Directions/Vice Presidencies')}}</span>
             <span class="bs-stepper-subtitle">Add Personal Info</span>
           </span>
         </button>
@@ -109,7 +109,7 @@ else
         <button type="button" class="step-trigger">
           <span class="bs-stepper-box">3</span>
           <span class="bs-stepper-label">
-            <span class="bs-stepper-title">Departamentos</span>
+            <span class="bs-stepper-title">{{__('Departments')}}</span>
             <span class="bs-stepper-subtitle">Add Address</span>
           </span>
         </button>
@@ -121,7 +121,7 @@ else
         <button type="button" class="step-trigger">
           <span class="bs-stepper-box">4</span>
           <span class="bs-stepper-label">
-            <span class="bs-stepper-title">Posiciones</span>
+            <span class="bs-stepper-title">{{__('Positions')}}</span>
             <span class="bs-stepper-subtitle">Add Social Links</span>
           </span>
         </button>
@@ -133,7 +133,7 @@ else
         <button type="button" class="step-trigger">
           <span class="bs-stepper-box">5</span>
           <span class="bs-stepper-label">
-            <span class="bs-stepper-title">Empleados</span>
+            <span class="bs-stepper-title">{{__('Employees')}}</span>
             <span class="bs-stepper-subtitle">Add Social Links</span>
           </span>
         </button>
@@ -153,7 +153,7 @@ else
     <div class="bs-stepper-content">
       <div id="account-details" class="content empresas {{ $lis_empresa }}" role="tabpanel" aria-labelledby="account-details-trigger">
         <div class="content-header">
-          <h5 class="mb-0">Empresas</h5>
+          <h5 class="mb-0">{{__('Companies')}}</h5>
           <small class="text-muted">Enter Your Account Details.</small>
         </div>
         
@@ -194,10 +194,10 @@ else
         <div class="d-flex justify-content-between">
           <button class="btn btn-outline-secondary btn-prev" disabled>
             <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-            <span class="align-middle d-sm-inline-block d-none">Previous</span>
+            <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
           </button>
           <button class="btn btn-primary btn-next">
-            <span class="align-middle d-sm-inline-block d-none">Next</span>
+            <span class="align-middle d-sm-inline-block d-none">{{__('Next')}}</span>
             <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
           </button>
         </div>
@@ -206,7 +206,7 @@ else
       </div>
       <div id="personal-info" class="content direccion_vicepresidencias {{$lis_direc}}" role="tabpanel" aria-labelledby="personal-info-trigger">
         <div class="content-header">
-          <h5 class="mb-0">Direcciones/Vicepresidencias</h5>
+          <h5 class="mb-0">{{__('Directions/Vice Presidencies')}} </h5>
           <small>Enter Your Personal Info.</small>
         </div>
         <form id="addRoleForm" method="POST" class="row" action="{{route('admin.vicepresidencias.store')}}">
@@ -245,16 +245,16 @@ else
             @if(count($data_empresas) > 0)
               <a href="?vicp=0" class="btn btn-primary btn-prev">
                 <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
               </a>
             @else 
               <button class="btn btn-outline-secondary btn-prev" disabled>
                 <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
               </button>
             @endif
             <button class="btn btn-primary btn-next">
-              <span class="align-middle d-sm-inline-block d-none">Next</span>
+              <span class="align-middle d-sm-inline-block d-none">{{__('Next')}}</span>
               <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
             </button>
           </div>
@@ -263,7 +263,7 @@ else
 
       <div id="address-step" class="content departamentos {{$lis_depart}}" role="tabpanel" aria-labelledby="address-step-trigger">
         <div class="content-header">
-          <h5 class="mb-0">Departamentos</h5>
+          <h5 class="mb-0">{{__('Departments')}}</h5>
           <small>Enter Your Address.</small>
         </div>
         <form id="addRoleForm" method="POST" class="row" action="{{route('admin.departamentosxvicepresidencias.store')}}">
@@ -302,16 +302,16 @@ else
             @if(count($data_direcciones_vicepre) > 0)
               <a href="?vicp=1" class="btn btn-primary btn-prev">
                 <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
               </a>
             @else 
               <button class="btn btn-outline-secondary btn-prev" disabled>
                 <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+                <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
               </button>
             @endif
             <button class="btn btn-primary btn-next">
-              <span class="align-middle d-sm-inline-block d-none">Next</span>
+              <span class="align-middle d-sm-inline-block d-none">{{__('Next')}}</span>
               <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
             </button>
           </div>
@@ -321,7 +321,7 @@ else
       
       <div id="address-step" class="content posiciones {{$lis_posicio}}" role="tabpanel" aria-labelledby="address-step-trigger">
         <div class="content-header">
-          <h5 class="mb-0">Posiciones</h5>
+          <h5 class="mb-0">{{__('Positions')}}</h5>
           <small>Enter Your Address.</small>
         </div>
         <form id="addRoleForm" method="POST" class="row" action="{{route('admin.posicionesxdepartamentos.store')}}">
@@ -360,16 +360,16 @@ else
           @if(count($data_departamentos) > 0)
             <a href="?vicp=2" class="btn btn-primary btn-prev">
               <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-              <span class="align-middle d-sm-inline-block d-none">Previous</span>
+              <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
             </a>
           @else 
             <button class="btn btn-outline-secondary btn-prev" disabled>
               <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-              <span class="align-middle d-sm-inline-block d-none">Previous</span>
+              <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
             </button>
           @endif
           <button class="btn btn-primary btn-next">
-            <span class="align-middle d-sm-inline-block d-none">Next</span>
+            <span class="align-middle d-sm-inline-block d-none">{{__('Next')}}</span>
             <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
           </button>
         </div>
@@ -378,7 +378,7 @@ else
 
       <div id="social-links" class="content empleados {{$lis_empleado}}" role="tabpanel" aria-labelledby="social-links-trigger">
         <div class="content-header">
-          <h5 class="mb-0">Empleados</h5>
+          <h5 class="mb-0">{{__('Employees')}}</h5>
           <small>Enter Your Social Links.</small>
         </div>
         <form id="addRoleForm" method="POST" class="row" action="{{route('admin.empleadosxposiciones.store')}}">
@@ -422,7 +422,7 @@ else
                         if($valores->empresa == '') 
                         {
                           $colorClass = 'class="alert-danger" style="color: red"';
-                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>empresa</b> vacio.';
+                          $messs = __('The row record '.$fila.' has the empresa field empty.'); 
                           $title = ' title="'.$messs.'"';
                           
                           $no_check = false;
@@ -431,7 +431,7 @@ else
                         if($valores->cod_empleado == '') 
                         {
                           $colorClass = 'class="alert-danger" style="color: red"';
-                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>codigo de empleado</b> vacio.';
+                          $messs = __('The row record '.$fila.' has the codigo de empleado field empty.'); 
                           $title = ' title="'.$messs.'"';
                           $no_check = false;
                         }
@@ -439,7 +439,7 @@ else
                         if($valores->nombres == '') 
                         {
                           $colorClass = 'class="alert-danger" style="color: red"';
-                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>nombre</b> vacio.';
+                          $messs = __('The row record '.$fila.' has the nombres field empty.'); 
                           $title = ' title="'.$messs.'"';
                           $no_check = false;
                         }
@@ -447,7 +447,7 @@ else
                         if($valores->apellidos == '') 
                         {
                           $colorClass = 'class="alert-danger" style="color: red"';
-                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>apellido</b>  vacio.';
+                          $messs = __('The row record '.$fila.' has the apellidos field empty.'); 
                           $title = ' title="'.$messs.'"';
                           $no_check = false;
                         }
@@ -455,7 +455,7 @@ else
                         if($valores->direccion_vp == '') 
                         {
                           $colorClass = 'class="alert-danger" style="color: red"';
-                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>direccion o vicepresidencia</b>  vacio.';
+                          $messs = __('The row record '.$fila.' has the direccion/vicepresidencia field empty.'); 
                           $title = ' title="'.$messs.'"';
                           $no_check = false;
                         }
@@ -463,7 +463,7 @@ else
                         if($valores->departamento == '') 
                         {
                           $colorClass = 'class="alert-danger" style="color: red"';
-                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de departamento vacio.';
+                          $messs = __('The row record '.$fila.' has the departamento field empty.'); 
                           $title = ' title="'.$messs.'"';
                           $no_check = false;
                         }
@@ -471,7 +471,7 @@ else
                         if($valores->documento == '') 
                         {
                           $colorClass = 'class="alert-danger" style="color: red"';
-                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de documento vacio.';
+                          $messs = __('The row record '.$fila.' has the documento field empty.'); 
                           $title = ' title="'.$messs.'"';
                           $no_check = false;
                         }
@@ -485,7 +485,7 @@ else
                               ($valida->empresa == $valores->empresa && $valida->documento == $valores->documento))
                             {
                               $colorClass = 'class="alert-danger" style="color: red"';
-                              $title = ' title="Existen datos repetidos para la misma empresa"';
+                              $title = ' title="'.__('There are duplicate data for the same company').'"';
                               $no_check = false;
                               break;
                             }
@@ -509,7 +509,8 @@ else
                                 $valores->documento.'||'.
                                 $valores->extencion.'||'.
                                 $valores->correo_instutucional.'||'.
-                                $valores->correo_personal
+                                $valores->correo_personal.'||'.
+                                $valores->cod_empleado
                                 }}"/>
                           @endif
                         </th>
@@ -539,22 +540,22 @@ else
           @if(count($data_posiciones) > 0)
             <a href="?vicp=3" class="btn btn-primary btn-prev">
               <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-              <span class="align-middle d-sm-inline-block d-none">Previous</span>
+              <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
             </a>
           @else 
             <button class="btn btn-outline-secondary btn-prev" disabled>
               <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-              <span class="align-middle d-sm-inline-block d-none">Previous</span>
+              <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
             </button>
           @endif
-          <button class="btn btn-success btn-submit">Submit</button>
+          <button class="btn btn-success btn-submit">{{__('To finalize')}}</button>
         </div>
       </form>
         
       </div>
         @if($lis_validation == 'active')
           <div class="alert alert-info p-2">
-            SIn datos para validar
+            {{__('There are no data pending validation')}}
           </div>
         @endif
     </div>

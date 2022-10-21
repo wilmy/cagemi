@@ -30,45 +30,53 @@ class CargaDatosController extends Controller
         {
             $fila = $valores->fila;
             $colorClass = '';
+
             if($valores->empresa == '') 
             {
-                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>empresa</b> vacio.';
+                $messs = __('The row record '.$fila.' has the <b>empresa</b>  field empty.');
+                //'El registro de la fila ('.$fila.'), tiene el campo de <b>empresa</b> vacio.';
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
             if($valores->cod_empleado == '') 
             {
-                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>codigo de empleado</b> vacio.';
+                $messs = __('The row record '.$fila.' has the <b>codigo de empleado</b>  field empty.');
+                //'El registro de la fila ('.$fila.'), tiene el campo de <b>codigo de empleado</b> vacio.';
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
             if($valores->nombres == '') 
             {
-                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>nombre</b> vacio.';
+                $messs = __('The row record '.$fila.' has the <b>nombre</b>  field empty.');
+                //'El registro de la fila ('.$fila.'), tiene el campo de <b>nombre</b> vacio.';
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
             if($valores->apellidos == '') 
             {
-                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>apellido</b>  vacio.';
+                $messs = __('The row record '.$fila.' has the <b>apellido</b>  field empty.');
+                //'El registro de la fila ('.$fila.'), tiene el campo de <b>apellido</b>  vacio.';
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
             if($valores->direccion_vp == '') 
             {
-                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>direccion o vicepresidencia</b>  vacio.';
+                $messs = __('The row record '.$fila.' has the <b>direccion o vicepresidencia</b>  field empty.');
+                //'El registro de la fila ('.$fila.'), tiene el campo de <b>direccion o vicepresidencia</b>  vacio.';
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
             if($valores->departamento == '') 
             {
-                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de departamento vacio.';
+                $messs = __('The row record '.$fila.' has the <b>departamento</b>  field empty.');
+                //'El registro de la fila ('.$fila.'), tiene el campo de departamento vacio.';
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
             if($valores->documento == '') 
             {
-                $messs = 'El registro de la fila ('.$fila.'), tiene el campo de documento vacio.';
+                $messs = __('The row record '.$fila.' has the <b>documento</b>  field empty.');
+                //'El registro de la fila ('.$fila.'), tiene el campo de documento vacio.';
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
@@ -80,7 +88,8 @@ class CargaDatosController extends Controller
                     if(($valida->empresa == $valores->empresa && $valida->cod_empleado == $valores->cod_empleado) ||
                         ($valida->empresa == $valores->empresa && $valida->documento == $valores->documento))
                     {
-                        $mensaje_alert .= '<li>-El registro de la fila ('.$fila.'), esta con el mismo codigo de empleado ('.$valida->cod_empleado .'), o mismo documento ('.$valida->documento .') en la misma empresa.</li>';
+                        $mensaje_alert .= '<li>-'.__('The row record '.$fila.' is with the same employee code '.$valida->cod_empleado .' or same document '.$valida->documento .' in the same company.').'</li>';
+                        //'<li>-El registro de la fila ('.$fila.'), esta con el mismo codigo de empleado ('.$valida->cod_empleado .'), o mismo documento ('.$valida->documento .') en la misma empresa.</li>';
                         break;
                     }
                 }
