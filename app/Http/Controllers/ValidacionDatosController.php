@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CargaDatos;
 use Illuminate\Http\Request;
+use App\Http\Controllers\CargaDatosController;
 
 class ValidacionDatosController extends Controller
 {
@@ -14,11 +15,13 @@ class ValidacionDatosController extends Controller
      */
     public function index()
     {
-        $data_empresas = CargaDatos::where('validacion_empresa', 'N')->get()->unique('empresa');
-        $data_direcciones_vicepre = CargaDatos::where('validacion_VP', 'N')->get()->unique('direccion_vp');
-        $data_departamentos = CargaDatos::where('validacion_departamento', 'N')->get()->unique('departamento');
-        $data_posiciones = CargaDatos::where('validacion_posicon', 'N')->get()->unique('posicion');
+        $data_empresas = CargaDatos::where([['validacion_empresa', 'N'], ['empresa','<>', '']])->get()->unique('empresa');
+        $data_direcciones_vicepre = CargaDatos::where([['validacion_VP', 'N'], ['direccion_vp','<>', '']])->get()->unique('direccion_vp');
+        $data_departamentos = CargaDatos::where([['validacion_departamento', 'N'],['departamento','<>', '']])->get()->unique('departamento');
+        $data_posiciones = CargaDatos::where([['validacion_posicon', 'N'],['posicion','<>', '']])->get()->unique('posicion');
         $data_empleados= CargaDatos::where('validacion_empleados', 'N')->get();
+
+        $validacionesDataTmp = CargaDatosController::validacionesDataTmp();
         
         return view('/content/apps/validacionDatos/index', 
                     [
@@ -26,7 +29,8 @@ class ValidacionDatosController extends Controller
                         'data_direcciones_vicepre' => $data_direcciones_vicepre,
                         'data_departamentos' => $data_departamentos,
                         'data_posiciones' => $data_posiciones,
-                        'data_empleados' => $data_empleados
+                        'data_empleados' => $data_empleados,
+                        'validacionesDataTmp' => $validacionesDataTmp
                     ]);
     }
 

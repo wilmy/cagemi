@@ -22,7 +22,7 @@ class CargaDatosController extends Controller
         return view('/content/apps/cargaDatos/index', ['array_data' => $array_data, 'mensaje_alert' => $mensaje_alert]);
     }
 
-    public function validacionesDataTmp()
+    public static function validacionesDataTmp()
     {
         $array_data_all = CargaDatos::all();
         $mensaje_alert = '';

@@ -22,36 +22,57 @@ $lis_direc = '';
 $lis_depart = '';
 $lis_posicio = '';
 $lis_empleado = '';
+$lis_validation = '';
 if(isset($_GET['vicp']))
 {
-  if($_GET['vicp'] == 0)
+  if($_GET['vicp'] == 0 && count($data_empresas) > 0)
   {
     $lis_empresa = 'active';
   }
-  else if($_GET['vicp'] == 1)
+  else if($_GET['vicp'] == 1 && count($data_direcciones_vicepre) > 0)
   {
     $lis_direc = 'active';
   }
-  else if($_GET['vicp'] == 2)
+  else if($_GET['vicp'] == 2 && count($data_departamentos) > 0)
   {
     $lis_depart = 'active';
   }
-  else if($_GET['vicp'] == 3)
+  else if($_GET['vicp'] == 3 && count($data_posiciones) > 0)
   {
     $lis_posicio = 'active';
   }
-  else if($_GET['vicp'] == 4)
+  else if($_GET['vicp'] == 4 && count($data_empleados) > 0)
   {
     $lis_empleado = 'active';
   }
   else 
   {
-    $lis_empresa = 'active';
+    $lis_validation = 'active';
   }
+}
+else if(count($data_empresas) > 0)
+{
+  $lis_empresa = 'active';
+}
+else if(count($data_direcciones_vicepre) > 0)
+{
+  $lis_direc = 'active';
+}
+else if(count($data_departamentos) > 0)
+{
+  $lis_depart = 'active';
+}
+else if(count($data_posiciones) > 0)
+{
+  $lis_posicio = 'active';
+}
+else if(count($data_empleados) > 0)
+{
+  $lis_empleado = 'active';
 }
 else 
 {
-  $lis_empresa = 'active';
+  $lis_validation = 'active';
 }
 @endphp
 
@@ -119,6 +140,15 @@ else
       </div>
     </div>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
    
     <div class="bs-stepper-content">
       <div id="account-details" class="content empresas {{ $lis_empresa }}" role="tabpanel" aria-labelledby="account-details-trigger">
@@ -129,7 +159,7 @@ else
         
         <form id="addRoleForm" method="POST" class="row" action="{{route('admin.empresas.store')}}">
           @csrf
-
+          
           @if(isset($data_empresas))
             @if(count($data_empresas) > 0)
                 <div class="col-md-12 mb-10 table-responsive">
@@ -195,12 +225,13 @@ else
                     @foreach($data_direcciones_vicepre as $valores)
                       <tr>
                         <th>
+                            <input type="hidden" name="empresa[]" value="{{ $valores->empresa}}">
                             <input 
                               class="form-check-input" 
                               type="checkbox" 
                               name="vicepresidencias[]" 
                               checked="checked"
-                              value="{{ $valores->direccion_vp }}"/>
+                              value="{{ $valores->empresa.'||'.$valores->direccion_vp }}"/>
                         </th>
                         <th>{{$valores->direccion_vp}}</th>
                       </tr>
@@ -211,10 +242,17 @@ else
           @endif
         
           <div class="d-flex justify-content-between">
-            <a href="?vicp=0" class="btn btn-primary btn-prev">
-              <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-              <span class="align-middle d-sm-inline-block d-none">Previous</span>
-            </a>
+            @if(count($data_empresas) > 0)
+              <a href="?vicp=0" class="btn btn-primary btn-prev">
+                <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+              </a>
+            @else 
+              <button class="btn btn-outline-secondary btn-prev" disabled>
+                <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+              </button>
+            @endif
             <button class="btn btn-primary btn-next">
               <span class="align-middle d-sm-inline-block d-none">Next</span>
               <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
@@ -244,12 +282,13 @@ else
                     @foreach($data_departamentos as $valores)
                       <tr>
                         <th>
+                            <input type="hidden" name="direccion_vp[]" value="{{ $valores->direccion_vp}}">
                             <input 
                               class="form-check-input" 
                               type="checkbox" 
                               name="departamentos[]" 
                               checked="checked"
-                              value="{{ $valores->id }}"/>
+                              value="{{ $valores->direccion_vp.'||'.$valores->departamento }}"/>
                         </th>
                         <th>{{$valores->departamento}}</th>
                       </tr>
@@ -260,10 +299,17 @@ else
           @endif
         
           <div class="d-flex justify-content-between">
-            <a href="?vicp=1" class="btn btn-primary btn-prev">
-              <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-              <span class="align-middle d-sm-inline-block d-none">Previous</span>
-            </a>
+            @if(count($data_direcciones_vicepre) > 0)
+              <a href="?vicp=1" class="btn btn-primary btn-prev">
+                <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+              </a>
+            @else 
+              <button class="btn btn-outline-secondary btn-prev" disabled>
+                <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+                <span class="align-middle d-sm-inline-block d-none">Previous</span>
+              </button>
+            @endif
             <button class="btn btn-primary btn-next">
               <span class="align-middle d-sm-inline-block d-none">Next</span>
               <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
@@ -278,7 +324,7 @@ else
           <h5 class="mb-0">Posiciones</h5>
           <small>Enter Your Address.</small>
         </div>
-        <form id="addRoleForm" method="POST" class="row" action="">
+        <form id="addRoleForm" method="POST" class="row" action="{{route('admin.posicionesxdepartamentos.store')}}">
           @csrf
 
           @if(isset($data_posiciones))
@@ -294,12 +340,13 @@ else
                     @foreach($data_posiciones as $valores)
                       <tr>
                         <th>
+                            <input type="hidden" name="departamento[]" value="{{ $valores->departamento}}">
                             <input 
                               class="form-check-input" 
                               type="checkbox" 
                               name="posiciones[]" 
                               checked="checked"
-                              value="{{ $valores->id }}"/>
+                              value="{{ $valores->departamento.'||'.$valores->posicion }}"/>
                         </th>
                         <th>{{$valores->posicion}}</th>
                       </tr>
@@ -308,17 +355,25 @@ else
                 </div>
             @endif
           @endif
-        </form>
+        
         <div class="d-flex justify-content-between">
-          <a href="?vicp=2" class="btn btn-primary btn-prev">
-            <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-          </a>
+          @if(count($data_departamentos) > 0)
+            <a href="?vicp=2" class="btn btn-primary btn-prev">
+              <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+              <span class="align-middle d-sm-inline-block d-none">Previous</span>
+            </a>
+          @else 
+            <button class="btn btn-outline-secondary btn-prev" disabled>
+              <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+              <span class="align-middle d-sm-inline-block d-none">Previous</span>
+            </button>
+          @endif
           <button class="btn btn-primary btn-next">
             <span class="align-middle d-sm-inline-block d-none">Next</span>
             <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
           </button>
         </div>
+        </form>
       </div>
 
       <div id="social-links" class="content empleados {{$lis_empleado}}" role="tabpanel" aria-labelledby="social-links-trigger">
@@ -326,16 +381,23 @@ else
           <h5 class="mb-0">Empleados</h5>
           <small>Enter Your Social Links.</small>
         </div>
-        <form id="addRoleForm" method="POST" class="row" action="">
+        <form id="addRoleForm" method="POST" class="row" action="{{route('admin.empleadosxposiciones.store')}}">
           @csrf
 
           @if(isset($data_empleados))
             @if(count($data_empleados) > 0)
                 <div class="col-md-12 mb-10 table-responsive">
+                  @if($validacionesDataTmp != '')
+                    <div class="alert alert-danger p-1" role="alert">
+                      {!! $validacionesDataTmp !!}
+                    </div>
+                  @endif
+
                   <table class="table table-striped- table-bordered table-hover table-responsive">
                     <thead>
                       <tr>
                         <th></th>
+                        <th>Fila</th>
                         <th>empresa</th>
                         <th>cod_empleado</th>
                         <th>nombres</th>
@@ -352,52 +414,106 @@ else
                         <th>codigo_superfisor</th>
                       </tr>
                     </thead>
-                    @php 
-                      $fila = 2; 
-                      $mensaje_alert = '';
-                    @endphp
                     @foreach($data_empleados as $valores)
-                    @php
-                      $colorClass = '';
-                      $no_check = true;
-                      if($valores->empresa == '' || $valores->cod_empleado == '' ||
-                        $valores->nombres == '' || $valores->apellidos == '' ||
-                        $valores->posicion == '' || $valores->direccion_vp == '' ||
-                        $valores->departamento == '' || $valores->documento == '') 
-                      {
-                        $colorClass = 'class="alert-danger" style="color: red"';
-                        $no_check = false;
-                      }
-
-                      $title = '';
-                      foreach($data_empleados as $valida)
-                      {
-                        if($valida->id != $valores->id)
+                      @php
+                        $fila = $valores->fila;
+                        $colorClass = '';
+                        $no_check = true;
+                        if($valores->empresa == '') 
                         {
-                          if(($valida->empresa == $valores->empresa && $valida->cod_empleado == $valores->cod_empleado) ||
-                            ($valida->empresa == $valores->empresa && $valida->documento == $valores->documento))
-                          {
-                            $colorClass = 'class="alert-danger" style="color: red"';
-                            $title = ' title="Existen datos repetidos para la misma empresa"';
-                            $mensaje_alert .= '<li>-El registro de la fila ('.$fila.'), esta con el mismo codigo de empleado ('.$valida->cod_empleado .'), o mismo documento ('.$valida->documento .') en la misma empresa.</li>';
+                          $colorClass = 'class="alert-danger" style="color: red"';
+                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>empresa</b> vacio.';
+                          $title = ' title="'.$messs.'"';
                           
-                            $no_check = false;
-                            break;
+                          $no_check = false;
+                        }
+    
+                        if($valores->cod_empleado == '') 
+                        {
+                          $colorClass = 'class="alert-danger" style="color: red"';
+                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>codigo de empleado</b> vacio.';
+                          $title = ' title="'.$messs.'"';
+                          $no_check = false;
+                        }
+    
+                        if($valores->nombres == '') 
+                        {
+                          $colorClass = 'class="alert-danger" style="color: red"';
+                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>nombre</b> vacio.';
+                          $title = ' title="'.$messs.'"';
+                          $no_check = false;
+                        }
+    
+                        if($valores->apellidos == '') 
+                        {
+                          $colorClass = 'class="alert-danger" style="color: red"';
+                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>apellido</b>  vacio.';
+                          $title = ' title="'.$messs.'"';
+                          $no_check = false;
+                        }
+    
+                        if($valores->direccion_vp == '') 
+                        {
+                          $colorClass = 'class="alert-danger" style="color: red"';
+                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de <b>direccion o vicepresidencia</b>  vacio.';
+                          $title = ' title="'.$messs.'"';
+                          $no_check = false;
+                        }
+    
+                        if($valores->departamento == '') 
+                        {
+                          $colorClass = 'class="alert-danger" style="color: red"';
+                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de departamento vacio.';
+                          $title = ' title="'.$messs.'"';
+                          $no_check = false;
+                        }
+    
+                        if($valores->documento == '') 
+                        {
+                          $colorClass = 'class="alert-danger" style="color: red"';
+                          $messs = 'El registro de la fila ('.$fila.'), tiene el campo de documento vacio.';
+                          $title = ' title="'.$messs.'"';
+                          $no_check = false;
+                        }
+    
+                        $title = '';
+                        foreach($data_empleados as $valida)
+                        {
+                          if($valida->id != $valores->id)
+                          {
+                            if(($valida->empresa == $valores->empresa && $valida->cod_empleado == $valores->cod_empleado) ||
+                              ($valida->empresa == $valores->empresa && $valida->documento == $valores->documento))
+                            {
+                              $colorClass = 'class="alert-danger" style="color: red"';
+                              $title = ' title="Existen datos repetidos para la misma empresa"';
+                              $no_check = false;
+                              break;
+                            }
                           }
                         }
-                      }
-                    @endphp
-                      <tr {!! $colorClass !!} {!! $title !!}>
+                      @endphp
+                      <tr {!!$colorClass!!} {!!$title!!}>
                         <th>
                           @if($no_check)
+                            <input type="hidden" name="posiciones[]" value="{{ $valores->posiciones}}">
                             <input 
                               class="form-check-input" 
                               type="checkbox" 
                               name="empleados[]" 
                               checked="checked"
-                              value="{{ $valores->id }}"/>
-                            @endif
+                              value="{{ 
+                                $valores->posicion.'||'.
+                                $valores->codigo_superfisor.'||'.
+                                $valores->nombres.'||'.
+                                $valores->apellidos.'||'.
+                                $valores->documento.'||'.
+                                $valores->extencion.'||'.
+                                $valores->correo_instutucional.'||'.
+                                $valores->correo_personal
+                                }}"/>
+                          @endif
                         </th>
+                        <th>{{$fila}}</th>
                         <th>{{$valores->empresa}}</th>
                         <th>{{$valores->cod_empleado}}</th>
                         <th>{{$valores->nombres}}</th>
@@ -413,26 +529,34 @@ else
                         <th>{{$valores->fecha_nacimiento->format('d/m/Y')}}</th>
                         <th>{{$valores->codigo_superfisor}}</th>
                       </tr>
-                      @php $fila++; @endphp
                     @endforeach
-                    @if($mensaje_alert != '')
-                      <div class="alert alert-danger p-1" role="alert">
-                        {!! $mensaje_alert !!}
-                      </div>
-                    @endif
                   </table>
                 </div>
             @endif
           @endif
-        </form>
+        
         <div class="d-flex justify-content-between">
-          <a href="?vicp=3" class="btn btn-primary btn-prev">
-            <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
-            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-          </a>
+          @if(count($data_posiciones) > 0)
+            <a href="?vicp=3" class="btn btn-primary btn-prev">
+              <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+              <span class="align-middle d-sm-inline-block d-none">Previous</span>
+            </a>
+          @else 
+            <button class="btn btn-outline-secondary btn-prev" disabled>
+              <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+              <span class="align-middle d-sm-inline-block d-none">Previous</span>
+            </button>
+          @endif
           <button class="btn btn-success btn-submit">Submit</button>
         </div>
+      </form>
+        
       </div>
+        @if($lis_validation == 'active')
+          <div class="alert alert-info p-2">
+            SIn datos para validar
+          </div>
+        @endif
     </div>
   </div>
 </section>

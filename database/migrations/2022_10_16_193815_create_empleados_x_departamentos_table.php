@@ -15,9 +15,18 @@ return new class extends Migration
     {
         Schema::create('tb_empleados_x_departamentos', function (Blueprint $table) {
             $table->id('cod_empleado');
-            $table->integer('cod_posicon');
-            $table->integer('cod_departamento');
-            $table->string('nombre_posicion');
+            $table->integer('cod_posicion');
+            $table->integer('cod_supervisor');
+            $table->string('nombres');
+            $table->string('apellidos');
+            $table->string('documento', 20);
+            $table->string('telefono_movil', 20)->nullable();
+            $table->string('extencion', 8)->nullable();
+            $table->string('correo_instutucional')->nullable();
+            $table->string('correo_personal')->nullable();
+            $table->string('foto')->nullable();
+            $table->string('estatus', 1);
+            $table->datetime('activo_hasta')->nullable();
             $table->timestamps();
         });
     }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CargaDatos;
 use Illuminate\Http\Request;
+use App\Models\DireccionesVicepresidencias;
 use App\Models\DepartamentosXVicepresidencias;
 
 class DepartamentosXVicepresidenciasController extends Controller
@@ -35,20 +37,45 @@ class DepartamentosXVicepresidenciasController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = $request->validate([
+            'departamentos' => ['required'],
+            'direccion_vp' => ['required'],
+        ]);
+
         $nombre_departamento = $request->departamentos;
+        $direccion_vp = $request->direccion_vp;
         if(count($nombre_departamento) > 0)
         {
-            $cod_vicepresidencia = 1;
-            //Eliminmos los datos para insertar de nuevo las nuevas empresas o existentes
-            DepartamentosXVicepresidencias::where('cod_vicepresidencia', $cod_vicepresidencia)->delete();
+            for($x = 0; $x < count($direccion_vp); $x++)
+            {
+                $vicep = DireccionesVicepresidencias::where('nombre_vicepresidencia', $direccion_vp[$x])->first();
 
+                if(isset($vicep->cod_vicepresidencia))
+                {
+                    //Eliminmos los datos para insertar de nuevo 
+                    DepartamentosXVicepresidencias::where('cod_vicepresidencia', $vicep->cod_vicepresidencia)->delete();
+                }
+            }
+            
             for($x = 0; $x < count($nombre_departamento); $x++)
             {
-                $data_in_vicepre = new DepartamentosXVicepresidencias();
-                $data_in_vicepre->cod_vicepresidencia = $cod_vicepresidencia;
-                $data_in_vicepre->nombre_departamento = $nombre_departamento[$x];
-                $data_in_vicepre->save();
+                $dda_arr = explode('||', $nombre_departamento[$x]);
+                $nombre_vicepresidencia = $dda_arr[0];
+                $vicep = DireccionesVicepresidencias::where('nombre_vicepresidencia', $nombre_vicepresidencia)->first();
+                if(isset($vicep->cod_vicepresidencia))
+                {
+                    $data_in_depart = new DepartamentosXVicepresidencias();
+                    $data_in_depart->cod_vicepresidencia = $vicep->cod_vicepresidencia;
+                    $data_in_depart->nombre_departamento = $dda_arr[1];
+                    $data_in_depart->save();
+
+                    //Actualizamos el registro de dato temporal a S
+                    $data_temp = CargaDatos::where('departamento', $dda_arr[1])
+                                            ->update(['validacion_departamento' => 'S',
+                                                      'departamento_agregado' => 'S']);
+                }
             }
+            
         
             return redirect('admin/app/validacionDatos?vicp=3')
                         ->with(['message' => 'Datos de departamentos cargados correctamente', 

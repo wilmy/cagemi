@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CargaDatos;
 use Illuminate\Http\Request;
 use App\Models\EmpresasXGruposEmpresariales;
 
@@ -35,6 +36,10 @@ class EmpresasXGruposEmpresarialesController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = $request->validate([
+            'empresas' => ['required'],
+        ]);
+
         $nombre_empresas = $request->empresas;
         if(count($nombre_empresas) > 0)
         {
@@ -47,6 +52,12 @@ class EmpresasXGruposEmpresarialesController extends Controller
                 $data_in_empresa->cod_grupo_empresarial = auth()->user()->cod_grupo_empresarial;
                 $data_in_empresa->nombre = $nombre_empresas[$x];
                 $data_in_empresa->save();
+
+                //Actualizamos el registro de dato temporal de empresa
+                $data_temp = CargaDatos::where('empresa', $nombre_empresas[$x])
+                                        ->update(['validacion_empresa' => 'S',
+                                                   'empresa_agregada' => 'S']);
+                
             }
         
             return redirect('admin/app/validacionDatos?vicp=1')

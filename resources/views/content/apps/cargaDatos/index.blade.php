@@ -170,7 +170,6 @@
                     <th>{{$valores->fecha_nacimiento->format('d/m/Y')}}</th>
                     <th>{{$valores->codigo_superfisor}}</th>
                   </tr>
-                  @php $fila++; @endphp
                 @endforeach
               </table>
             </div>
