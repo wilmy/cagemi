@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Validacion de datos')
+@section('title', __('Data validation'))
 
 @section('vendor-style')
   <!-- vendor css files -->
