@@ -124,7 +124,7 @@ class UserController extends Controller
         $pageConfigs = ['pageHeader' => false];
 
         return redirect('admin/app/users/')
-                    ->with(['message' => 'Usuario creado correctamente ', 
+                    ->with(['message' => __('User created successfully'), 
                             'alert' => 'success']);
         
         //return view('/content/apps/user/app-user-list', ['users' => $users, 'pageConfigs' => $pageConfigs]);
@@ -150,7 +150,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = DB::table('users')
-                    ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                    ->leftjoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
                     ->select('users.*', 'model_has_roles.role_id as rol')
                     ->find($id);
 
@@ -200,7 +200,7 @@ class UserController extends Controller
         
         
         return redirect('admin/app/users/')
-                    ->with(['message' => 'Usuario <b>'.$user->name.'</b> actualizado correctamente ', 
+                    ->with(['message' => __('User <b>'.$user->name.'</b> updated successfully'), 
                             'alert' => 'success']);
     }
 

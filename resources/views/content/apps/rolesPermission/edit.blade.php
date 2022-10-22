@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Roles')
+@section('title', __('Role'))
 
 @section('vendor-style')
   <!-- Vendor css files -->
@@ -20,7 +20,7 @@
     <div class="modal-content">
       <div class="modal-body px-5 pb-5">
         <div class="text-left mb-4">
-          <h1 class="role-title">Editar el Rol: <b>{{ $rol->name }}</b></h1>
+          <h1 class="role-title">{{__('Edit the Role')}}: <b>{{ $rol->name }}</b></h1>
         </div>
         <!-- Add role form -->
         <form id="updateRoleForm" method="POST" class="row" action="{{route('admin.roles.update', $rol->id)}}">
@@ -38,7 +38,7 @@
             @endif
 
           <div class="col-12">
-            <label class="form-label" for="modalRoleName">Nombre del Rol</label>
+            <label class="form-label" for="modalRoleName">{{__('Role Name')}}</label>
             <input
               type="text"
               id="modalRoleName"
@@ -52,7 +52,7 @@
             />
           </div>
           <div class="col-12">
-            <h4 class="mt-2 pt-50">Permisos del Rol</h4>
+            <h4 class="mt-2 pt-50">{{__('Role permissions')}}</h4>
             <!-- Permission table -->
             <div class="table-responsive">
 
@@ -60,15 +60,15 @@
                 <thead>
                   <tr>
                     <th class="text-nowrap fw-bolder">
-                      Aplicaci&oacute;n
+                      {{__('App')}}
                     </th>
                     <th class="text-nowrap fw-bolder">
-                      Funci&oacute;n
+                      {{__('Function')}}
                     </th>
-                    <th>Ver</th>
-                    <th>Crear</th>
-                    <th>Editar</th>
-                    <th>Eliminar</th>
+                    <th>{{__('Watch')}}</th>
+                    <th>{{__('Create')}}</th>
+                    <th>{{__('Edit')}}</th>
+                    <th>{{__('Delete')}}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -137,9 +137,9 @@
             <!-- Permission table -->
           </div>
           <div class="col-12 text-center mt-2">
-            <button type="submit" class="btn btn-primary me-1">Actualizar</button>
+            <button type="submit" class="btn btn-primary me-1">{{__('Update')}}</button>
             <a href="{{route('admin.roles.index')}}" class="btn btn-outline-danger">
-              Cancelar
+              {{__('Cancel')}}
             </a>
           </div>
         </form>

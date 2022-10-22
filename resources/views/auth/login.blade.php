@@ -50,9 +50,9 @@
             <h2 class="brand-text text-primary ms-1">Cintrapp</h2>
           </a>
 
-          <h4 class="card-title mb-1">Bienvenido a Cintrapp! 👋</h4>
+          <h4 class="card-title mb-1">{{ __('Welcome to')}} Cintrapp! 👋</h4>
           <p class="card-text mb-2">
-            Inicia sesión en tu cuenta y comienza la aventura.
+            {{ __('Log in to your account and start the adventure')}}
           </p>
 
           @if (session('status'))
@@ -66,7 +66,7 @@
           <form class="auth-login-form mt-2" method="POST" action="{{ route('login') }}">
             @csrf
             <div class="mb-1">
-              <label for="login-email" class="form-label">Correo Electr&oacute;nico</label>
+              <label for="login-email" class="form-label">{{__('Email')}}</label>
               <input type="text" class="form-control @error('email') is-invalid @enderror" id="login-email" name="email"
                 placeholder="john@example.com" aria-describedby="login-email" tabindex="1" autofocus
                 value="{{ old('email') }}" />
@@ -79,10 +79,10 @@
 
             <div class="mb-1">
               <div class="d-flex justify-content-between">
-                <label class="form-label" for="login-password">Contraseña</label>
+                <label class="form-label" for="login-password">{{__('Password')}}</label>
                 @if (Route::has('password.request'))
                   <a href="{{ route('password.request') }}">
-                    <small>Olvido su Contraseña?</small>
+                    <small>{{__('Forgot your password?')}}</small>
                   </a>
                 @endif
               </div>
@@ -101,7 +101,7 @@
                 <label class="form-check-label" for="remember"> Remember Me </label>
               </div>
             </div>--}}
-            <button type="submit" class="btn btn-primary w-100" tabindex="4">Iniciar Sesi&oacute;n</button>
+            <button type="submit" class="btn btn-primary w-100" tabindex="4">{{__('Login')}}</button>
           </form>
 
           {{--

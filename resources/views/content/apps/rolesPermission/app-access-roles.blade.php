@@ -1,6 +1,6 @@
 @extends('layouts/contentLayoutMaster')
 
-@section('title', 'Roles')
+@section('title', __('Role'))
 
 @section('vendor-style')
   <!-- Vendor css files -->
@@ -14,7 +14,7 @@
 @endsection
 
 @section('content')
-<h3>Lista de Roles</h3>
+<h3>{{__('Role list')}}</h3>
 
 <!-- Role cards -->
 <div class="row">
@@ -69,7 +69,7 @@
               <h4 class="fw-bolder">{{$role->name}}</h4>
               @can('roles.edit')
                 <a href="{{route('admin.roles.edit', $role->id)}}" class="role-edit-modal">
-                  <small class="fw-bolder">Editar</small>
+                  <small class="fw-bolder">{{__('Edit')}}</small>
                 </a>
               @endcan
             </div>
@@ -100,7 +100,7 @@
         <div class="col-sm-7">
           <div class="card-body text-sm-end text-center ps-sm-0">
             <a href="{{route('admin.roles.create')}}" class="stretched-link text-nowrap add-new-role">
-              <span class="btn btn-primary mb-1">Nuevo Rol</span>
+              <span class="btn btn-primary mb-1">{{__('New Role')}}</span>
             </a>
             <p class="mb-0">Add role, if it does not exist</p>
           </div>
