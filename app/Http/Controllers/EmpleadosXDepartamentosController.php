@@ -81,12 +81,12 @@ class EmpleadosXDepartamentosController extends Controller
                 {
                     $data_in_emplead = new EmpleadosXDepartamentos();
                     $data_in_emplead->cod_posicion              = $posicion->cod_posicion;
-                    $data_in_emplead->cod_supervisor            = $cod_supervisor;
                     $data_in_emplead->nombres                   = $nombres;
                     $data_in_emplead->apellidos                 = $apellidos;
                     $data_in_emplead->estatus                   = $estatus;
                     $data_in_emplead->documento                 = $documento;
 
+                    $this->validateValue($data_in_emplead, 'cod_supervisor', $cod_supervisor);
                     $this->validateValue($data_in_emplead, 'telefono_institucional', $telefono_institucional);
                     $this->validateValue($data_in_emplead, 'extencion', $extencion);
                     $this->validateValue($data_in_emplead, 'correo_institucional', $correo_instutucional);
