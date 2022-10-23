@@ -70,6 +70,9 @@ class EmpleadosXDepartamentosController extends Controller
                 $correo_instutucional   = $dda_arr[6];
                 $correo_personal        = $dda_arr[7];
                 $cod_empleado           = $dda_arr[8];
+                $fecha_nacimiento       = $dda_arr[9];
+                $telefono_movil         = $dda_arr[10];
+                $telefono_institucional = $dda_arr[11];
                 $estatus                = 'A';
                 $activo_hasta           = date('Y-m-d H:i:s');
                 
@@ -77,17 +80,20 @@ class EmpleadosXDepartamentosController extends Controller
                 if(isset($posicion->cod_posicion))
                 {
                     $data_in_emplead = new EmpleadosXDepartamentos();
-                    $data_in_emplead->cod_posicion = $posicion->cod_posicion;
-                    
-                    $data_in_emplead->cod_supervisor         = $cod_supervisor;
-                    $data_in_emplead->nombres                = $nombres;
-                    $data_in_emplead->apellidos              = $apellidos;
-                    $data_in_emplead->documento              = $documento;
-                    $data_in_emplead->extencion              = $extencion;
-                    $data_in_emplead->correo_instutucional   = $correo_instutucional;
-                    $data_in_emplead->correo_personal        = $correo_personal;
-                    $data_in_emplead->estatus                = $estatus;
-                    $data_in_emplead->activo_hasta           = $activo_hasta;
+                    $data_in_emplead->cod_posicion              = $posicion->cod_posicion;
+                    $data_in_emplead->cod_supervisor            = $cod_supervisor;
+                    $data_in_emplead->nombres                   = $nombres;
+                    $data_in_emplead->apellidos                 = $apellidos;
+                    $data_in_emplead->estatus                   = $estatus;
+                    $data_in_emplead->documento                 = $documento;
+
+                    $this->validateValue($data_in_emplead, 'telefono_institucional', $telefono_institucional);
+                    $this->validateValue($data_in_emplead, 'extencion', $extencion);
+                    $this->validateValue($data_in_emplead, 'correo_institucional', $correo_instutucional);
+                    $this->validateValue($data_in_emplead, 'correo_personal', $correo_personal);
+                    $this->validateValue($data_in_emplead, 'activo_hasta', $activo_hasta);
+                    $this->validateValue($data_in_emplead, 'fecha_nacimiento', $fecha_nacimiento);
+                    $this->validateValue($data_in_emplead, 'telefono_movil', $telefono_movil);
 
                     $data_in_emplead->save();
 
@@ -118,6 +124,14 @@ class EmpleadosXDepartamentosController extends Controller
             return redirect('admin/app/validacionDatos')
                         ->with(['message' => __('Error saving employees'), 
                                 'alert' => 'danger']);
+        }
+    }
+
+    public function validateValue($model, $input, $dataImput)
+    {
+        if($dataImput != '')
+        {
+            $model->$input = $dataImput;
         }
     }
 

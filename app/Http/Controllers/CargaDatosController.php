@@ -152,19 +152,20 @@ class CargaDatosController extends Controller
                 for ($indiceFila = 2; $indiceFila <= $numeroMayorDeFila; $indiceFila++) 
                 {
                     $cargaDatos = new CargaDatos();
-                    $empresa	        = $hojaActual->getCellByColumnAndRow(1, $indiceFila)->getValue();
-                    $cod_empleado	    = $hojaActual->getCellByColumnAndRow(2, $indiceFila)->getValue();
-                    $nombres	        = $hojaActual->getCellByColumnAndRow(3, $indiceFila)->getValue();
-                    $apellidos	        = $hojaActual->getCellByColumnAndRow(4, $indiceFila)->getValue();
-                    $posición	        = $hojaActual->getCellByColumnAndRow(5, $indiceFila)->getValue();
+                    $empresa	                = $hojaActual->getCellByColumnAndRow(1, $indiceFila)->getValue();
+                    $cod_empleado	            = $hojaActual->getCellByColumnAndRow(2, $indiceFila)->getValue();
+                    $nombres	                = $hojaActual->getCellByColumnAndRow(3, $indiceFila)->getValue();
+                    $apellidos	                = $hojaActual->getCellByColumnAndRow(4, $indiceFila)->getValue();
+                    $posición	                = $hojaActual->getCellByColumnAndRow(5, $indiceFila)->getValue();
                     $dirección_vicepresidencia	= $hojaActual->getCellByColumnAndRow(6, $indiceFila)->getValue();
-                    $departamento	    = $hojaActual->getCellByColumnAndRow(7, $indiceFila)->getValue();
-                    $numeroDocumento	= $hojaActual->getCellByColumnAndRow(8, $indiceFila)->getValue();
-                    $correo	            = $hojaActual->getCellByColumnAndRow(9, $indiceFila)->getValue();
-                    $celular	        = $hojaActual->getCellByColumnAndRow(10, $indiceFila)->getValue();
+                    $departamento	            = $hojaActual->getCellByColumnAndRow(7, $indiceFila)->getValue();
+                    $numeroDocumento	        = $hojaActual->getCellByColumnAndRow(8, $indiceFila)->getValue();
+                    $correo	                    = $hojaActual->getCellByColumnAndRow(9, $indiceFila)->getValue();
+                    $celular	                = $hojaActual->getCellByColumnAndRow(10, $indiceFila)->getValue();
                     $fecha_nacimiento_no_formt	= $hojaActual->getCellByColumnAndRow(11, $indiceFila)->getValue();
-                    $cod_superviso      = $hojaActual->getCellByColumnAndRow(12, $indiceFila)->getValue();
-                    $extencion          = '';
+                    $cod_superviso              = $hojaActual->getCellByColumnAndRow(12, $indiceFila)->getValue();
+                    $telefono_institucional     = $hojaActual->getCellByColumnAndRow(13, $indiceFila)->getValue();
+                    $extencion                  = $hojaActual->getCellByColumnAndRow(14, $indiceFila)->getValue();
 
                     $fecha_nacimiento = '';
                     if($fecha_nacimiento_no_formt != '')
@@ -181,6 +182,7 @@ class CargaDatosController extends Controller
                     $this->validateValue($cargaDatos, 'direccion_vp', $dirección_vicepresidencia);
                     $this->validateValue($cargaDatos, 'departamento', $departamento);
                     $this->validateValue($cargaDatos, 'telefono_movil', $celular);
+                    $this->validateValue($cargaDatos, 'telefono_institucional', $telefono_institucional);
                     $this->validateValue($cargaDatos, 'extencion', $extencion);
                     $this->validateValue($cargaDatos, 'correo_instutucional', '');
                     $this->validateValue($cargaDatos, 'correo_personal', $correo);

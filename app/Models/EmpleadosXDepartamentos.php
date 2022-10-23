@@ -17,10 +17,12 @@ class EmpleadosXDepartamentos extends Model
         'apellidos',
         'documento', 
         'telefono_movil', 
+        'telefono_institucional', 
         'extencion', 
-        'correo_instutucional', 
+        'correo_institucional', 
         'correo_personal', 
-        'foto', 
+        'foto',  
+        'fecha_nacimiento', 
         'estatus', 
         'activo_hasta'
     ];

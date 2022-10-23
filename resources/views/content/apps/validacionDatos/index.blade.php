@@ -527,7 +527,11 @@ else
                                   $valores->extencion.'||'.
                                   $valores->correo_instutucional.'||'.
                                   $valores->correo_personal.'||'.
-                                  $valores->cod_empleado
+                                  $valores->cod_empleado.'||'.
+                                  $valores->fecha_nacimiento.'||'.
+                                  $valores->telefono_movil.'||'.
+                                  $valores->telefono_institucional
+                                  
                                   }}"/>
                             @endif
                           @endif
@@ -541,6 +545,7 @@ else
                         <th>{{$valores->direccion_vp}}</th>
                         <th>{{$valores->departamento}}</th>
                         <th>{{$valores->telefono_movil}}</th>
+                        <th>{{$valores->telefono_institucional}}</th>
                         <th>{{$valores->extencion}}</th>
                         <th>{{$valores->correo_instutucional}}</th>
                         <th>{{$valores->correo_personal}}</th>
