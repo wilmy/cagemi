@@ -40,7 +40,6 @@ use App\Http\Controllers\DepartamentosXVicepresidenciasController;
 |
 */
 
-Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
 
 // locale Route
 Route::get('lang/{locale}', [LanguageController::class, 'swap']);
@@ -98,11 +97,13 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function(){
     });
 });
 
-/*
+
 Route::group(['middleware' => 'auth:sanctum', 'verified'],function(){
     //Route::get('/', [StaterkitController::class, 'home'])->name('home');
 
     // Main Page Route
     //
+
+    Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
     Route::get('/error', [MiscellaneousController::class, 'error'])->name('error');
-});*/
+});
