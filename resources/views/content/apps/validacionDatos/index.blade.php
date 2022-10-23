@@ -547,7 +547,7 @@ else
                         <th>{{$valores->telefono_movil}}</th>
                         <th>{{$valores->telefono_institucional}}</th>
                         <th>{{$valores->extencion}}</th>
-                        <th>{{$valores->correo_instutucional}}</th>
+                        <th>{{$valores->correo_institucional}}</th>
                         <th>{{$valores->correo_personal}}</th>
                         <th>{{$valores->documento}}</th>
                         <th>{{($valores->fecha_nacimiento != '' ? $valores->fecha_nacimiento->format('d/m/Y') : '')}}</th>

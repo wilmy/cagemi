@@ -184,7 +184,7 @@ class CargaDatosController extends Controller
                     $this->validateValue($cargaDatos, 'telefono_movil', $celular);
                     $this->validateValue($cargaDatos, 'telefono_institucional', $telefono_institucional);
                     $this->validateValue($cargaDatos, 'extencion', $extencion);
-                    $this->validateValue($cargaDatos, 'correo_instutucional', '');
+                    $this->validateValue($cargaDatos, 'correo_institucional', '');
                     $this->validateValue($cargaDatos, 'correo_personal', $correo);
                     $this->validateValue($cargaDatos, 'documento', $numeroDocumento);
                     $this->validateValue($cargaDatos, 'fecha_nacimiento', $fecha_nacimiento);

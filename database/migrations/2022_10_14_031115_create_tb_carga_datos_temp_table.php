@@ -24,8 +24,10 @@ return new class extends Migration
             $table->string('direccion_vp')->nullable();
             $table->string('departamento')->nullable();
             $table->string('telefono_movil')->nullable();
+            
+            $table->string('telefono_institucional')->nullable();
             $table->string('extencion')->nullable();
-            $table->string('correo_instutucional')->nullable();
+            $table->string('correo_institucional')->nullable();
             $table->string('correo_personal')->nullable();
             $table->string('documento')->nullable();
 
