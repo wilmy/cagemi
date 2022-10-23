@@ -21,9 +21,11 @@ return new class extends Migration
             $table->string('apellidos');
             $table->string('documento', 20);
             $table->string('telefono_movil', 20)->nullable();
+            $table->string('telefono_institucional', 20)->nullable();
             $table->string('extencion', 8)->nullable();
-            $table->string('correo_instutucional')->nullable();
+            $table->string('correo_institucional')->nullable();
             $table->string('correo_personal')->nullable();
+            $table->datetime('fecha_nacimiento')->nullable();
             $table->string('foto')->nullable();
             $table->string('estatus', 1);
             $table->datetime('activo_hasta')->nullable();
