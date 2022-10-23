@@ -219,12 +219,14 @@ else
                     <thead>
                       <tr>
                         <th></th>
+                        <th>Empresa</th>
                         <th>Direcciones/Vicepresidencias</th>
                       </tr>
                     </thead>
                     @foreach($data_direcciones_vicepre as $valores)
                       <tr>
                         <th>
+                          @if($valores->empresa != '')
                             <input type="hidden" name="empresa[]" value="{{ $valores->empresa}}">
                             <input 
                               class="form-check-input" 
@@ -232,7 +234,9 @@ else
                               name="vicepresidencias[]" 
                               checked="checked"
                               value="{{ $valores->empresa.'||'.$valores->direccion_vp }}"/>
+                            @endif
                         </th>
+                        <th>{{$valores->empresa}}</th>
                         <th>{{$valores->direccion_vp}}</th>
                       </tr>
                     @endforeach
@@ -276,6 +280,7 @@ else
                     <thead>
                       <tr>
                         <th></th>
+                        <th>Vicepresidencias</th>
                         <th>Departamentos</th>
                       </tr>
                     </thead>
@@ -290,6 +295,7 @@ else
                               checked="checked"
                               value="{{ $valores->direccion_vp.'||'.$valores->departamento }}"/>
                         </th>
+                        <th>{{$valores->direccion_vp}}</th>
                         <th>{{$valores->departamento}}</th>
                       </tr>
                     @endforeach
@@ -334,6 +340,7 @@ else
                     <thead>
                       <tr>
                         <th></th>
+                        <th>Departamento</th>
                         <th>Posiciones</th>
                       </tr>
                     </thead>
@@ -348,6 +355,7 @@ else
                               checked="checked"
                               value="{{ $valores->departamento.'||'.$valores->posicion }}"/>
                         </th>
+                        <th>{{$valores->departamento}}</th>
                         <th>{{$valores->posicion}}</th>
                       </tr>
                     @endforeach

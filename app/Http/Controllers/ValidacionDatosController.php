@@ -16,10 +16,25 @@ class ValidacionDatosController extends Controller
     public function index()
     {
         $data_empresas = CargaDatos::where([['validacion_empresa', 'N'], ['empresa','<>', '']])->get()->unique('empresa');
-        $data_direcciones_vicepre = CargaDatos::where([['validacion_VP', 'N'], ['direccion_vp','<>', '']])->get()->unique('direccion_vp');
-        $data_departamentos = CargaDatos::where([['validacion_departamento', 'N'],['departamento','<>', '']])->get()->unique('departamento');
-        $data_posiciones = CargaDatos::where([['validacion_posicon', 'N'],['posicion','<>', '']])->get()->unique('posicion');
-        $data_empleados= CargaDatos::where('validacion_empleados', 'N')->get();
+        $data_direcciones_vicepre = CargaDatos::where([['validacion_VP', 'N'], ['direccion_vp','<>', '']])
+                                                ->select('direccion_vp', 'empresa')
+                                                ->groupByRaw('direccion_vp, empresa')
+                                                ->orderBy('empresa', 'ASC')
+                                                ->get();
+
+        $data_departamentos = CargaDatos::where([['validacion_departamento', 'N'],['departamento','<>', '']])
+                                        ->select('departamento', 'direccion_vp')
+                                        ->groupByRaw('departamento, direccion_vp')
+                                        ->orderBy('direccion_vp', 'ASC')
+                                        ->get();
+
+        $data_posiciones = CargaDatos::where([['validacion_posicon', 'N'],['posicion','<>', '']])
+                                        ->select('posicion', 'departamento')
+                                        ->groupByRaw('posicion, departamento')
+                                        ->orderBy('departamento', 'ASC')
+                                        ->get();
+
+        $data_empleados = CargaDatos::where('validacion_empleados', 'N')->get();
 
         $validacionesDataTmp = CargaDatosController::validacionesDataTmp();
         
