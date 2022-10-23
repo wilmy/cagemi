@@ -40,9 +40,14 @@ use App\Http\Controllers\DepartamentosXVicepresidenciasController;
 |
 */
 
+Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
+
+// locale Route
+Route::get('lang/{locale}', [LanguageController::class, 'swap']);
+/*
 Route::get('/admin', function(){
     return view('admin.index');
-})->middleware(['auth', 'role:admin'])->name('admin.index');
+})->middleware(['auth', 'role:admin'])->name('admin.index');*/
 
 Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function(){
     Route::resource('/permissions', RoleController::class);
@@ -93,10 +98,11 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function(){
     });
 });
 
+/*
 Route::group(['middleware' => 'auth:sanctum', 'verified'],function(){
-    Route::get('/', [StaterkitController::class, 'home'])->name('home');
+    //Route::get('/', [StaterkitController::class, 'home'])->name('home');
 
     // Main Page Route
-    Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
+    //
     Route::get('/error', [MiscellaneousController::class, 'error'])->name('error');
-});
+});*/

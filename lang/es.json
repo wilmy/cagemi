@@ -193,6 +193,13 @@
     "Your email address is unverified.": "Su dirección de correo electrónico no está verificada.",
     "Log in to your account and start the adventure":"Inicia sesión en tu cuenta y comienza la aventura",
     "Welcome to":"Bienvenido a",
-    "The row record :attribute has the :attribute field empty.": "El registro de la fila :attribute tiene el campo de :attribute  vacio.",
-    "The row record :attribute is with the same employee code :attribute or same document :attribute in the same company.": "El registro de la fila :attribute, is with the same employee code :attribute, o mismo documento :attribute en la misma empresa."
+    "Select":"Seleccione",
+    "Surname":"Apellido",
+    "The row record": "El registro de la fila",
+    "has the field": " tiene el campo ",
+    "empty":"vacio",
+    "in the same company.": " en la misma empresa.",
+    "or same document":"o mismo documento ",
+    "is with the same employee code":" está con el mismo código de empleado ",
+    "The row record :attribute is with the same employee code :attribute or same document :attribute in the same company": "El registro de la fila :attribute, is with the same employee code :attribute, o mismo documento :attribute en la misma empresa."
 }

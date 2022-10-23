@@ -17,7 +17,7 @@ class CargaDatosController extends Controller
      */
     public function index()
     {
-        $array_data = CargaDatos::paginate(100);
+        $array_data = CargaDatos::where('cod_grupo_empresarial', auth()->user()->cod_grupo_empresarial)->paginate(100);
         $mensaje_alert = $this->validacionesDataTmp();
         return view('/content/apps/cargaDatos/index', ['array_data' => $array_data, 'mensaje_alert' => $mensaje_alert]);
     }
@@ -30,53 +30,47 @@ class CargaDatosController extends Controller
         {
             $fila = $valores->fila;
             $colorClass = '';
+            $messa_parm = __('The row record').' @fila '. __('has the field').' <b>@campo</b> '. __('empty').'.';
 
             if($valores->empresa == '') 
             {
-                $messs = __('The row record '.$fila.' has the <b>empresa</b>  field empty.');
-                //'El registro de la fila ('.$fila.'), tiene el campo de <b>empresa</b> vacio.';
+                $messs = str_replace('@fila', $fila, str_replace('@campo', 'empresa', $messa_parm));
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
             if($valores->cod_empleado == '') 
             {
-                $messs = __('The row record '.$fila.' has the <b>codigo de empleado</b>  field empty.');
-                //'El registro de la fila ('.$fila.'), tiene el campo de <b>codigo de empleado</b> vacio.';
+                $messs = str_replace('@fila', $fila, str_replace('@campo', 'codigo de empleado<', $messa_parm));
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
             if($valores->nombres == '') 
             {
-                $messs = __('The row record '.$fila.' has the <b>nombre</b>  field empty.');
-                //'El registro de la fila ('.$fila.'), tiene el campo de <b>nombre</b> vacio.';
+                $messs = str_replace('@fila', $fila, str_replace('@campo', 'nombre', $messa_parm));
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
             if($valores->apellidos == '') 
             {
-                $messs = __('The row record '.$fila.' has the <b>apellido</b>  field empty.');
-                //'El registro de la fila ('.$fila.'), tiene el campo de <b>apellido</b>  vacio.';
+                $messs = str_replace('@fila', $fila, str_replace('@campo', 'apellido', $messa_parm));
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
             if($valores->direccion_vp == '') 
             {
-                $messs = __('The row record '.$fila.' has the <b>direccion o vicepresidencia</b>  field empty.');
-                //'El registro de la fila ('.$fila.'), tiene el campo de <b>direccion o vicepresidencia</b>  vacio.';
+                $messs = str_replace('@fila', $fila, str_replace('@campo', 'direccion o vicepresidencia', $messa_parm));
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
             if($valores->departamento == '') 
             {
-                $messs = __('The row record '.$fila.' has the <b>departamento</b>  field empty.');
-                //'El registro de la fila ('.$fila.'), tiene el campo de departamento vacio.';
+                $messs = str_replace('@fila', $fila, str_replace('@campo', 'departamento', $messa_parm));
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
             if($valores->documento == '') 
             {
-                $messs = __('The row record '.$fila.' has the <b>documento</b>  field empty.');
-                //'El registro de la fila ('.$fila.'), tiene el campo de documento vacio.';
+                $messs = str_replace('@fila', $fila, str_replace('@campo', 'documento', $messa_parm));
                 $mensaje_alert .= '<li>-'.$messs.'</li>';
             }
 
@@ -88,7 +82,7 @@ class CargaDatosController extends Controller
                     if(($valida->empresa == $valores->empresa && $valida->cod_empleado == $valores->cod_empleado) ||
                         ($valida->empresa == $valores->empresa && $valida->documento == $valores->documento))
                     {
-                        $mensaje_alert .= '<li>-'.__('The row record '.$fila.' is with the same employee code '.$valida->cod_empleado .' or same document '.$valida->documento .' in the same company.').'</li>';
+                        $mensaje_alert .= '<li>-'.__('The row record').' '.$fila.' '.__('is with the same employee code').' '.$valida->cod_empleado.' '.__('or same document').' '.$valida->documento.' ' .__('in the same company.').'</li>';
                         //'<li>-El registro de la fila ('.$fila.'), esta con el mismo codigo de empleado ('.$valida->cod_empleado .'), o mismo documento ('.$valida->documento .') en la misma empresa.</li>';
                         break;
                     }
@@ -98,6 +92,7 @@ class CargaDatosController extends Controller
 
         return $mensaje_alert;
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -119,7 +114,8 @@ class CargaDatosController extends Controller
     {
         if(empty(auth()->user()->cod_grupo_empresarial))
         {
-            return view('/content/apps/cargaDatos/index', ['message'=> ['El usuario no tiene grupo empresarial definido'.auth()->user()->cod_grupo_empresarial]]);
+            return view('/content/apps/cargaDatos/index', 
+                    ['message'=> [__('The user does not have a business group defined ').auth()->user()->cod_grupo_empresarial]]);
         }
 
         $file_archivo = $request->archivo;
@@ -195,7 +191,7 @@ class CargaDatosController extends Controller
         }
 
         return redirect('admin/app/cargaDatos/')
-                    ->with(['message' => 'Datos cargados correctamente ', 
+                    ->with(['message' => __('Data uploaded successfully'), 
                             'alert' => 'success']);
     }
 
