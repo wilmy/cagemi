@@ -79,6 +79,7 @@ $listMenu = Helper::listMenu();
               }
             @endphp
            
+           @if (Auth::check())
             @if(Auth::user()->can($menu->ver))
               @if($menu->slug == 'grupo-empresarial')
                 @if(Auth::user()->super_usuario == 'S')
@@ -125,6 +126,7 @@ $listMenu = Helper::listMenu();
               @endif
             @endif
           @endif
+      @endif
         @endforeach
       @endif
       {{-- Foreach menu item ends --}}

@@ -16,25 +16,27 @@ class ValidacionDatosController extends Controller
     public function index()
     {
         $data_empresas = CargaDatos::where([['validacion_empresa', 'N'], ['empresa','<>', '']])->get()->unique('empresa');
-        $data_direcciones_vicepre = CargaDatos::where([['validacion_VP', 'N'], ['direccion_vp','<>', '']])
+        $data_direcciones_vicepre = CargaDatos::where([['validacion_VP', 'N'],['empresa_agregada', 'S'], ['direccion_vp','<>', '']])
                                                 ->select('direccion_vp', 'empresa')
                                                 ->groupByRaw('direccion_vp, empresa')
                                                 ->orderBy('empresa', 'ASC')
                                                 ->get();
 
-        $data_departamentos = CargaDatos::where([['validacion_departamento', 'N'],['departamento','<>', '']])
-                                        ->select('departamento', 'direccion_vp')
-                                        ->groupByRaw('departamento, direccion_vp')
+        $data_departamentos = CargaDatos::where([['validacion_departamento', 'N'],['vicepresidencia_agregada', 'S'], ['departamento','<>', '']])
+                                        ->select('departamento', 'direccion_vp', 'empresa')
+                                        ->groupByRaw('departamento, direccion_vp, empresa')
                                         ->orderBy('direccion_vp', 'ASC')
                                         ->get();
 
-        $data_posiciones = CargaDatos::where([['validacion_posicon', 'N'],['posicion','<>', '']])
-                                        ->select('posicion', 'departamento')
-                                        ->groupByRaw('posicion, departamento')
+        $data_posiciones = CargaDatos::where([['validacion_posicon', 'N'],['departamento_agregado', 'S'],['posicion','<>', '']])
+                                        ->select('posicion', 'departamento', 'direccion_vp', 'empresa')
+                                        ->groupByRaw('posicion, departamento, direccion_vp, empresa')
                                         ->orderBy('departamento', 'ASC')
                                         ->get();
 
-        $data_empleados = CargaDatos::where('validacion_empleados', 'N')->get();
+        $data_empleados = CargaDatos::where([['validacion_empleados', 'N'],['empresa_agregada', 'S'],['vicepresidencia_agregada', 'S'],['departamento_agregado', 'S'],['posicion_agregada', 'S']])
+                                    ->orderBy('posicion', 'ASC')
+                                    ->get();
 
         $validacionesDataTmp = CargaDatosController::validacionesDataTmp();
         
