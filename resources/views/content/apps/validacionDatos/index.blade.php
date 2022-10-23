@@ -422,6 +422,7 @@ else
                         <th>direccion_vp</th>
                         <th>departamento</th>
                         <th>telefono_movil</th>
+                        <th>telefono_institucional</th>
                         <th>extencion</th>
                         <th>correo_instutucional</th>
                         <th>correo_personal</th>
