@@ -166,7 +166,11 @@ class CargaDatosController extends Controller
                     $cod_superviso      = $hojaActual->getCellByColumnAndRow(12, $indiceFila)->getValue();
                     $extencion          = '';
 
-                    $fecha_nacimiento = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($fecha_nacimiento_no_formt)->format('Y-m-d');
+                    $fecha_nacimiento = '';
+                    if($fecha_nacimiento_no_formt != '')
+                    {
+                        $fecha_nacimiento = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($fecha_nacimiento_no_formt)->format('Y-m-d');
+                    }
 
                     $cargaDatos->cod_grupo_empresarial  = auth()->user()->cod_grupo_empresarial;
                     $this->validateValue($cargaDatos, 'empresa', $empresa);

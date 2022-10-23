@@ -287,6 +287,7 @@ else
                     @foreach($data_departamentos as $valores)
                       <tr>
                         <th>
+                          @if($valores->empresa != '')
                             <input type="hidden" name="direccion_vp[]" value="{{ $valores->direccion_vp}}">
                             <input 
                               class="form-check-input" 
@@ -294,6 +295,7 @@ else
                               name="departamentos[]" 
                               checked="checked"
                               value="{{ $valores->direccion_vp.'||'.$valores->departamento }}"/>
+                            @endif
                         </th>
                         <th>{{$valores->direccion_vp}}</th>
                         <th>{{$valores->departamento}}</th>
@@ -340,6 +342,8 @@ else
                     <thead>
                       <tr>
                         <th></th>
+                        <th>Empresa</th>
+                        <th>Vicepresidencia</th>
                         <th>Departamento</th>
                         <th>Posiciones</th>
                       </tr>
@@ -347,6 +351,7 @@ else
                     @foreach($data_posiciones as $valores)
                       <tr>
                         <th>
+                          @if($valores->empresa != '')
                             <input type="hidden" name="departamento[]" value="{{ $valores->departamento}}">
                             <input 
                               class="form-check-input" 
@@ -354,7 +359,10 @@ else
                               name="posiciones[]" 
                               checked="checked"
                               value="{{ $valores->departamento.'||'.$valores->posicion }}"/>
+                            @endif
                         </th>
+                        <th>{{$valores->empresa}}</th>
+                        <th>{{$valores->direccion_vp}}</th>
                         <th>{{$valores->departamento}}</th>
                         <th>{{$valores->posicion}}</th>
                       </tr>
@@ -502,24 +510,26 @@ else
                       @endphp
                       <tr {!!$colorClass!!} {!!$title!!}>
                         <th>
-                          @if($no_check)
-                            <input type="hidden" name="posiciones[]" value="{{ $valores->posiciones}}">
-                            <input 
-                              class="form-check-input" 
-                              type="checkbox" 
-                              name="empleados[]" 
-                              checked="checked"
-                              value="{{ 
-                                $valores->posicion.'||'.
-                                $valores->codigo_superfisor.'||'.
-                                $valores->nombres.'||'.
-                                $valores->apellidos.'||'.
-                                $valores->documento.'||'.
-                                $valores->extencion.'||'.
-                                $valores->correo_instutucional.'||'.
-                                $valores->correo_personal.'||'.
-                                $valores->cod_empleado
-                                }}"/>
+                          @if($valores->empresa != '')
+                            @if($no_check)
+                              <input type="hidden" name="posiciones[]" value="{{ $valores->posiciones}}">
+                              <input 
+                                class="form-check-input" 
+                                type="checkbox" 
+                                name="empleados[]" 
+                                checked="checked"
+                                value="{{ 
+                                  $valores->posicion.'||'.
+                                  $valores->codigo_superfisor.'||'.
+                                  $valores->nombres.'||'.
+                                  $valores->apellidos.'||'.
+                                  $valores->documento.'||'.
+                                  $valores->extencion.'||'.
+                                  $valores->correo_instutucional.'||'.
+                                  $valores->correo_personal.'||'.
+                                  $valores->cod_empleado
+                                  }}"/>
+                            @endif
                           @endif
                         </th>
                         <th>{{$fila}}</th>
@@ -535,7 +545,7 @@ else
                         <th>{{$valores->correo_instutucional}}</th>
                         <th>{{$valores->correo_personal}}</th>
                         <th>{{$valores->documento}}</th>
-                        <th>{{$valores->fecha_nacimiento->format('d/m/Y')}}</th>
+                        <th>{{($valores->fecha_nacimiento != '' ? $valores->fecha_nacimiento->format('d/m/Y') : '')}}</th>
                         <th>{{$valores->codigo_superfisor}}</th>
                       </tr>
                     @endforeach

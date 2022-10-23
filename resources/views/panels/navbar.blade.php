@@ -109,11 +109,13 @@
             @endif
           </span>
 
-          @foreach(Auth::user()->getRoleNames() as $v)
-              <span class="user-status">
-                {{$v}}
-              </span>
-          @endforeach
+          @if (Auth::check())
+            @foreach(Auth::user()->getRoleNames() as $v)
+                <span class="user-status">
+                  {{$v}}
+                </span>
+            @endforeach
+          @endif
           
         </div>
         <span class="avatar">
