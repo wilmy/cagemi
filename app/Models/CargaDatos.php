@@ -19,6 +19,7 @@ class CargaDatos extends Model
         'direccion_vp',
         'departamento',
         'telefono_movil',
+        'telefono_institucional',
         'extencion',
         'correo_instutucional',
         'correo_personal',
