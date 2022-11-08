@@ -2,7 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\CargaDatosController;
+use App\Http\Controllers\Api\TiposPublicacionesController;
+use App\Http\Controllers\Api\EmpresasXGruposEmpresarialesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +25,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'auth:sanctum'], function(){
 
 });
+
+//Empresas activas 
+Route::get('/empresas', [EmpresasXGruposEmpresarialesController::class, 'index']);
+
+
+//Login de inicio y validacion de usuario 
+Route::post('/login', [LoginController::class, 'index']);
+
+
+//Completar los datos del usuario
+Route::post('/completarDatos', [LoginController::class, 'completarDatos']);
+
+
+//Tipos de Publicaciones
+Route::get('/tipoPublicaciones', [TiposPublicacionesController::class, 'index']);
+
 
 Route::get('/tempdata', [CargaDatosController::class, 'index']);
 Route::get('/tempdata/{page}', [CargaDatosController::class, 'index']);

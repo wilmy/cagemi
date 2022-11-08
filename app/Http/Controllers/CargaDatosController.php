@@ -174,6 +174,7 @@ class CargaDatosController extends Controller
                     }
 
                     $cargaDatos->cod_grupo_empresarial  = auth()->user()->cod_grupo_empresarial;
+                    
                     $this->validateValue($cargaDatos, 'empresa', $empresa);
                     $this->validateValue($cargaDatos, 'cod_empleado', $cod_empleado);
                     $this->validateValue($cargaDatos, 'nombres', $nombres);

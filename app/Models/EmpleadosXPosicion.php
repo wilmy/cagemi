@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EmpleadosXDepartamentos extends Model
+class EmpleadosXPosicion extends Model
 {
     use HasFactory;
-    protected $table = 'tb_empleados_x_departamentos';
+    protected $table = 'tb_empleados_x_posicion';
     protected $primaryKey = 'cod_empleado';
     protected $fillable = [
         'cod_posicion',
+        'cod_empleado_empresa',
         'cod_supervisor',
         'nombres',
         'apellidos',

@@ -22,7 +22,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ValidacionDatosController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\GrupoEmpresarialController;
-use App\Http\Controllers\EmpleadosXDepartamentosController;
+use App\Http\Controllers\EmpleadosXPosicionController;
 use App\Http\Controllers\PosicionesXDepartamentosController;
 use App\Http\Controllers\DireccionesVicepresidenciasController;
 use App\Http\Controllers\EmpresasXGruposEmpresarialesController;
@@ -81,7 +81,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function(){
 
         
         //Empleados  por posiciones
-        Route::resource('/empleadosxposiciones', EmpleadosXDepartamentosController::class);
+        Route::resource('/empleadosxposiciones', EmpleadosXPosicionController::class);
         
 
         //Carga de datos temp

@@ -52,7 +52,7 @@
               <div class="mb-1 col-md-4">
                 <label for="register-comunidad" class="form-label">{{__('Community')}}</label>
                 <select name="comunidad" class="form-select">
-                  <option value="A">{{__('open')}}</option>
+                  <option value="A">{{__('Open')}}</option>
                   <option value="C">{{__('Closed')}}</option>
                 </select>
                 @error('cominidad')
