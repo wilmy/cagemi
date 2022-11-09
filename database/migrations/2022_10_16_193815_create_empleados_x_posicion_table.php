@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_empleados_x_departamentos', function (Blueprint $table) {
+        Schema::create('tb_empleados_x_posicion', function (Blueprint $table) {
             $table->id('cod_empleado');
+            $table->string('cod_empleado_empresa', 45);
             $table->integer('cod_posicion');
             $table->integer('cod_supervisor')->nullable();
             $table->string('nombres');
@@ -40,6 +41,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_empleados_x_departamentos');
+        Schema::dropIfExists('tb_empleados_x_posicion');
     }
 };

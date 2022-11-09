@@ -6,10 +6,10 @@ use App\Models\User;
 use App\Models\CargaDatos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\EmpleadosXDepartamentos;
+use App\Models\EmpleadosXPosicion;
 use App\Models\PosicionesXDepartamentos;
 
-class EmpleadosXDepartamentosController extends Controller
+class EmpleadosXPosicionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -79,7 +79,8 @@ class EmpleadosXDepartamentosController extends Controller
                 $posicion = PosicionesXDepartamentos::where('nombre_posicion', $nombre_posicion)->first();
                 if(isset($posicion->cod_posicion))
                 {
-                    $data_in_emplead = new EmpleadosXDepartamentos();
+                    $data_in_emplead = new EmpleadosXPosicion();
+                    $data_in_emplead->cod_empleado_empresa      = $cod_empleado;
                     $data_in_emplead->cod_posicion              = $posicion->cod_posicion;
                     $data_in_emplead->nombres                   = $nombres;
                     $data_in_emplead->apellidos                 = $apellidos;
