@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('tb_empleados_x_posicion', function (Blueprint $table) {
             $table->id('cod_empleado');
             $table->string('cod_empleado_empresa', 45);
-            $table->integer('cod_posicion');
+            $table->foreignId('cod_posicion');
             $table->integer('cod_supervisor')->nullable();
             $table->string('nombres');
             $table->string('apellidos');

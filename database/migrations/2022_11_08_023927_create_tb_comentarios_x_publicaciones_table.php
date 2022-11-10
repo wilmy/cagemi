@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('tb_comentarios_x_publicaciones', function (Blueprint $table) {
             $table->id('cod_comentario');
-            $table->integer('cod_publicacion');
-            $table->integer('cod_usuario');
+            $table->foreignId('cod_publicacion');
+            $table->foreignId('cod_usuario');
             $table->string('comentario');
             $table->timestamps();
         });

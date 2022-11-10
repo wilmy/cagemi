@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('tb_visitas_x_publicaciones', function (Blueprint $table) {
             $table->id('cod_vista');
-            $table->integer('cod_publicacion');
-            $table->integer('cod_usuario');
+            $table->foreignId('cod_publicacion');
+            $table->foreignId('cod_usuario');
             $table->datetime('fecha_vista');
             $table->datetime('tiempo_visualizacion');
             $table->timestamps();

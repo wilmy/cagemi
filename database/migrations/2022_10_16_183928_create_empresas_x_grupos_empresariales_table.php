@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tb_empresas_x_grupos_empresariales', function (Blueprint $table) {
             $table->id('cod_empresa');
-            $table->integer('cod_grupo_empresarial');
+            $table->foreignId('cod_grupo_empresarial');
             $table->string('nombre');
             $table->integer('cod_pais')->nullable();
             $table->string('estatus', 1)->default('A');

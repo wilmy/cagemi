@@ -85,7 +85,7 @@
          
           <form id="addRoleForm-" method="GET" action="">
            
-          <div class="d-flex justify-content-between align-items-center header-actions mx-2 row mt-75">
+          <div class="d-flex justify-content-between align-items-center header-actions mx-2 row mt-100">
             <div class="col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start">
               <div class="dataTables_length" id="DataTables_Table_0_length">
                 <label>{{ __('To Show') }} 
@@ -98,7 +98,7 @@
                 </label>
                 </div>
                 
-                <div class="dataTables_length" id="DataTables_Table_0_length">
+                <div class="dataTables_length" id="DataTables_Table_3_length">
                   <label>{{ __('Type of user') }}:
                     <select class="form-select" name="tipo_usuario" aria-controls="DataTables_Table_0">
                       <option value=""> {{ __('All') }}</option>

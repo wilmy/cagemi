@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('pantallas', function (Blueprint $table) {
             $table->id('cod_pantalla');
-            $table->integer('id_padre')->nullable();
+            $table->foreignId('id_padre')->nullable();
             $table->string('aplicacion', 1)->nullable();
             $table->string('nombre', 80);
             $table->string('slug', 100);  

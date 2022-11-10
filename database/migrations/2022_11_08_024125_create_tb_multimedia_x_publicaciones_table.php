@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tb_multimedia_x_publicaciones', function (Blueprint $table) {
             $table->id('cod_elemento');
-            $table->integer('cod_publicacion');
+            $table->foreignId('cod_publicacion');
             $table->string('server');
             $table->string('nombre_archivo');
             $table->timestamps();

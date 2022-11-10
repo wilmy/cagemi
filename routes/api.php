@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\CargaDatosController;
+use App\Http\Controllers\Api\PublicacionesController;
 use App\Http\Controllers\Api\TiposPublicacionesController;
 use App\Http\Controllers\Api\EmpresasXGruposEmpresarialesController;
 
@@ -40,6 +41,9 @@ Route::post('/completarDatos', [LoginController::class, 'completarDatos']);
 
 //Tipos de Publicaciones
 Route::get('/tipoPublicaciones', [TiposPublicacionesController::class, 'index']);
+
+//Publicaciones
+Route::get('/publicaciones', [PublicacionesController::class, 'index']);
 
 
 Route::get('/tempdata', [CargaDatosController::class, 'index']);
