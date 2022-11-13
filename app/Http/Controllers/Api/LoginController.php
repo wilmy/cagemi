@@ -66,7 +66,7 @@ class LoginController extends Controller
         else
         {
             $data_in_emplead = EmpleadosXPosicion::find($cod_empleado);
-            $fechaNacimiento_F = substr($fechaNacimiento, 6,4).'-'.substr($fechaNacimiento, 3,2).'-'.substr($fechaNacimiento, 0,2);
+            $fechaNacimiento_F = ($fechaNacimiento != '' ? substr($fechaNacimiento, 6,4).'-'.substr($fechaNacimiento, 3,2).'-'.substr($fechaNacimiento, 0,2) : '');
             $this->validateValue($data_in_emplead, 'telefono_institucional', $telefonoInstitucional);
             $this->validateValue($data_in_emplead, 'extencion', $extencion);
             $this->validateValue($data_in_emplead, 'correo_personal', $correo_personal);
@@ -75,7 +75,7 @@ class LoginController extends Controller
 
             if($data_in_emplead->save())
             {
-                array_push($data, array("estatus" => 'success', "message" => "Datos actualizados correctamente"));
+               array_push($data, array("estatus" => 'success', "message" => "Datos actualizados correctamente"));
             }
             else
             {
