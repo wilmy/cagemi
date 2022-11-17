@@ -12,6 +12,7 @@ class TiposPublicacionesController extends Controller
     public function index(Request $request)
     {
         $data = TiposPublicaciones::where('estatus', 'A')->get();
+
         return response()->json($data); 
     }
 }
