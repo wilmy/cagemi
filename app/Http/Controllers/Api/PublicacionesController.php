@@ -9,6 +9,7 @@ use App\Models\GrupoEmpresarial;
 use App\Http\Controllers\Controller;
 use App\Models\MultimediaXPublicaciones;
 use App\Models\ReaccionesXPublicaciones;
+use App\Models\EmpresasXGruposEmpresariales;
 use App\Http\Controllers\ValidacionesController;
 
 class PublicacionesController extends Controller
@@ -22,14 +23,15 @@ class PublicacionesController extends Controller
                                     ->orderBy('created_at','DESC')
                                     ->get();
 
-        $url_http = 'https://7336-190-167-233-105.ngrok.io';
+        //$url_http = 'https://2511-190-80-245-171.ngrok.io';
+        $url_http =  'http://18.217.9.139/';
         
         if(count($data_public) > 0)
         {
             foreach($data_public as $post)
             {
                 $reacciones_publ = ReaccionesXPublicaciones::where('cod_publicacion', $post->cod_publicacion)->count();
-                $grupo_empresarial = GrupoEmpresarial::find($post->cod_comunidad);
+                $grupo_empresarial = EmpresasXGruposEmpresariales::find($post->cod_comunidad);
                 $nombre_grupo = ($grupo_empresarial != '' ? $grupo_empresarial->nombre : '');
                 $postComent = 0;
 
@@ -52,7 +54,7 @@ class PublicacionesController extends Controller
                                 "nombre" =>  'Wilmy Rodriguez',
                                 "avatar" =>  $url_http.'/images/avatars/1.png',
                                 "tipo" =>  $nombre_grupo,
-                                "postImage" =>  array($nombre_ima),
+                                "postImage" =>  $array_imagenes,
                                 "postComentario" =>  $post->texto,
                                 "postText" =>  '',
                                 "postLike" =>  $reacciones_publ,
