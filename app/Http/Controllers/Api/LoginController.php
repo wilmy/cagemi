@@ -29,7 +29,7 @@ class LoginController extends Controller
                                 ['users.cod_empleado', '=', $request->user],
                                 //['users.password', '=', Hash::make($request->password)]
                             ])
-                        ->select('tb_empleados_x_posicion.*')
+                        ->select('tb_empleados_x_posicion.*', 'users.id')
                         ->get();
 
         if(count($dataUser) > 0)

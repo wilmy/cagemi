@@ -6,8 +6,11 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Publicaciones;
 use App\Models\GrupoEmpresarial;
+use App\Models\EmpleadosXPosicion;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\MultimediaXPublicaciones;
+use App\Models\PosicionesXDepartamentos;
 use App\Models\ReaccionesXPublicaciones;
 use App\Models\EmpresasXGruposEmpresariales;
 use App\Http\Controllers\ValidacionesController;
@@ -19,20 +22,23 @@ class PublicacionesController extends Controller
     public function index(Request $request)
     {
         $posts = array();
-        $data_public = Publicaciones::where('estatus', 'A')
-                                    ->orderBy('created_at','DESC')
-                                    ->get();
+        $data_public = DB::table('tb_publicaciones')
+                            ->join('users' ,'tb_publicaciones.cod_usuario','=','users.id')
+                            ->select('tb_publicaciones.*','users.name','users.cod_empleado')
+                            ->where('tb_publicaciones.estatus', 'A')
+                            ->orderBy('tb_publicaciones.created_at','DESC')
+                            ->get();
 
-        //$url_http = 'https://2511-190-80-245-171.ngrok.io';
-        $url_http =  'http://18.217.9.139/';
+        $url_http = 'https://2511-190-80-245-171.ngrok.io';
+        //$url_http =  'http://18.217.9.139/';
         
         if(count($data_public) > 0)
         {
             foreach($data_public as $post)
             {
                 $reacciones_publ = ReaccionesXPublicaciones::where('cod_publicacion', $post->cod_publicacion)->count();
-                $grupo_empresarial = EmpresasXGruposEmpresariales::find($post->cod_comunidad);
-                $nombre_grupo = ($grupo_empresarial != '' ? $grupo_empresarial->nombre : '');
+                //$grupo_empresarial = EmpresasXGruposEmpresariales::find($post->cod_comunidad);
+                //$nombre_grupo = ($grupo_empresarial != '' ? $grupo_empresarial->nombre : '');
                 $postComent = 0;
 
                 $array_imagenes = array();
@@ -48,12 +54,23 @@ class PublicacionesController extends Controller
                     }
                 }
 
+                $nombre_posicion = '';
+                $posisionEmpleado = EmpleadosXPosicion::where('cod_empleado_empresa', $post->cod_empleado)->get();
+                if(count($posisionEmpleado) > 0)
+                {
+                    $posiciones = PosicionesXDepartamentos::where('cod_posicion', $posisionEmpleado[0]->cod_posicion)->get();
+                    if(count($posiciones) > 0)
+                    {
+                        $nombre_posicion = $posiciones[0]->nombre_posicion;
+                    }
+                }
+
                 $list_popst = array(
                                 "estatus" => "success",
                                 "cod_publicacion" => $post->cod_publicacion,
-                                "nombre" =>  'Wilmy Rodriguez',
+                                "nombre" =>  $post->name,
                                 "avatar" =>  $url_http.'/images/avatars/1.png',
-                                "tipo" =>  $nombre_grupo,
+                                "tipo" =>  $nombre_posicion,
                                 "postImage" =>  $array_imagenes,
                                 "postComentario" =>  $post->texto,
                                 "postText" =>  '',
@@ -75,17 +92,19 @@ class PublicacionesController extends Controller
     {
         $data = array();
        
+        $cod_usuario        = (isset($request->cod_usuario) ? $request->cod_usuario : '');
         $cod_empleado       = (isset($request->cod_empleado) ? $request->cod_empleado : '');
         $tipo_publicacion   = (isset($request->tipo_publicacion) ? $request->tipo_publicacion : '');  
         $commentario        = (isset($request->commentario) ? $request->commentario : '');
         $grupos             = (isset($request->grupos) ? $request->grupos : '');
 
-        if(empty($cod_empleado) && 
+        if(empty($cod_usuario) && 
+            empty($cod_empleado) && 
             empty($tipo_publicacion) && 
             empty($commentario) && 
             empty($grupos))
         {
-            array_push($data, array("estatus" => 'error', "message" => "Todos los campos son obligatorios".$cod_empleado));
+            array_push($data, array("estatus" => 'error', "message" => "Todos los campos son obligatorios"));
         }
         else
         {
@@ -98,6 +117,8 @@ class PublicacionesController extends Controller
             $permite_comentario     = 'S';
 
             $validate_input = new ValidacionesController;
+            
+            $validate_input->validateValue($data_public, 'cod_usuario', $cod_usuario);
             $validate_input->validateValue($data_public, 'cod_comunidad', $cod_comunidad);
             $validate_input->validateValue($data_public, 'cod_tipo_publicacion', $cod_tipo_publicacion);
             $validate_input->validateValue($data_public, 'texto', $texto);
@@ -107,13 +128,34 @@ class PublicacionesController extends Controller
             if($data_public->save())
             {
                 $imagenes = '';
-                if($request->hasFile("imagenes"))
+
+                //$validator = Validator::make($request->all(), ['image' => ['required', File::image()->max(2 * 1024)]]);
+                //if ($validator->fails()) return response()->json($validator->messages());
+                //$image = new Image();
+               /* $file = $request->file('imagenes');
+                $fileName = time().'_'.$file->getClientOriginalName();
+                //$file->storeAs('uploads', $fileName, 'public');
+                $nombreimagen = uniqid() . "_" . $file->getClientOriginalName();
+
+                $tmpim = $file;
+                $ruta = public_path("images/gruposEmpresariales/post/multimedia/");
+                //$file->move($ruta, $filename);
+                //copy($file->getRealPath(), $ruta.$nombreimagen);
+
+                //$url = URL::to('/') . '/public/images/' . $filename;
+                //$image['url'] = $url;
+                //$image->save();
+                $imagenes = $file->getRealPath();
+               // return response()->json(['isSuccess' => true, 'url' => $url]);
+
+                /*if($request->hasFile("imagenes"))
                 {
                     $imagen = $request->file("imagenes");
                     $nombreimagen = uniqid().".".$imagen->guessExtension();
                     $ruta = public_path("images/gruposEmpresariales/post/multimedia/");
 
-                    copy($imagen->getRealPath(),$ruta.$nombreimagen);
+                    $imagenes = 'entro image'.$nombreimagen;
+                    /*copy($imagen->getRealPath(),$ruta.$nombreimagen);
                     $imagenes = $nombreimagen;
 
                     $up_images = new MultimediaXPublicaciones;
@@ -121,8 +163,8 @@ class PublicacionesController extends Controller
                     $up_images->cod_publicacion = $data_public->cod_publicacion;
                     $up_images->server = $ruta;
                     $up_images->nombre_archivo = $nombreimagen;
-                    $up_images->save();
-                }
+                    $up_images->save();*
+                }*/
 
                 array_push($data, array("estatus" => 'success', "message" => "Publicaciones realizada".$imagenes)); 
             }
