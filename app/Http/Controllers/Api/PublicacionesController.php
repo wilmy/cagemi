@@ -29,8 +29,8 @@ class PublicacionesController extends Controller
                             ->orderBy('tb_publicaciones.created_at','DESC')
                             ->get();
 
-        $url_http = 'https://2511-190-80-245-171.ngrok.io';
-        //$url_http =  'http://18.217.9.139/';
+        //$url_http = 'https://2511-190-80-245-171.ngrok.io';
+        $url_http =  'http://18.217.9.139/';
         
         if(count($data_public) > 0)
         {
@@ -69,7 +69,7 @@ class PublicacionesController extends Controller
                                 "estatus" => "success",
                                 "cod_publicacion" => $post->cod_publicacion,
                                 "nombre" =>  $post->name,
-                                "avatar" =>  $url_http.'/images/avatars/1.png',
+                                "avatar" =>  $url_http.'/images/avatars/2.png',
                                 "tipo" =>  $nombre_posicion,
                                 "postImage" =>  $array_imagenes,
                                 "postComentario" =>  $post->texto,
