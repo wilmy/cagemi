@@ -9,6 +9,7 @@ use App\Models\GrupoEmpresarial;
 use App\Models\EmpleadosXPosicion;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Models\MultimediaXPublicaciones;
 use App\Models\PosicionesXDepartamentos;
 use App\Models\ReaccionesXPublicaciones;
@@ -127,7 +128,40 @@ class PublicacionesController extends Controller
           
             if($data_public->save())
             {
-                $imagenes = '';
+                $imagenes = ' >>';
+
+               $file = $request->file('imagenes');
+               $fileName = time().'_'.$file->getClientOriginalName();
+
+               $uri = $request->imagenes->path();
+               //$file->storeAs('uploads', $fileName, 'public');
+
+                //$fileName = $file;
+               $ruta = public_path("images/gruposEmpresariales/post/multimedia/");
+               //$file->move($ruta, $filename);
+               //copy($file->getRealPath(), $ruta.$nombreimagen);
+
+                //copy($file->getRealPath(), $ruta.$nombreimagen);
+
+               //$imagenes = $file;
+
+               //$img  = $this->getB64Image($base64_image);
+               //$img = getB64Image($image_avatar_b64);
+                // Obtener la extensión de la Imagen
+               //$img_extension = $this->getB64Extension($base64_image);
+                // Crear un nombre aleatorio para la imagen
+                /*$img_name = 'user_avatar'. time() . '.jpg';   
+
+                $ext = explode(';base64',$image);
+                $ext = explode('/',$ext[0]);			
+                $ext = $ext[1];		*/
+
+                $imagenes = $uri ;
+
+                // Usando el Storage guardar en el disco creado anteriormente y pasandole a 
+                // la función "put" el nombre de la imagen y los datos de la imagen como 
+                // segundo parametro
+                //Storage::disk('public')->put($img_name, $img);
 
                 //$validator = Validator::make($request->all(), ['image' => ['required', File::image()->max(2 * 1024)]]);
                 //if ($validator->fails()) return response()->json($validator->messages());
@@ -175,6 +209,26 @@ class PublicacionesController extends Controller
         }
 
         return response()->json($data); 
+    }
+
+    public function getB64Image($base64_image)
+    {  
+        // Obtener el String base-64 de los datos         
+        $image_service_str = substr($base64_image, strpos($base64_image, ",")+1);
+        // Decodificar ese string y devolver los datos de la imagen        
+        $image = base64_decode($image_service_str);   
+        // Retornamos el string decodificado
+        return $image; 
+    }
+
+    public function getB64Extension($base64_image, $full=null)
+    {  
+        // Obtener mediante una expresión regular la extensión imagen y guardarla
+        // en la variable "img_extension"        
+        preg_match("/^data:image\/(.*);base64/i",$base64_image, $img_extension);   
+        // Dependiendo si se pide la extensión completa o no retornar el arreglo con
+        // los datos de la extensión en la posición 0 - 1
+        return ($full) ?  $img_extension[0] : $img_extension[1];  
     }
 
     public function likepublicacion(Request $request)
