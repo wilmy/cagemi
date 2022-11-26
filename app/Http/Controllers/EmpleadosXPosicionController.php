@@ -65,7 +65,7 @@ class EmpleadosXPosicionController extends Controller
                 $cod_supervisor         = $dda_arr[1];
                 $nombres                = $dda_arr[2];
                 $apellidos              = $dda_arr[3];
-                $documento              = $dda_arr[4];
+                $documento              = trim($dda_arr[4]);
                 $extencion              = $dda_arr[5];
                 $correo_instutucional   = $dda_arr[6];
                 $correo_personal        = $dda_arr[7];

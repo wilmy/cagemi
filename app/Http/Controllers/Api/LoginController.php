@@ -38,7 +38,7 @@ class LoginController extends Controller
         }
         else
         {
-            array_push($data, array("message" => "Error, usuario o contraseña incotecta."));
+            array_push($data, array("message" => "Usuario o contraseña incotecta."));
         }
 
         return response()->json($data); 
@@ -66,7 +66,10 @@ class LoginController extends Controller
         else
         {
             $data_in_emplead = EmpleadosXPosicion::find($cod_empleado);
-            $fechaNacimiento_F = ($fechaNacimiento != '' ? substr($fechaNacimiento, 6,4).'-'.substr($fechaNacimiento, 3,2).'-'.substr($fechaNacimiento, 0,2) : '');
+
+            $feccha_conter = explode('/',$fechaNacimiento);
+            $fechaNacimiento_F = ($fechaNacimiento != '' ? $feccha_conter[2].'-'.$feccha_conter[1].'-'.$feccha_conter[0] : '');
+            
             $this->validateValue($data_in_emplead, 'telefono_institucional', $telefonoInstitucional);
             $this->validateValue($data_in_emplead, 'extencion', $extencion);
             $this->validateValue($data_in_emplead, 'correo_personal', $correo_personal);
