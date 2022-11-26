@@ -87,6 +87,10 @@ class PublicacionesController extends Controller
                 array_push($posts, $list_popst);
             }
         }
+        else
+        {
+            array_push($posts, array("estatus" => "error"));
+        }
 
         return response()->json($posts); 
     }
