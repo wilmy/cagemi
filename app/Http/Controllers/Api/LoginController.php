@@ -26,15 +26,35 @@ class LoginController extends Controller
                         ->leftjoin('tb_empleados_x_posicion', 'users.cod_empleado', '=','tb_empleados_x_posicion.cod_empleado_empresa')
                         ->where([
                                 ['users.cod_grupo_empresarial', '=', $request->empresa],
-                                ['users.cod_empleado', '=', $request->user],
-                                //['users.password', '=', Hash::make($request->password)]
+                                ['users.cod_empleado', '=', $request->user]
                             ])
-                        ->select('tb_empleados_x_posicion.*', 'users.id')
-                        ->get();
-
-        if(count($dataUser) > 0)
+                        ->select('tb_empleados_x_posicion.*', 'users.password', 'users.cambio_password', 'users.id', 'users.cod_grupo_empresarial', 'users.email_verified_at')
+                        ->first();
+        if($dataUser)
         {
-            array_push($data, array("estatus" => 'success', "dataUser" => $dataUser));
+            if(Hash::check($request->password, $dataUser->password))
+            {
+                $completar_datos = false;
+                $cambio_password = $dataUser->cambio_password;
+
+                if($dataUser->correo_personal == '' ||
+                    $dataUser->fecha_nacimiento == '' ||
+                    $dataUser->telefono_movil  == '' ||
+                    $dataUser->telefono_institucional == '' ||
+                    $dataUser->extencion == '') 
+                { 
+                    $completar_datos = true;
+                }
+
+                array_push($data, array("estatus" => 'success',
+                                        'cambio_pass' => $cambio_password,
+                                        'completar_datos' => $completar_datos,
+                                        "dataUser" => $dataUser));
+            }
+            else
+            {
+                array_push($data, array("message" => "Usuario o contraseña incotecta."));
+            }
         }
         else
         {
@@ -75,6 +95,49 @@ class LoginController extends Controller
             $this->validateValue($data_in_emplead, 'correo_personal', $correo_personal);
             $this->validateValue($data_in_emplead, 'fecha_nacimiento', $fechaNacimiento_F);
             $this->validateValue($data_in_emplead, 'telefono_movil', $telefonoCelular);
+
+            if($data_in_emplead->save())
+            {
+               array_push($data, array("estatus" => 'success', "message" => "Datos actualizados correctamente"));
+            }
+            else
+            {
+                array_push($data, array("estatus" => 'error', "message" => "Error, al actualizar los datos."));
+            }
+        }
+
+        return response()->json($data); 
+    }
+
+    public function cambioPassword(Request $request)
+    { 
+        $data = array();
+       
+        $id                      = (isset($request->id) ? $request->id : '');  
+        $cod_empleado            = (isset($request->cod_empleado) ? $request->cod_empleado : '');  
+        $empresa                 = (isset($request->empresa) ? $request->empresa : '');
+        $password                = (isset($request->password) ? $request->password : '');
+        $confirmPassword         = (isset($request->confirmPassword) ? $request->confirmPassword : '');
+
+        if(empty($id) && 
+            empty($cod_empleado) && 
+            empty($empresa) && 
+            empty($password) && 
+            empty($confirmPassword))
+        {
+            array_push($data, array("estatus" => 'error', "message" => "No hay datos para actualizar"));
+        }
+        else if($password != $confirmPassword)
+        {
+            array_push($data, array("estatus" => 'error', "message" => "Password no coinciden"));
+        }
+        else
+        {
+            //$data_in_emplead = User::where([['cod_empleado', '=', $cod_empleado], ['cod_grupo_empresarial', '=', $empresa]]);
+            $data_in_emplead = User::find($id);
+            
+            $this->validateValue($data_in_emplead, 'password', Hash::make($password));
+            $this->validateValue($data_in_emplead, 'cambio_password', 'N');
 
             if($data_in_emplead->save())
             {

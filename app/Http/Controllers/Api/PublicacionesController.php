@@ -23,16 +23,30 @@ class PublicacionesController extends Controller
 
     public function index(Request $request)
     {
+        $cod_publicacion = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
         $posts = array();
-        $data_public = DB::table('tb_publicaciones')
-                            ->join('users' ,'tb_publicaciones.cod_usuario','=','users.id')
-                            ->select('tb_publicaciones.*','users.name','users.cod_empleado')
-                            ->where('tb_publicaciones.estatus', 'A')
-                            ->orderBy('tb_publicaciones.created_at','DESC')
-                            ->get();
 
-        //$url_http = 'https://e75c-201-229-162-140.ngrok.io';
-        $url_http =  'http://18.217.9.139/';
+        if($cod_publicacion != '')
+        {
+            $data_public = DB::table('tb_publicaciones')
+                                ->join('users' ,'tb_publicaciones.cod_usuario','=','users.id')
+                                ->select('tb_publicaciones.*','users.name','users.cod_empleado')
+                                ->where([['tb_publicaciones.estatus', 'A'], ['tb_publicaciones.cod_padre_publicacion', '=', $cod_publicacion]])
+                                ->orderBy('tb_publicaciones.created_at','DESC')
+                                ->get();
+        }
+        else
+        {
+            $data_public = DB::table('tb_publicaciones')
+                                ->join('users' ,'tb_publicaciones.cod_usuario','=','users.id')
+                                ->select('tb_publicaciones.*','users.name','users.cod_empleado')
+                                ->where([['tb_publicaciones.estatus', 'A'], ['tb_publicaciones.cod_padre_publicacion', '=', NULL]])
+                                ->orderBy('tb_publicaciones.created_at','DESC')
+                                ->get();
+        }
+
+        $url_http = 'https://2537-152-166-137-20.ngrok.io';
+        //$url_http =  'http://18.217.9.139/';
         
         if(count($data_public) > 0)
         {
@@ -67,6 +81,11 @@ class PublicacionesController extends Controller
                     }
                 }
 
+                //Total de comentario 
+                $postComent = DB::table('tb_publicaciones')
+                                ->where([['estatus', 'A'], ['cod_padre_publicacion', '=', $post->cod_publicacion]])
+                                ->count();
+
                 $rand = rand(1,9);
                 $list_popst = array(
                                 "estatus" => "success",
@@ -99,12 +118,14 @@ class PublicacionesController extends Controller
     {
         $data = array();
        
-        $cod_usuario        = (isset($request->cod_usuario) ? $request->cod_usuario : '');
-        $cod_empleado       = (isset($request->cod_empleado) ? $request->cod_empleado : '');
-        $tipo_publicacion   = (isset($request->tipo_publicacion) ? $request->tipo_publicacion : '');  
-        $commentario        = (isset($request->commentario) ? $request->commentario : '');
-        $grupos             = (isset($request->grupos) ? $request->grupos : '');
+        $cod_padre_publicacion  = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
+        $cod_usuario            = (isset($request->cod_usuario) ? $request->cod_usuario : '');
+        $cod_empleado           = (isset($request->cod_empleado) ? $request->cod_empleado : '');
+        $tipo_publicacion       = (isset($request->tipo_publicacion) ? $request->tipo_publicacion : '');  
+        $commentario            = (isset($request->commentario) ? $request->commentario : '');
+        $grupos                 = (isset($request->grupos) ? $request->grupos : '');
 
+        
         if(empty($cod_usuario) && 
             empty($cod_empleado) && 
             empty($tipo_publicacion) && 
@@ -125,6 +146,8 @@ class PublicacionesController extends Controller
 
             $validate_input = new ValidacionesController;
             
+            
+            $validate_input->validateValue($data_public, 'cod_padre_publicacion', $cod_padre_publicacion);
             $validate_input->validateValue($data_public, 'cod_usuario', $cod_usuario);
             $validate_input->validateValue($data_public, 'cod_comunidad', $cod_comunidad);
             $validate_input->validateValue($data_public, 'cod_tipo_publicacion', $cod_tipo_publicacion);

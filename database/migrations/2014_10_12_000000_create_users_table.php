@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('cambio_password', 1)->default('S');
             $table->rememberToken();
             $table->string('tipo_usuario', 1)->nullable();
             $table->string('token_dispositivo')->nullable();

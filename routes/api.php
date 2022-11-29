@@ -37,6 +37,7 @@ Route::post('/login', [LoginController::class, 'index']);
 
 //Completar los datos del usuario
 Route::post('/completarDatos', [LoginController::class, 'completarDatos']);
+Route::post('/cambioPassword', [LoginController::class, 'cambioPassword']);
 
 
 //Tipos de Publicaciones
@@ -44,8 +45,10 @@ Route::get('/tipoPublicaciones', [TiposPublicacionesController::class, 'index'])
 
 //Publicaciones
 Route::get('/publicaciones', [PublicacionesController::class, 'index']);
+Route::post('/publicaciones', [PublicacionesController::class, 'index']);
 Route::post('/publicar', [PublicacionesController::class, 'publicar']);
 Route::post('/likepublicacion', [PublicacionesController::class, 'likepublicacion']);
+
 
 
 

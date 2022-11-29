@@ -12,6 +12,7 @@ class Publicaciones extends Model
     protected $primaryKey = 'cod_publicacion';
     protected $fillable = [
         'cod_publicacion',
+        'cod_padre_publicacion',
         'cod_usuario',
         'cod_comunidad',
         'cod_tipo_publicacion', 

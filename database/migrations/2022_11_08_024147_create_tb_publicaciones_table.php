@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('tb_publicaciones', function (Blueprint $table) {
             $table->id('cod_publicacion');
+            $table->foreignId('cod_padre_publicacion')->nutable();
             $table->foreignId('cod_usuario');
             $table->foreignId('cod_comunidad');
             $table->foreignId('cod_tipo_publicacion');
