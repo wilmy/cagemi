@@ -10,12 +10,13 @@ use App\Models\EmpleadosXPosicion;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\FileUploadRequest;
 use App\Models\MultimediaXPublicaciones;
 use App\Models\PosicionesXDepartamentos;
 use App\Models\ReaccionesXPublicaciones;
+use App\Models\ComentariosXPublicaciones;
 use App\Models\EmpresasXGruposEmpresariales;
 use App\Http\Controllers\ValidacionesController;
-use App\Http\Requests\FileUploadRequest;
 
 class PublicacionesController extends Controller
 {
@@ -104,6 +105,58 @@ class PublicacionesController extends Controller
         return response()->json($posts); 
     }
 
+    public function comentarios_publicaciones(Request $request)
+    {
+        $cod_publicacion = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
+        $posts = array();
+
+        $url_http =  'http://18.217.9.139/';
+
+        $data_public = DB::table('tb_comentarios_x_publicaciones')
+                            ->join('users' ,'tb_comentarios_x_publicaciones.cod_usuario','=','users.id')
+                            ->select('tb_comentarios_x_publicaciones.*','users.name','users.cod_empleado')
+                            ->where([['cod_publicacion', '=', $cod_publicacion]])
+                            ->orderBy('tb_comentarios_x_publicaciones.created_at','DESC')
+                            ->get();
+       
+        if(count($data_public) > 0)
+        {
+            foreach($data_public as $post)
+            {
+                $nombre_posicion = '';
+                $posisionEmpleado = EmpleadosXPosicion::where('cod_empleado_empresa', $post->cod_empleado)->get();
+                if(count($posisionEmpleado) > 0)
+                {
+                    $posiciones = PosicionesXDepartamentos::where('cod_posicion', $posisionEmpleado[0]->cod_posicion)->get();
+                    if(count($posiciones) > 0)
+                    {
+                        $nombre_posicion = $posiciones[0]->nombre_posicion;
+                    }
+                }
+
+                $rand = rand(1,9);
+                $list_popst = array(
+                                "estatus" => "success",
+                                "cod_publicacion" => $post->cod_publicacion,
+                                "nombre" =>  $post->name,
+                                "avatar" =>  $url_http.'/images/avatars/'.$rand.'.png',
+                                "tipo" =>  $nombre_posicion,
+                                "postComentario" =>  $post->comentario
+                            );
+
+                array_push($posts, $list_popst);
+            }            
+        }
+        else
+        {
+            array_push($posts, array("estatus" => "error"));
+        }
+
+        return response()->json($posts); 
+    }
+
+    
+
     public function publicar(Request $request)
     {
         $data = array();
@@ -181,24 +234,42 @@ class PublicacionesController extends Controller
         return response()->json($data); 
     }
 
-    public function getB64Image($base64_image)
-    {  
-        // Obtener el String base-64 de los datos         
-        $image_service_str = substr($base64_image, strpos($base64_image, ",")+1);
-        // Decodificar ese string y devolver los datos de la imagen        
-        $image = base64_decode($image_service_str);   
-        // Retornamos el string decodificado
-        return $image; 
-    }
 
-    public function getB64Extension($base64_image, $full=null)
-    {  
-        // Obtener mediante una expresión regular la extensión imagen y guardarla
-        // en la variable "img_extension"        
-        preg_match("/^data:image\/(.*);base64/i",$base64_image, $img_extension);   
-        // Dependiendo si se pide la extensión completa o no retornar el arreglo con
-        // los datos de la extensión en la posición 0 - 1
-        return ($full) ?  $img_extension[0] : $img_extension[1];  
+    public function publicar_comentario(Request $request)
+    {
+        $data = array();
+       
+        $cod_publicacion  = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
+        $cod_usuario            = (isset($request->cod_usuario) ? $request->cod_usuario : '');
+        $cod_empleado           = (isset($request->cod_empleado) ? $request->cod_empleado : ''); 
+        $comentario            = (isset($request->commentario) ? $request->commentario : '');
+        
+        if(empty($cod_usuario) && 
+            empty($comentario))
+        {
+            array_push($data, array("estatus" => 'error', "message" => "Todos los campos son obligatorios"));
+        }
+        else
+        {
+            $data_public = new ComentariosXPublicaciones; 
+
+            $validate_input = new ValidacionesController;
+            
+            $validate_input->validateValue($data_public, 'cod_usuario', $cod_usuario);
+            $validate_input->validateValue($data_public, 'cod_publicacion', $cod_publicacion);
+            $validate_input->validateValue($data_public, 'comentario', $comentario);
+          
+            if($data_public->save())
+            {
+                array_push($data, array("estatus" => 'success', "message" => "Comentario realizado")); 
+            }
+            else
+            {
+                array_push($data, array("estatus" => 'error', "message" => "Error al realizar el comentario"));
+            }
+        }
+
+        return response()->json($data); 
     }
 
     public function likepublicacion(Request $request)
@@ -214,6 +285,11 @@ class PublicacionesController extends Controller
             empty($cod_publicacion))
         {
             array_push($data, array("estatus" => 'error', "message" => "Todos los campos son obligatorios"));
+        }
+
+        if(ReaccionesXPublicaciones::where([['cod_publicacion', $cod_publicacion], ['cod_usuario', $cod_empleado]])->delete())
+        {
+
         }
 
         $data_public = new ReaccionesXPublicaciones; 

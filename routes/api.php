@@ -46,6 +46,11 @@ Route::get('/tipoPublicaciones', [TiposPublicacionesController::class, 'index'])
 //Publicaciones
 Route::get('/publicaciones', [PublicacionesController::class, 'index']);
 Route::post('/publicaciones', [PublicacionesController::class, 'index']);
+
+Route::post('/comentarios_publicaciones', [PublicacionesController::class, 'comentarios_publicaciones']);
+Route::post('/publicar_comentario', [PublicacionesController::class, 'publicar_comentario']);
+
+
 Route::post('/publicar', [PublicacionesController::class, 'publicar']);
 Route::post('/likepublicacion', [PublicacionesController::class, 'likepublicacion']);
 
