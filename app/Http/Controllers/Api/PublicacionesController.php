@@ -26,26 +26,16 @@ class PublicacionesController extends Controller
         $cod_publicacion = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
         $posts = array();
 
-        if($cod_publicacion != '')
-        {
-            $data_public = DB::table('tb_publicaciones')
-                                ->join('users' ,'tb_publicaciones.cod_usuario','=','users.id')
-                                ->select('tb_publicaciones.*','users.name','users.cod_empleado')
-                                ->where([['tb_publicaciones.estatus', 'A'], ['tb_publicaciones.cod_padre_publicacion', '=', $cod_publicacion]])
-                                ->orderBy('tb_publicaciones.created_at','DESC')
-                                ->get();
-        }
-        else
-        {
-            $data_public = DB::table('tb_publicaciones')
-                                ->join('users' ,'tb_publicaciones.cod_usuario','=','users.id')
-                                ->select('tb_publicaciones.*','users.name','users.cod_empleado')
-                                ->where([['tb_publicaciones.estatus', 'A'], ['tb_publicaciones.cod_padre_publicacion', '=', NULL]])
-                                ->orderBy('tb_publicaciones.created_at','DESC')
-                                ->get();
-        }
+        
+        $data_public = DB::table('tb_publicaciones')
+                            ->join('users' ,'tb_publicaciones.cod_usuario','=','users.id')
+                            ->select('tb_publicaciones.*','users.name','users.cod_empleado')
+                            ->where([['tb_publicaciones.estatus', 'A']])
+                            ->orderBy('tb_publicaciones.created_at','DESC')
+                            ->get();
+        
 
-        //$url_http = 'https://9314-152-166-159-138.ngrok.io';
+        //$url_http = 'https://ef5d-152-166-159-138.ngrok.io';
         $url_http =  'http://18.217.9.139/';
         
         if(count($data_public) > 0)
@@ -82,8 +72,8 @@ class PublicacionesController extends Controller
                 }
 
                 //Total de comentario 
-                $postComent = DB::table('tb_publicaciones')
-                                ->where([['estatus', 'A'], ['cod_padre_publicacion', '=', $post->cod_publicacion]])
+                $postComent = DB::table('tb_comentarios_x_publicaciones')
+                                ->where([['cod_publicacion', '=', $post->cod_publicacion]])
                                 ->count();
 
                 $rand = rand(1,9);
@@ -147,7 +137,6 @@ class PublicacionesController extends Controller
             $validate_input = new ValidacionesController;
             
             
-            $validate_input->validateValue($data_public, 'cod_padre_publicacion', $cod_padre_publicacion);
             $validate_input->validateValue($data_public, 'cod_usuario', $cod_usuario);
             $validate_input->validateValue($data_public, 'cod_comunidad', $cod_comunidad);
             $validate_input->validateValue($data_public, 'cod_tipo_publicacion', $cod_tipo_publicacion);

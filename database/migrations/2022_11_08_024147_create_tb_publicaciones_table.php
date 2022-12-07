@@ -15,13 +15,12 @@ return new class extends Migration
     {
         Schema::create('tb_publicaciones', function (Blueprint $table) {
             $table->id('cod_publicacion');
-            $table->foreignId('cod_padre_publicacion')->nutable();
             $table->foreignId('cod_usuario');
-            $table->foreignId('cod_comunidad');
+            $table->foreignId('cod_comunidad')->nutable();
             $table->foreignId('cod_tipo_publicacion');
-            $table->string('texto', 2048); 
-            $table->string('permite_comentario', 1);
-            $table->string('permite_reaccion', 1);
+            $table->string('texto', 2048)->nutable();
+            $table->string('permite_comentario', 1)->nutable();
+            $table->string('permite_reaccion', 1)->nutable();
             $table->string('estatus', 1)->default('A');
             $table->timestamps();
         });
