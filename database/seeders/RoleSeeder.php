@@ -24,7 +24,7 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'dashboard.index'])->syncRoles([$admin, $manager, $developer]);
 
         /*Para los permisios de los usuarios */
-        Permission::create(['name' => 'menu-users'])->syncRoles([$admin, $manager]);
+        Permission::create(['name' => 'menu-empleados'])->syncRoles([$admin, $manager]);
         Permission::create(['name' => 'users.index'])->syncRoles([$admin, $manager]);
         Permission::create(['name' => 'users.create'])->syncRoles([$admin]);
         Permission::create(['name' => 'users.edit'])->syncRoles([$admin]);
@@ -36,6 +36,10 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'roles.create'])->syncRoles([$admin]);
         Permission::create(['name' => 'roles.edit'])->syncRoles([$admin]);
         Permission::create(['name' => 'roles.destroy'])->syncRoles([$admin]);
+
+
+        Permission::create(['name' => 'menu-empresa'])->syncRoles([$admin]);
+        Permission::create(['name' => 'menu-configuracion'])->syncRoles([$admin]);
 
         //Permisos para el administrador del los grupos empresariales 
         Permission::create(['name' => 'grupo_empresarial.index'])->syncRoles([$admin]);
