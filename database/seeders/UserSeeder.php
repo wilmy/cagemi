@@ -37,8 +37,8 @@ class UserSeeder extends Seeder
 
         
         //Crea 10 usuarios aleatorios 
-        User::factory(10)->create()->each(function($user){
+        /*User::factory(10)->create()->each(function($user){
             $user->assignRole('developer');
-        });
+        });*/
     }
 }

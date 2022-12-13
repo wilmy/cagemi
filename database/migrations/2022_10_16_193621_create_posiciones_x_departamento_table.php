@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tb_posiciones_x_departamento', function (Blueprint $table) {
             $table->id('cod_posicion');
-            $table->integer('cod_departamento');
+            $table->foreignId('cod_departamento');
             $table->string('nombre_posicion');
             $table->timestamps();
         });

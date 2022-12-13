@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('tb_comunidades_x_grupo_empresarial', function (Blueprint $table) {
             $table->id('cod_comunidad');
-            $table->integer('cod_grupo_empresarial');
+            $table->foreignId('cod_grupo_empresarial');
             $table->string('nombre');
-            $table->string('foto');
+            $table->string('foto')->nullable();
             $table->string('estatus', 1)->default('A');
             $table->timestamps();
         });

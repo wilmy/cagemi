@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tb_parametros', function (Blueprint $table) {
             $table->id('cod_parametro');
-            $table->integer('cod_grupo_empresarial');
+            $table->foreignId('cod_grupo_empresarial');
             $table->string('parametro');
             $table->string('valor');
             $table->string('estatus', 1);

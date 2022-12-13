@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\CargaDatosController;
+use App\Http\Controllers\Api\PublicacionesController;
 use App\Http\Controllers\Api\TiposPublicacionesController;
 use App\Http\Controllers\Api\EmpresasXGruposEmpresarialesController;
 
@@ -36,10 +37,25 @@ Route::post('/login', [LoginController::class, 'index']);
 
 //Completar los datos del usuario
 Route::post('/completarDatos', [LoginController::class, 'completarDatos']);
+Route::post('/cambioPassword', [LoginController::class, 'cambioPassword']);
 
 
 //Tipos de Publicaciones
 Route::get('/tipoPublicaciones', [TiposPublicacionesController::class, 'index']);
+
+//Publicaciones
+Route::get('/publicaciones', [PublicacionesController::class, 'index']);
+Route::post('/publicaciones', [PublicacionesController::class, 'index']);
+
+Route::post('/comentarios_publicaciones', [PublicacionesController::class, 'comentarios_publicaciones']);
+Route::post('/publicar_comentario', [PublicacionesController::class, 'publicar_comentario']);
+
+
+Route::post('/publicar', [PublicacionesController::class, 'publicar']);
+Route::post('/likepublicacion', [PublicacionesController::class, 'likepublicacion']);
+
+
+
 
 
 Route::get('/tempdata', [CargaDatosController::class, 'index']);

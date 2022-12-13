@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tb_departamentos_x_vicepresidencia', function (Blueprint $table) {
             $table->id('cod_departamento');
-            $table->integer('cod_vicepresidencia');
+            $table->foreignId('cod_vicepresidencia');
             $table->string('nombre_departamento');
             $table->timestamps();
         });

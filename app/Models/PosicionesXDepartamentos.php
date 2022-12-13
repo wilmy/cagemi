@@ -11,6 +11,7 @@ class PosicionesXDepartamentos extends Model
     protected $table = 'tb_posiciones_x_departamento';
     protected $primaryKey = 'cod_posicion';
     protected $fillable = [
+        'cod_posicion',
         'cod_departamento',
         'nombre_posicion',
     ];
