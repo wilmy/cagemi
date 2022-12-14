@@ -65,8 +65,8 @@
 
             <div class="form-group row">
                 <div class="mb-1 col-md-4">
-                  <label for="register-apellido" class="form-label">{{__('Logo')}}{</label>
-                  <input type="file" class="form-control" id="logo" name="logo" />
+                  <label for="register-apellido" class="form-label">{{__('Logo')}}</label>
+                  <input type="file" class="form-control" id="logo" name="logo" accept="image/*" />
                   @error('logo')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>

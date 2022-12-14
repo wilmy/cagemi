@@ -33,6 +33,7 @@ class User extends Authenticatable
         'cod_grupo_empresarial',
         'cod_empleado',
         'name', 
+        'surname', 
         'email', 
         'password', 
         'cambio_password', 

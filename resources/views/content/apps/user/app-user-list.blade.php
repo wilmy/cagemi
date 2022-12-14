@@ -141,6 +141,7 @@
           <tr>
             <th></th>
             <th>{{ __('Name') }}</th>
+            <th>{{ __('Surname') }}</th>
             <th>{{ __('Email') }}</th>
             <th>{{ __('Rol') }}</th>
             <th>{{ __('Status') }}</th>
@@ -159,6 +160,7 @@
                   </span>
                 </td>
                 <td>{{ $user->name }}</td>
+                <td>{{ $user->surname }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->nombre_rol }}</td>
                 <td>

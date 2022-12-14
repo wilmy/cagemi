@@ -106,6 +106,7 @@ class UserController extends Controller
     {
         $validator = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
+            'apellido' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users']
         ]);
 
@@ -114,6 +115,7 @@ class UserController extends Controller
         $user = User::create([
             'cod_grupo_empresarial' => $cod_grupo_empresarial,
             'name' => $request->nombre,
+            'surname' => $request->apellido,
             'email' => $request->email,
             'password' => Hash::make($password),
             'estatus' => 'A'
@@ -175,6 +177,7 @@ class UserController extends Controller
     {
         $validator = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
+            'apellido' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255']
         ]);
 
@@ -186,6 +189,7 @@ class UserController extends Controller
             ->update([
                     'cod_grupo_empresarial' => $cod_grupo_empresarial,
                     'name' => $request->nombre,
+                    'surname' => $request->apellido,
                     'estatus' => $request->estatus,
                 ]);
         
