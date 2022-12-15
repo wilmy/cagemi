@@ -19,68 +19,134 @@
 <!-- Role cards -->
 <div class="row">
   @foreach($roles as $role)
-  <div class="col-xl-4 col-lg-6 col-md-6">
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between">
-          <span>Total {{$role->users_count}} users</span>
-          <ul class="list-unstyled d-flex align-items-center avatar-group mb-0">
-            <li
-              data-bs-toggle="tooltip"
-              data-popup="tooltip-custom"
-              data-bs-placement="top"
-              title="Vinnie Mostowy"
-              class="avatar avatar-sm pull-up"
-            >
-              <img class="rounded-circle" src="{{asset('images/avatars/2.png')}}" alt="Avatar" />
-            </li>
-            <li
-              data-bs-toggle="tooltip"
-              data-popup="tooltip-custom"
-              data-bs-placement="top"
-              title="Allen Rieske"
-              class="avatar avatar-sm pull-up"
-            >
-              <img class="rounded-circle" src="{{asset('images/avatars/12.png')}}" alt="Avatar" />
-            </li>
-            <li
-              data-bs-toggle="tooltip"
-              data-popup="tooltip-custom"
-              data-bs-placement="top"
-              title="Julee Rossignol"
-              class="avatar avatar-sm pull-up"
-            >
-              <img class="rounded-circle" src="{{asset('images/avatars/6.png')}}" alt="Avatar" />
-            </li>
-            <li
-              data-bs-toggle="tooltip"
-              data-popup="tooltip-custom"
-              data-bs-placement="top"
-              title="Kaith D'souza"
-              class="avatar avatar-sm pull-up"
-            >
-              <img class="rounded-circle" src="{{asset('images/avatars/11.png')}}" alt="Avatar" />
-            </li>
-          </ul>
-        </div>
-       
-          <div class="d-flex justify-content-between align-items-end mt-1 pt-25">
-            <div class="role-heading">
-              <h4 class="fw-bolder">{{$role->name}}</h4>
-              @can('roles.edit')
-                <a href="{{route('admin.roles.edit', $role->id)}}" class="role-edit-modal">
-                  <small class="fw-bolder">{{__('Edit')}}</small>
-                </a>
-              @endcan
-            </div>
-            <a href="javascript:void(0);" class="text-body">
-              <i data-feather="copy" class="font-medium-5"></i>
-            </a>
+    @if ($role->name == 'admin' && Auth::user()->super_usuario == 'S')
+
+    <div class="col-xl-4 col-lg-6 col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <span>Total {{$role->users_count}} users</span>
+            <ul class="list-unstyled d-flex align-items-center avatar-group mb-0">
+              <li
+                data-bs-toggle="tooltip"
+                data-popup="tooltip-custom"
+                data-bs-placement="top"
+                title="Vinnie Mostowy"
+                class="avatar avatar-sm pull-up"
+              >
+                <img class="rounded-circle" src="{{asset('images/avatars/2.png')}}" alt="Avatar" />
+              </li>
+              <li
+                data-bs-toggle="tooltip"
+                data-popup="tooltip-custom"
+                data-bs-placement="top"
+                title="Allen Rieske"
+                class="avatar avatar-sm pull-up"
+              >
+                <img class="rounded-circle" src="{{asset('images/avatars/12.png')}}" alt="Avatar" />
+              </li>
+              <li
+                data-bs-toggle="tooltip"
+                data-popup="tooltip-custom"
+                data-bs-placement="top"
+                title="Julee Rossignol"
+                class="avatar avatar-sm pull-up"
+              >
+                <img class="rounded-circle" src="{{asset('images/avatars/6.png')}}" alt="Avatar" />
+              </li>
+              <li
+                data-bs-toggle="tooltip"
+                data-popup="tooltip-custom"
+                data-bs-placement="top"
+                title="Kaith D'souza"
+                class="avatar avatar-sm pull-up"
+              >
+                <img class="rounded-circle" src="{{asset('images/avatars/11.png')}}" alt="Avatar" />
+              </li>
+            </ul>
           </div>
-        
+            <div class="d-flex justify-content-between align-items-end mt-1 pt-25">
+              <div class="role-heading">
+                <h4 class="fw-bolder">{{$role->name}}</h4>
+                @can('roles.edit')
+                  <a href="{{route('admin.roles.edit', $role->id)}}" class="role-edit-modal">
+                    <small class="fw-bolder">{{__('Edit')}}</small>
+                  </a>
+                @endcan
+              </div>
+              <a href="javascript:void(0);" class="text-body">
+                <i data-feather="copy" class="font-medium-5"></i>
+              </a>
+            </div>
+        </div>
       </div>
     </div>
-  </div>
+
+    @else
+    
+      <div class="col-xl-4 col-lg-6 col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <span>Total {{$role->users_count}} users</span>
+              <ul class="list-unstyled d-flex align-items-center avatar-group mb-0">
+                <li
+                  data-bs-toggle="tooltip"
+                  data-popup="tooltip-custom"
+                  data-bs-placement="top"
+                  title="Vinnie Mostowy"
+                  class="avatar avatar-sm pull-up"
+                >
+                  <img class="rounded-circle" src="{{asset('images/avatars/2.png')}}" alt="Avatar" />
+                </li>
+                <li
+                  data-bs-toggle="tooltip"
+                  data-popup="tooltip-custom"
+                  data-bs-placement="top"
+                  title="Allen Rieske"
+                  class="avatar avatar-sm pull-up"
+                >
+                  <img class="rounded-circle" src="{{asset('images/avatars/12.png')}}" alt="Avatar" />
+                </li>
+                <li
+                  data-bs-toggle="tooltip"
+                  data-popup="tooltip-custom"
+                  data-bs-placement="top"
+                  title="Julee Rossignol"
+                  class="avatar avatar-sm pull-up"
+                >
+                  <img class="rounded-circle" src="{{asset('images/avatars/6.png')}}" alt="Avatar" />
+                </li>
+                <li
+                  data-bs-toggle="tooltip"
+                  data-popup="tooltip-custom"
+                  data-bs-placement="top"
+                  title="Kaith D'souza"
+                  class="avatar avatar-sm pull-up"
+                >
+                  <img class="rounded-circle" src="{{asset('images/avatars/11.png')}}" alt="Avatar" />
+                </li>
+              </ul>
+            </div>
+          
+              <div class="d-flex justify-content-between align-items-end mt-1 pt-25">
+                <div class="role-heading">
+                  <h4 class="fw-bolder">{{$role->name}}</h4>
+                  @can('roles.edit')
+                    <a href="{{route('admin.roles.edit', $role->id)}}" class="role-edit-modal">
+                      <small class="fw-bolder">{{__('Edit')}}</small>
+                    </a>
+                  @endcan
+                </div>
+                <a href="javascript:void(0);" class="text-body">
+                  <i data-feather="copy" class="font-medium-5"></i>
+                </a>
+              </div>
+            
+          </div>
+        </div>
+      </div> 
+    @endif
 @endforeach
 
 @can('roles.create')

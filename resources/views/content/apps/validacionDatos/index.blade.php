@@ -196,7 +196,7 @@ else
             <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
             <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
           </button>
-          <button class="btn btn-primary btn-next">
+          <button class="btn btn-primary  btn-next" onclick="backblock()">
             <span class="align-middle d-sm-inline-block d-none">{{__('Next')}}</span>
             <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
           </button>
@@ -257,7 +257,7 @@ else
                 <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
               </button>
             @endif
-            <button class="btn btn-primary btn-next">
+            <button class="btn btn-primary  btn-next"  onclick="backblock()">
               <span class="align-middle d-sm-inline-block d-none">{{__('Next')}}</span>
               <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
             </button>
@@ -318,7 +318,7 @@ else
                 <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
               </button>
             @endif
-            <button class="btn btn-primary btn-next">
+            <button class="btn btn-primary  btn-next" onclick="backblock()">
               <span class="align-middle d-sm-inline-block d-none">{{__('Next')}}</span>
               <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
             </button>
@@ -384,7 +384,7 @@ else
               <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
             </button>
           @endif
-          <button class="btn btn-primary btn-next">
+          <button class="btn btn-primary  btn-next" onclick="backblock()">
             <span class="align-middle d-sm-inline-block d-none">{{__('Next')}}</span>
             <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
           </button>
@@ -572,7 +572,7 @@ else
               <span class="align-middle d-sm-inline-block d-none">{{__('Previous')}}</span>
             </button>
           @endif
-          <button class="btn btn-success btn-submit">{{__('To finalize')}}</button>
+          <button class="btn btn-success btn-submit" onclick="backblock()">{{__('To finalize')}}</button>
         </div>
       </form>
         

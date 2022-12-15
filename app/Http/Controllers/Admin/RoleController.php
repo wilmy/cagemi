@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -20,7 +21,18 @@ class RoleController extends Controller
     // Access Roles App
     public function index()
     {
-        $roles = Role::withCount('users')->get();
+        if(Auth::user()->super_usuario == 'S')
+        {
+            $roles = Role::withCount('users')
+                        ->get();
+        }
+        else
+        {
+            $roles = Role::withCount('users')
+                            ->where('name', '<>', 'admin')
+                            ->get();
+        }
+
         $pageConfigs = ['pageHeader' => false,];
 
         return view('/content/apps/rolesPermission/app-access-roles', ['roles' => $roles, 'pageConfigs' => $pageConfigs]);

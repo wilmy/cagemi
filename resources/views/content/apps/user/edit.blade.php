@@ -129,7 +129,7 @@
             </div>
 
           <div class="col-4 text-center mt-2">
-            <button type="submit" class="btn btn-primary me-1">{{__('Update')}}</button>
+            <button type="submit" class="btn btn-primary me-1"  onclick="backblock()">{{__('Update')}}</button>
             <a href="{{route('admin.users.index')}}" class="btn btn-outline-danger">
               {{__('Cancel')}}
             </a>
