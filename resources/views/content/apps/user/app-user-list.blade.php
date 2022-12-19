@@ -96,18 +96,18 @@
                     <option value="10" {{(isset($request->mostrar) ? ($request->mostrar == 10 ? 'selected' : '') : '')}}>10</option>
                   </select> 
                 </label>
-                </div>
+              </div>
                 
-                <div class="dataTables_length" id="DataTables_Table_3_length">
+                <div class="dataTables_length" id="DataTables_Table_1_length" >
                   <label>{{ __('Type of user') }}:
-                    <select class="form-select" name="tipo_usuario" aria-controls="DataTables_Table_0">
+                    <select class="form-select" name="tipo_usuario" aria-controls="DataTables_Table_0" style="width: 150px;">
                       <option value=""> {{ __('All') }}</option>
                       <option value="B" class="text-capitalize" {{(isset($request->tipo_usuario) ? ($request->tipo_usuario == 'B' ? 'selected' : '') : '')}}>Backoffice</option>
                       <option value="F" class="text-capitalize" {{(isset($request->tipo_usuario) ? ($request->tipo_usuario == 'B' ? 'selected' : '') : '')}}>Frontend</option>
                     </select></label>
                 </div>
 
-              </div>
+            </div>
 
                 <div class="col-sm-12 col-lg-8 ps-0">
                   <div class="dt-action-buttons d-flex align-items-center justify-content-center- justify-content-lg-end flex-lg-nowrap flex-wrap">
@@ -135,12 +135,13 @@
           </div>
         </form>
       </div>
-
+  
       <table class="user-list-table table">
         <thead class="table-light">
           <tr>
             <th></th>
             <th>{{ __('Name') }}</th>
+            <th>{{ __('Surname') }}</th>
             <th>{{ __('Email') }}</th>
             <th>{{ __('Rol') }}</th>
             <th>{{ __('Status') }}</th>
@@ -159,6 +160,7 @@
                   </span>
                 </td>
                 <td>{{ $user->name }}</td>
+                <td>{{ $user->surname }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->nombre_rol }}</td>
                 <td>

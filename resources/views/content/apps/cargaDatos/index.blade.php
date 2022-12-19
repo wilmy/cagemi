@@ -37,14 +37,14 @@
             <div class="form-group row">
                 <div class="mb-1 col-md-4">
                   <label for="register-apellido" class="form-label">{{ __('Template') }}</label>
-                  <input type="file" class="form-control" id="logo" name="archivo" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                  <input type="file" class="form-control" id="logo" required name="archivo" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                   
                 </div> 
             </div>
-
+      
           <div class="col-4  mt-2">
-            <button type="submit" class="btn btn-primary me-1">{{ __('Save') }}</button>
-            <a href="{{route('admin.grupoEmpresarial.index')}}" class="btn btn-outline-danger">
+            <button type="submit" class="btn btn-primary me-1" onclick="backblock()">{{ __('Upload') }}</button>
+            <a href="{{route('admin.cargaDatos.index')}}" class="btn btn-outline-danger">
               {{ __('Cancel') }}
             </a>
           </div>
@@ -197,4 +197,6 @@
   <script src="{{ asset(mix('vendors/js/tables/datatable/buttons.bootstrap5.min.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/tables/datatable/datatables.checkboxes.min.js')) }}"></script>
   <script src="{{ asset(mix('vendors/js/forms/validation/jquery.validate.min.js')) }}"></script>
+
+
 @endsection

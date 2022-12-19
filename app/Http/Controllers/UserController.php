@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\GrupoEmpresarial;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -39,9 +40,14 @@ class UserController extends Controller
                         ->leftjoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
                         ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
                         ->select('users.*', 'roles.name as nombre_rol')
-                        ->where([['users.name', 'LIKE', '%'.$buscar.'%'], ['users.tipo_usuario', $tipo_usuario]])
+                        ->where([
+                                    (Auth::user()->super_usuario == 'S' ? ['users.id','<>','']  : ['users.cod_grupo_empresarial','=', Auth::user()->cod_grupo_empresarial]),
+                                    ['users.name', 'LIKE', '%'.$buscar.'%'], 
+                                    ['users.tipo_usuario', $tipo_usuario]
+                                ])
                         ->orWhere(function($query) use ($buscar, $tipo_usuario) {
-                            $query->where([['users.email', 'LIKE', '%'.$buscar.'%'], ['users.tipo_usuario', $tipo_usuario]]);
+                            $query->where([(Auth::user()->super_usuario == 'S' ? ['users.id','<>','']  : ['users.cod_grupo_empresarial','=', Auth::user()->cod_grupo_empresarial]),
+                                ['users.email', 'LIKE', '%'.$buscar.'%'], ['users.tipo_usuario', $tipo_usuario]]);
                         })
                         ->orderBy('created_at', 'DESC')
                         ->paginate($mostrar);
@@ -52,9 +58,12 @@ class UserController extends Controller
                         ->leftjoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
                         ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
                         ->select('users.*', 'roles.name as nombre_rol')
-                        ->where([['users.name', 'LIKE', '%'.$buscar.'%']])
+                        ->where([
+                            (Auth::user()->super_usuario == 'S' ? ['users.id','<>',''] : ['users.cod_grupo_empresarial','=', Auth::user()->cod_grupo_empresarial]),
+                            ['users.name', 'LIKE', '%'.$buscar.'%']])
                         ->orWhere(function($query) use ($buscar) {
-                            $query->where([['users.email', 'LIKE', '%'.$buscar.'%']]);
+                            $query->where([(Auth::user()->super_usuario == 'S' ? ['users.id','<>','']  : ['users.cod_grupo_empresarial','=', Auth::user()->cod_grupo_empresarial]),
+                                ['users.email', 'LIKE', '%'.$buscar.'%']]);
                         })
                         ->orderBy('created_at', 'DESC')
                         ->paginate($mostrar);
@@ -65,6 +74,9 @@ class UserController extends Controller
                         ->leftjoin('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
                         ->leftjoin('roles', 'roles.id', '=', 'model_has_roles.role_id')
                         ->select('users.*', 'roles.name as nombre_rol')
+                        ->where([
+                            (Auth::user()->super_usuario == 'S' ? ['users.id','<>',''] : ['users.cod_grupo_empresarial','=', Auth::user()->cod_grupo_empresarial])
+                          ])
                         ->orderBy('created_at', 'DESC')
                         ->paginate($mostrar);
         }
@@ -106,6 +118,7 @@ class UserController extends Controller
     {
         $validator = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
+            'apellido' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users']
         ]);
 
@@ -114,6 +127,7 @@ class UserController extends Controller
         $user = User::create([
             'cod_grupo_empresarial' => $cod_grupo_empresarial,
             'name' => $request->nombre,
+            'surname' => $request->apellido,
             'email' => $request->email,
             'password' => Hash::make($password),
             'estatus' => 'A'
@@ -175,6 +189,7 @@ class UserController extends Controller
     {
         $validator = $request->validate([
             'nombre' => ['required', 'string', 'max:255'],
+            'apellido' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255']
         ]);
 
@@ -186,6 +201,7 @@ class UserController extends Controller
             ->update([
                     'cod_grupo_empresarial' => $cod_grupo_empresarial,
                     'name' => $request->nombre,
+                    'surname' => $request->apellido,
                     'estatus' => $request->estatus,
                 ]);
         

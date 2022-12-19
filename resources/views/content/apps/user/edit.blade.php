@@ -40,7 +40,7 @@
                   <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="register-nombre"
                     name="nombre" placeholder="" aria-describedby="register-nombre" tabindex="1" autofocus
                     value="{{ old('nombre', $user->name) }}" />
-                  @error('name')
+                  @error('nombre')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
                     </span>
@@ -48,20 +48,20 @@
                 </div> 
             </div>
 
-            {{--
+           
             <div class="form-group row">
                 <div class="mb-1 col-md-4">
                   <label for="register-apellido" class="form-label">Apellido</label>
                   <input type="text" class="form-control @error('apellido') is-invalid @enderror" id="register-apellido"
                     name="apellido" placeholder="" aria-describedby="register-apellido" tabindex="1" autofocus
-                    value="{{ old('apellido') }}" />
-                  @error('name')
+                    value="{{ old('apellido', $user->surname) }}" />
+                  @error('apellido')
                     <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
                     </span>
                   @enderror
                 </div> 
-            </div> --}}
+            </div>
 
             <div class="form-group row">
               <div class="mb-1 col-md-4">
@@ -129,7 +129,7 @@
             </div>
 
           <div class="col-4 text-center mt-2">
-            <button type="submit" class="btn btn-primary me-1">{{__('Update')}}</button>
+            <button type="submit" class="btn btn-primary me-1"  onclick="backblock()">{{__('Update')}}</button>
             <a href="{{route('admin.users.index')}}" class="btn btn-outline-danger">
               {{__('Cancel')}}
             </a>

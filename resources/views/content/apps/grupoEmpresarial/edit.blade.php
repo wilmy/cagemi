@@ -66,7 +66,12 @@
             <div class="form-group row">
               <div class="mb-1 col-md-4">
                 <label for="register-email" class="form-label">{{__('Logo')}}</label>
-                <input type="file" class="form-control" id="logo" name="logo" />
+                
+                <input type="file" class="form-control" id="logo" name="logo" accept="image/*" />
+                @if ($grupo_empresarial->logo != '')
+                  <br>
+                  <img src="{{url('images/gruposEmpresariales/')}}/{{$grupo_empresarial->logo}}" style="width: 100px">
+                @endif
                 @error('logo')
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -91,7 +96,7 @@
             </div>
 
           <div class="col-4 text-center mt-2">
-            <button type="submit" class="btn btn-primary me-1">{{__('Update')}}</button>
+            <button type="submit" class="btn btn-primary me-1"  onclick="backblock()">{{__('Update')}}</button>
             <a href="{{route('admin.grupoEmpresarial.index')}}" class="btn btn-outline-danger">
               {{__('Cancel')}}
             </a>

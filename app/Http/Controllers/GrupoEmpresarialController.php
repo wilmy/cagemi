@@ -175,13 +175,26 @@ class GrupoEmpresarialController extends Controller
             $logo = '';
         }
 
-        //Actualizamos los datos del usuario enviado
-        GrupoEmpresarial::where('cod_grupo_empresarial', $cod_grupo_empresarial)
-                        ->update([
-                                'nombre' => $request->nombre,
-                                'logo' => $logo,
-                                'estatus' => $request->estatus,
-                            ]);
+        if($logo != '')
+        {
+            //Actualizamos los datos del usuario enviado
+            GrupoEmpresarial::where('cod_grupo_empresarial', $cod_grupo_empresarial)
+                            ->update([
+                                    'nombre' => $request->nombre,
+                                    'logo' => $logo,
+                                    'estatus' => $request->estatus,
+                                ]);
+
+        }
+        else
+        {
+            //Actualizamos los datos del usuario enviado
+            GrupoEmpresarial::where('cod_grupo_empresarial', $cod_grupo_empresarial)
+                            ->update([
+                                    'nombre' => $request->nombre,
+                                    'estatus' => $request->estatus,
+                                ]);
+        }
         
         $datos_valid = Parametros::where([['cod_grupo_empresarial', $cod_grupo_empresarial], ['parametro', 'TIPO_COMUNIDAD']])->get();
         if(count($datos_valid) > 0)

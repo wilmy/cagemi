@@ -25,8 +25,9 @@ class PublicacionesController extends Controller
     public function index(Request $request)
     {
         $cod_publicacion = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
-        $posts = array();
+        $id_usuario = (isset($request->id_usuario) ? $request->id_usuario : '');
 
+        $posts = array();
         
         $data_public = DB::table('tb_publicaciones')
                             ->join('users' ,'tb_publicaciones.cod_usuario','=','users.id')
@@ -36,7 +37,7 @@ class PublicacionesController extends Controller
                             ->get();
         
 
-        //$url_http = 'https://00a4-152-166-159-138.sa.ngrok.io';
+        //$url_http = 'https://5a5c-152-166-159-138.ngrok.io';
         $url_http =  'http://18.217.9.139/';
         
         if(count($data_public) > 0)
@@ -77,6 +78,12 @@ class PublicacionesController extends Controller
                                 ->where([['cod_publicacion', '=', $post->cod_publicacion]])
                                 ->count();
 
+                $postLikeUser = 0;
+                if($id_usuario != '')
+                {
+                    $postLikeUser = ReaccionesXPublicaciones::where([['cod_publicacion', $post->cod_publicacion],['cod_usuario', $id_usuario]])->count();
+                }
+
                 $rand = rand(1,9);
                 $list_popst = array(
                                 "estatus" => "success",
@@ -88,6 +95,7 @@ class PublicacionesController extends Controller
                                 "postComentario" =>  $post->texto,
                                 "postText" =>  '',
                                 "postLike" =>  $reacciones_publ,
+                                "postLikeUser" => $postLikeUser,
                                 "postComent" =>  $postComent,
                                 "comentario" =>  '',
                                 "activeInput" =>  false,
@@ -276,36 +284,45 @@ class PublicacionesController extends Controller
     {
         $data = array();
        
-        $cod_empleado      = $request->cod_empleado;
+        $id_usuario        = $request->cod_empleado;
         $likepublicacion   = (isset($request->likepublicacion) ? $request->likepublicacion : 0);  
         $cod_publicacion   = (isset($request->cod_publicacion) ? $request->cod_publicacion : ''); 
 
-        if(empty($cod_empleado) && 
+        if(empty($id_usuario) && 
             empty($likepublicacion) && 
             empty($cod_publicacion))
         {
             array_push($data, array("estatus" => 'error', "message" => "Todos los campos son obligatorios"));
         }
 
-        if(ReaccionesXPublicaciones::where([['cod_publicacion', $cod_publicacion], ['cod_usuario', $cod_empleado]])->delete())
+        $postLikeUser = ReaccionesXPublicaciones::where([['cod_publicacion', $cod_publicacion],['cod_usuario', $id_usuario]])->count();
+
+        if(ReaccionesXPublicaciones::where([['cod_publicacion', $cod_publicacion], ['cod_usuario', $id_usuario]])->delete())
+        {}
+
+        if($postLikeUser <= 0)
         {
+            $data_public = new ReaccionesXPublicaciones; 
 
-        }
+            $validate_input = new ValidacionesController;
+            $validate_input->validateValue($data_public, 'cod_publicacion', $cod_publicacion);
+            $validate_input->validateValue($data_public, 'cod_usuario', $id_usuario);
 
-        $data_public = new ReaccionesXPublicaciones; 
-
-        $validate_input = new ValidacionesController;
-        $validate_input->validateValue($data_public, 'cod_publicacion', $cod_publicacion);
-        $validate_input->validateValue($data_public, 'cod_usuario', $cod_empleado);
-
-        if($data_public->save())
-        {
-            $totalLikes = ReaccionesXPublicaciones::where('cod_publicacion', $cod_publicacion)->count();
-            array_push($data, array("estatus" => 'success', "totalLikes" => $totalLikes, "message" => "Me gusta")); 
+            if($data_public->save())
+            {
+                $postLikeUser = ReaccionesXPublicaciones::where([['cod_publicacion', $cod_publicacion],['cod_usuario', $id_usuario]])->count();
+                $totalLikes = ReaccionesXPublicaciones::where('cod_publicacion', $cod_publicacion)->count();
+                array_push($data, array("estatus" => 'success', "totalLikes" => $totalLikes, "message" => "Me gusta", "postLikeUser"=>$postLikeUser)); 
+            }
+            else
+            {
+                array_push($data, array("estatus" => 'error', "message" => "Error"));
+            }
         }
         else
         {
-            array_push($data, array("estatus" => 'error', "message" => "Error"));
+            $totalLikes = ReaccionesXPublicaciones::where('cod_publicacion', $cod_publicacion)->count();
+            array_push($data, array("estatus" => 'success', "totalLikes" => $totalLikes, "message" => "Me gusta")); 
         }
 
         return response()->json($data); 

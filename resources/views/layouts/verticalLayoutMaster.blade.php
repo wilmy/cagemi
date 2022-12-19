@@ -4,6 +4,15 @@ data-menu="vertical-menu-modern"
 data-col="{{$configData['showMenu'] ? $configData['contentLayout'] : '1-column' }}"
 data-framework="laravel"
 data-asset-path="{{ asset('/')}}">
+
+ <div id="backblock" style="background-color: rgba(255,255,255,0.9); z-index: 9999; 
+                          width: 100%; height: 100%; position: fixed; top: 0; left: 0; 
+                          display: none;">
+    <div class="spinner-border text-primary " role="status" style="width: 5rem; height: 5rem; position: absolute; left: 50%; top: 40%;">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+ </div>
+
   <!-- BEGIN: Header-->
   @include('panels.navbar')
   <!-- END: Header-->
@@ -77,7 +86,17 @@ data-asset-path="{{ asset('/')}}">
           width: 14, height: 14
         });
       }
+
+     function backblock(){
+      alert()
+     }
     })
-  </script>
+
+    
+  function backblock()
+  {
+    document.getElementById("backblock").style.display = "block";
+  }
+</script>
 </body>
 </html>
