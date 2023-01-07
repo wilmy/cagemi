@@ -15,9 +15,10 @@ class GrupoEmpresarialController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('can:users.create', ['only' => ['create']]);
-        $this->middleware('can:users.edit', ['only' => ['edit', 'update']]); 
-        $this->middleware('can:users.destroy', ['only' => ['destroy']]); 
+        $this->middleware('can:grupo_empresarial.index', ['only' => ['index']]);
+        $this->middleware('can:grupo_empresarial.create', ['only' => ['create']]);
+        $this->middleware('can:grupo_empresarial.edit', ['only' => ['edit', 'update']]); 
+        $this->middleware('can:grupo_empresarial.destroy', ['only' => ['destroy']]); 
     }
 
     public function index(Request $request)

@@ -6,6 +6,7 @@ use App\Models\CargaDatos;
 use Illuminate\Http\Request;
 use App\Models\DireccionesVicepresidencias;
 use App\Models\DepartamentosXVicepresidencias;
+use App\Models\EmpresasXGruposEmpresariales;
 
 class DepartamentosXVicepresidenciasController extends Controller
 {
@@ -17,6 +18,7 @@ class DepartamentosXVicepresidenciasController extends Controller
     public function index()
     {
         //
+        echo 'entros';
     }
 
     /**
@@ -43,12 +45,15 @@ class DepartamentosXVicepresidenciasController extends Controller
         ]);
 
         $nombre_departamento = $request->departamentos;
+        $empresa_arr = $request->empresa;
         $direccion_vp = $request->direccion_vp;
         if(count($nombre_departamento) > 0)
         {
             for($x = 0; $x < count($direccion_vp); $x++)
             {
-                $vicep = DireccionesVicepresidencias::where('nombre_vicepresidencia', $direccion_vp[$x])->first();
+                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr[$x])->first();
+                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $direccion_vp[$x]],
+                                                             ['cod_empresa', $empresa->cod_empresa]])->first();
 
                 if(isset($vicep->cod_vicepresidencia))
                 {
@@ -61,7 +66,11 @@ class DepartamentosXVicepresidenciasController extends Controller
             {
                 $dda_arr = explode('||', $nombre_departamento[$x]);
                 $nombre_vicepresidencia = $dda_arr[0];
-                $vicep = DireccionesVicepresidencias::where('nombre_vicepresidencia', $nombre_vicepresidencia)->first();
+
+                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr[$x])->first();
+                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $nombre_vicepresidencia],
+                                                             ['cod_empresa', $empresa->cod_empresa]])->first();
+
                 if(isset($vicep->cod_vicepresidencia))
                 {
                     $data_in_depart = new DepartamentosXVicepresidencias();

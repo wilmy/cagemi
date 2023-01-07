@@ -13,6 +13,15 @@ class ValidacionDatosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function __construct()
+     {
+         $this->middleware('can:validaciondatos.index', ['only' => ['index']]);
+         $this->middleware('can:validaciondatos.create', ['only' => ['create']]);
+         $this->middleware('can:validaciondatos.edit', ['only' => ['edit', 'update']]); 
+         $this->middleware('can:validaciondatos.destroy', ['only' => ['destroy']]); 
+     }
+ 
     public function index()
     {
         $data_empresas = CargaDatos::where([['validacion_empresa', 'N'], ['empresa','<>', '']])->get()->unique('empresa');
