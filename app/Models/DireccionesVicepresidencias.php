@@ -17,6 +17,6 @@ class DireccionesVicepresidencias extends Model
 
     public function empresa()
     {
-        return $this->belonsTo(EmpresasXGruposEmpresariales::class, 'cod_empresa');
+        return $this->belongsTo(EmpresasXGruposEmpresariales::class, 'cod_empresa');
     }
 }

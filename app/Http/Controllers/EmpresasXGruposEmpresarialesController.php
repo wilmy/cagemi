@@ -13,9 +13,36 @@ class EmpresasXGruposEmpresarialesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $buscar         = (isset($request->buscar) ? $request->buscar : '');
+        $mostrar        = (isset($request->mostrar) ? $request->mostrar : 100);
+        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+
+        if($buscar != '')
+        {
+           
+            $empresas = EmpresasXGruposEmpresariales::where([['nombre', 'LIKE', '%'.$buscar.'%'], 
+                                                               ['cod_grupo_empresarial', '=', $codGrupoEmpresarial ]])
+                                                            ->orderBy('nombre', 'ASC')->paginate($mostrar);
+        }
+        else
+        {
+            $empresas = EmpresasXGruposEmpresariales::where([['cod_grupo_empresarial', '=', $codGrupoEmpresarial ]])
+                                                            ->orderBy('nombre', 'ASC')->paginate($mostrar);
+
+        }
+
+        $pageConfigs = ['pageHeader' => true];
+        $total_empresas_acti = EmpresasXGruposEmpresariales::where([['cod_grupo_empresarial', '=', $codGrupoEmpresarial ], ['estatus', '=', 'A' ]])->count();
+        $total_empresas_inac = EmpresasXGruposEmpresariales::where([['cod_grupo_empresarial', '=', $codGrupoEmpresarial ], ['estatus', '=', 'I' ]])->count();
+        
+        return view('/content/apps/empresas.index', ['empresas' => $empresas,
+                                                            'pageConfigs' => $pageConfigs,
+                                                            'total_empresas_acti' => $total_empresas_acti,
+                                                            'total_empresas_inac' => $total_empresas_inac,
+                                                            'codGrupoEmpresarial' => $codGrupoEmpresarial,
+                                                            'request'=>$request]);
     }
 
     /**
@@ -25,7 +52,9 @@ class EmpresasXGruposEmpresarialesController extends Controller
      */
     public function create()
     {
-        //
+        
+        $pageConfigs = ['pageHeader' => false];
+        return view('/content/apps/empresas/create', ['pageConfigs' => $pageConfigs ]);
     }
 
     /**
@@ -36,6 +65,58 @@ class EmpresasXGruposEmpresarialesController extends Controller
      */
     public function store(Request $request)
     {
+        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+
+        if(isset($request->esFormulario)){
+            $validator = $request->validate([
+                'nombre' => ['required'],
+            ]);
+
+            $logo = '';
+
+            $file_image = $request->file('logo');
+            
+            if($request->hasFile('logo'))
+            {
+                $directorio = 'images/gruposEmpresariales/grupo'.$codGrupoEmpresarial.'/'.'logoEmpresa';
+                if (!is_dir($directorio)) {
+                    mkdir($directorio, 0775, true);
+                }
+
+                $nombre_imge = rand().trim($request->nombre).'-'.(date('Y-m-d')).'.'.$file_image->getClientOriginalExtension();
+                if($file_image->move($directorio, $nombre_imge))
+                {
+                    $logo  = $nombre_imge;
+                }
+                else
+                {
+                    $logo = '';
+                }
+            }
+            else
+            {
+                $logo = '';
+            }
+
+
+            $grupo_empresarial = EmpresasXGruposEmpresariales::create([
+                                                'nombre' => $request->nombre,
+                                                'cod_grupo_empresarial' => $codGrupoEmpresarial,
+                                                'logo' => $logo,
+                                                'estatus' => 'A'
+                                            ]);
+            
+            
+
+            $pageConfigs = ['pageHeader' => false];
+
+            return redirect('admin/app/empresas/')
+                        ->with(['message' => 'Registro creado correctamente ', 
+                                'alert' => 'success']);
+        
+
+        }
+        
         $validator = $request->validate([
             'empresas' => ['required'],
         ]);
@@ -90,9 +171,18 @@ class EmpresasXGruposEmpresarialesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($cod_empresa)
     {
-        //
+        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+        
+        $empresa = EmpresasXGruposEmpresariales::where('cod_empresa', $cod_empresa)->first();
+        $pageConfigs = ['pageHeader' => true];
+        
+       
+        
+        return view('/content/apps/empresas/edit', ['empresa' => $empresa, 
+                                                         'codGrupoEmpresarial' => $codGrupoEmpresarial,
+                                                         'pageConfigs' => $pageConfigs]);
     }
 
     /**
@@ -102,9 +192,65 @@ class EmpresasXGruposEmpresarialesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $cod_empresa)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => ['required', 'string', 'max:255'],
+        ]);
+
+        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+        
+        $logo = '';
+
+        $file_image = $request->file('logo');
+        
+        if($request->hasFile('logo'))
+        {
+            $directorio = 'images/gruposEmpresariales/grupo'.$codGrupoEmpresarial.'/'.'logoEmpresa';
+            if (!is_dir($directorio)) {
+                mkdir($directorio, 0775, true);
+            }
+            $nombre_imge = rand().trim($request->nombre).'-'.(date('Y-m-d')).'.'.$file_image->getClientOriginalExtension();
+            if($file_image->move($directorio, $nombre_imge))
+            {
+                $logo  = $nombre_imge;
+            }
+            else
+            {
+                $logo = '';
+            }
+        }
+        else
+        {
+            $logo = '';
+        }
+
+        if($logo != '')
+        {
+            //Actualizamos los datos del usuario enviado
+            EmpresasXGruposEmpresariales::where('cod_empresa', $cod_empresa)
+                            ->update([
+                                    'nombre' => $request->nombre,
+                                    'logo' => $logo,
+                                    'estatus' => $request->estatus,
+                                ]);
+
+        }
+        else
+        {
+            //Actualizamos los datos del usuario enviado
+            EmpresasXGruposEmpresariales::where('cod_empresa', $cod_empresa)
+                            ->update([
+                                    'nombre' => $request->nombre,
+                                    'estatus' => $request->estatus,
+                                ]);
+        }
+        
+        
+
+        return redirect('admin/app/empresas/')
+                    ->with(['message' => 'Regisro actualizado correctamente ', 
+                            'alert' => 'success']);
     }
 
     /**

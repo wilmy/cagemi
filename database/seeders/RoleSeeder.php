@@ -37,8 +37,32 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'roles.edit'])->syncRoles([$admin]);
         Permission::create(['name' => 'roles.destroy'])->syncRoles([$admin]);
 
+        /*Para los departamentos */
+        Permission::create(['name' => 'menu-empresa'])->syncRoles([$admin, $manager]);
+        Permission::create(['name' => 'departamentos.index'])->syncRoles([$admin, $manager]);
+        Permission::create(['name' => 'departamentos.create'])->syncRoles([$admin]);
+        Permission::create(['name' => 'departamentos.edit'])->syncRoles([$admin]);
 
-        Permission::create(['name' => 'menu-empresa'])->syncRoles([$admin]);
+        /*Para los posiciones */
+        Permission::create(['name' => 'posiciones.index'])->syncRoles([$admin, $manager]);
+        Permission::create(['name' => 'posiciones.create'])->syncRoles([$admin]);
+        Permission::create(['name' => 'posiciones.edit'])->syncRoles([$admin]);
+
+        /*Para los empresas */
+        Permission::create(['name' => 'empresas.index'])->syncRoles([$admin, $manager]);
+        Permission::create(['name' => 'empresas.create'])->syncRoles([$admin]);
+        Permission::create(['name' => 'empresas.edit'])->syncRoles([$admin]);
+
+        /*Para los vicepresidencias */
+        Permission::create(['name' => 'vicepresidencias.index'])->syncRoles([$admin, $manager]);
+        Permission::create(['name' => 'vicepresidencias.create'])->syncRoles([$admin]);
+        Permission::create(['name' => 'vicepresidencias.edit'])->syncRoles([$admin]);
+
+        /*Para los vicepresidencias */
+        Permission::create(['name' => 'empleados.index'])->syncRoles([$admin, $manager]);
+        Permission::create(['name' => 'empleados.create'])->syncRoles([$admin]);
+        Permission::create(['name' => 'empleados.edit'])->syncRoles([$admin]);
+
         Permission::create(['name' => 'menu-configuracion'])->syncRoles([$admin]);
 
         //Permisos para el administrador del los grupos empresariales 

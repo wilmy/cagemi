@@ -11,6 +11,13 @@ use App\Models\EmpresasXGruposEmpresariales;
 
 class DepartamentosXVicepresidenciasController extends Controller
 {
+   /* public function __construct()
+    {
+        $this->middleware('can:DepartamentosXVicepresidenciasController.create', ['only' => ['create']]);
+        $this->middleware('can:DepartamentosXVicepresidenciasController.edit', ['only' => ['edit', 'update']]); 
+        $this->middleware('can:DepartamentosXVicepresidenciasController.destroy', ['only' => ['destroy']]); 
+    }*/
+
     /**
      * Display a listing of the resource.
      *
@@ -21,14 +28,16 @@ class DepartamentosXVicepresidenciasController extends Controller
         $buscar         = (isset($request->buscar) ? $request->buscar : '');
         $mostrar        = (isset($request->mostrar) ? $request->mostrar : 100);
         $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
-        //dd($codGrupoEmpresarial);
 
         if($buscar != '')
         {
-            $DepartamentosXVicepresidencias = DepartamentosXVicepresidencias::where([['nombre_departamento', 'LIKE', '%'.$buscar.'%'],
-                                                                                     ['cod_grupo_empresarial', '=', $codGrupoEmpresarial]])
-                                                                                    ->orderBy('nombre_departamento', 'ASC')
-                                                                                    ->paginate($mostrar);
+           
+            $resultados = DB::table('tb_departamentos_x_vicepresidencia')
+                        ->join('tb_vicepresidencia_x_empresa', 'tb_departamentos_x_vicepresidencia.cod_vicepresidencia', '=', 'tb_vicepresidencia_x_empresa.cod_vicepresidencia' )
+                        ->join('tb_empresas_x_grupos_empresariales', 'tb_empresas_x_grupos_empresariales.cod_empresa', '=', 'tb_vicepresidencia_x_empresa.cod_empresa')
+                        ->select('tb_departamentos_x_vicepresidencia.*')
+                        ->where([['tb_departamentos_x_vicepresidencia.nombre_departamento', 'LIKE', '%'.$buscar.'%'], ['tb_empresas_x_grupos_empresariales.cod_grupo_empresarial', '=', $codGrupoEmpresarial ]])
+                        ->orderBy('nombre_departamento', 'ASC')->paginate($mostrar);
         }
         else
         {
@@ -39,44 +48,62 @@ class DepartamentosXVicepresidenciasController extends Controller
                         ->where([['tb_empresas_x_grupos_empresariales.cod_grupo_empresarial', '=', $codGrupoEmpresarial ]])
                         ->orderBy('nombre_departamento', 'ASC')->paginate($mostrar);
 
-            $coleccion = collect($resultados->items());
-
-           //dd($coleccion);
-
-           $DepartamentosXVicepresidencias = $coleccion->map(function ($item, $key) {
-                return new DepartamentosXVicepresidencias($item->cod_departamento, $item->cod_vicepresidencia, $item->nombre_departamento, $item->created_at, $item->updated_at);
-            });            
-
-           // dd($DepartamentosXVicepresidencias);
-
-           
-
-           // $DepartamentosXVicepresidencias = 
-           /* $empresasXGruposEmpresariales = EmpresasXGruposEmpresariales::where([['cod_grupo_empresarial', '=', $codGrupoEmpresarial]])->get();
-                                                                                //->orderBy('nombre_departamento', 'ASC')
-                                                                               // ->paginate($mostrar);
-                                                                                //->paginate($mostrar);*/
-           
-
-            /*$DepartamentosXVicepresidencias = array();
-            foreach ($empresasXGruposEmpresariales as $empresa) {              
-                foreach ($empresa->departamentos as $departamento) {
-                    array_push($DepartamentosXVicepresidencias, $departamento);                    
-                }       
-            }*/
-
         }
 
-       /* $total_departamentos_acti = DepartamentosXVicepresidencias::where('estatus', 'A')->count();
-        $total_departamentos_inac = DepartamentosXVicepresidencias::where('estatus', 'I')->count();*/
+        $coleccion = collect($resultados->items()); 
+
+        $DepartamentosXVicepresidencias = $coleccion->map(function ($item, $key) {
+            $departamentos = new DepartamentosXVicepresidencias();
+
+            $departamentos->cod_departamento = $item->cod_departamento;
+            $departamentos->cod_vicepresidencia = $item->cod_vicepresidencia;
+            $departamentos->nombre_departamento = $item->nombre_departamento;
+            $departamentos->created_at = $item->created_at;
+            $departamentos->updated_at = $item->updated_at;
+
+            return $departamentos;
+        });    
+       
+        //dd($DepartamentosXVicepresidencias);
         $pageConfigs = ['pageHeader' => true];
         
         return view('/content/apps/departamentos.index', ['DepartamentosXVicepresidencias' => $DepartamentosXVicepresidencias, 
-                                                          // 'empresasXGruposEmpresariales' => $empresasXGruposEmpresariales,
-                                                            //'total_departamentos_acti' => $total_grupo_acti, 
-                                                            //'total_departamentos_inac' => $total_grupo_inac, 
+                                                          'resultados' => $resultados,
                                                             'pageConfigs' => $pageConfigs,
                                                             'request'=>$request]);
+    }
+
+    public function getDepartamentos($cod_vicepresidencia = '')
+    {
+        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+        
+        $resultados = DB::table('tb_departamentos_x_vicepresidencia')
+                    ->join('tb_vicepresidencia_x_empresa', 'tb_departamentos_x_vicepresidencia.cod_vicepresidencia', '=', 'tb_vicepresidencia_x_empresa.cod_vicepresidencia' )
+                    ->join('tb_empresas_x_grupos_empresariales', 'tb_empresas_x_grupos_empresariales.cod_empresa', '=', 'tb_vicepresidencia_x_empresa.cod_empresa')
+                    ->select('tb_departamentos_x_vicepresidencia.*')
+                    ->where([['tb_empresas_x_grupos_empresariales.cod_grupo_empresarial', '=', $codGrupoEmpresarial ]])
+                    ->where(function ($query) use ($cod_vicepresidencia) {
+                        if ($cod_vicepresidencia != '') {
+                            $query->where('tb_departamentos_x_vicepresidencia.cod_vicepresidencia', '=', $cod_vicepresidencia);                                
+                        }
+                    })
+                    ->orderBy('nombre_departamento', 'ASC')->get();        
+
+        $coleccion = collect($resultados); 
+
+        $DepartamentosXVicepresidencias = $coleccion->map(function ($item, $key) {
+            $departamentos = new DepartamentosXVicepresidencias();
+
+            $departamentos->cod_departamento = $item->cod_departamento;
+            $departamentos->cod_vicepresidencia = $item->cod_vicepresidencia;
+            $departamentos->nombre_departamento = $item->nombre_departamento;
+            $departamentos->created_at = $item->created_at;
+            $departamentos->updated_at = $item->updated_at;
+
+            return $departamentos;
+        });    
+
+        return $DepartamentosXVicepresidencias;
     }
 
     /**
@@ -87,11 +114,10 @@ class DepartamentosXVicepresidenciasController extends Controller
     public function create()
     {
         $pageConfigs = ['pageHeader' => false];
-
         
+        $vicep = new DireccionesVicepresidenciasController();
 
-        $viceprecidencias = DireccionesVicepresidencias::where([['nombre_departamento', 'LIKE', '%'.$buscar.'%']])
-                                                                ->orderBy('nombre_vicepresidencia', 'ASC')->get();
+        $viceprecidencias = $vicep->getVicepresidencias(); 
 
         return view('/content/apps/departamentos/create', ['pageConfigs' => $pageConfigs,
                                                             'viceprecidencias' =>  $viceprecidencias ]);
@@ -105,6 +131,23 @@ class DepartamentosXVicepresidenciasController extends Controller
      */
     public function store(Request $request)
     {
+        if(isset($request->esFormulario)){
+            
+            $validator = $request->validate([
+                'nombre' => ['required'],
+                'direccion_vp' => ['required'],
+            ]);
+
+            DepartamentosXVicepresidencias::create([
+                                                    'nombre_departamento' => $request->nombre,
+                                                    'cod_vicepresidencia' => $request->direccion_vp
+                                                ]);
+            
+            return redirect('admin/app/departamentos/')
+            ->with(['message' => 'Departamento creado correctamente ', 
+                    'alert' => 'success']);
+        }
+
         $validator = $request->validate([
             'departamentos' => ['required'],
             'direccion_vp' => ['required'],
@@ -172,13 +215,24 @@ class DepartamentosXVicepresidenciasController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $cod_departamento
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($cod_departamento)
     {
-        //
-        return "editar ".$id;
+       
+        
+        $departamento = DepartamentosXVicepresidencias::where('cod_departamento', $cod_departamento)->first();
+        $pageConfigs = ['pageHeader' => true];
+        
+        $vicep = new DireccionesVicepresidenciasController();
+
+        $viceprecidencias = $vicep->getVicepresidencias(); 
+       
+        
+        return view('/content/apps/departamentos/edit', ['departamento' => $departamento, 
+                                                         'viceprecidencias' => $viceprecidencias,
+                                                         'pageConfigs' => $pageConfigs]);
     }
 
     /**
@@ -188,9 +242,22 @@ class DepartamentosXVicepresidenciasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $cod_departamento)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => ['required'],
+            'direccion_vp' => ['required'],
+        ]);
+
+        DepartamentosXVicepresidencias::where('cod_departamento', $cod_departamento)
+                                        ->update([
+                                                'nombre_departamento' => $request->nombre,
+                                                'cod_vicepresidencia' => $request->direccion_vp
+                                            ]);
+        
+        return redirect('admin/app/departamentos/')
+        ->with(['message' => 'Departamento actulizado correctamente ', 
+                'alert' => 'success']);
     }
 
     /**

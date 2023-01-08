@@ -6,8 +6,10 @@ use App\Models\User;
 use App\Models\CargaDatos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use App\Models\EmpleadosXPosicion;
 use App\Models\PosicionesXDepartamentos;
+use App\Models\EmpresasXGruposEmpresariales;
 
 class EmpleadosXPosicionController extends Controller
 {
@@ -16,10 +18,185 @@ class EmpleadosXPosicionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $buscar         = (isset($request->buscar) ? $request->buscar : '');
+        $mostrar        = (isset($request->mostrar) ? $request->mostrar : 100);
+        $FiltroEmpresa  = (isset($request->FiltroEmpresa) ? $request->FiltroEmpresa : '');
+        $FiltroVicepresidencia  = (isset($request->FiltroVicepresidencia) ? $request->FiltroVicepresidencia : '');
+        $FiltroDepartamento  = (isset($request->FiltroDepartamento) ? $request->FiltroDepartamento : '');
+        $FiltroPosicion  = (isset($request->FiltroPosicion) ? $request->FiltroPosicion : '');
+        $FiltroEstatus  = (isset($request->FiltroEstatus) ? $request->FiltroEstatus : '');
+        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+        
+        
+
+        
+        $resultados = DB::table('tb_empleados_x_posicion')
+                        ->join('tb_posiciones_x_departamento', 'tb_empleados_x_posicion.cod_posicion', '=', 'tb_posiciones_x_departamento.cod_posicion' )
+                        ->join('tb_departamentos_x_vicepresidencia', 'tb_departamentos_x_vicepresidencia.cod_departamento', '=', 'tb_posiciones_x_departamento.cod_departamento' )
+                        ->join('tb_vicepresidencia_x_empresa', 'tb_departamentos_x_vicepresidencia.cod_vicepresidencia', '=', 'tb_vicepresidencia_x_empresa.cod_vicepresidencia' )
+                        ->join('tb_empresas_x_grupos_empresariales', 'tb_empresas_x_grupos_empresariales.cod_empresa', '=', 'tb_vicepresidencia_x_empresa.cod_empresa')
+                        ->select('tb_empleados_x_posicion.*')
+                        ->where(function ($query) use ($buscar) {
+                            if ($buscar) {
+                                $query->where('tb_empleados_x_posicion.nombres', 'LIKE', "%$buscar%");
+                            }
+                        })                        
+                        ->where(function ($query) use ($codGrupoEmpresarial ) {
+                            if ($codGrupoEmpresarial) {
+                                $query->where('tb_empresas_x_grupos_empresariales.cod_grupo_empresarial', '=', $codGrupoEmpresarial);
+                            }
+                        })
+                        ->where(function ($query) use ($FiltroEmpresa ) {
+                            if ($FiltroEmpresa) {
+                                $query->where('tb_empresas_x_grupos_empresariales.cod_empresa', '=', $FiltroEmpresa);                                
+                            }
+                        })
+                        ->where(function ($query) use ($FiltroVicepresidencia ) {
+                            if ($FiltroVicepresidencia) {
+                                $query->where('tb_vicepresidencia_x_empresa.cod_vicepresidencia', '=', $FiltroVicepresidencia);                                
+                            }
+                        })
+                        ->where(function ($query) use ($FiltroDepartamento ) {
+                            if ($FiltroDepartamento) {
+                                $query->where('tb_departamentos_x_vicepresidencia.cod_departamento', '=', $FiltroDepartamento);                                
+                            }
+                        })
+                        ->where(function ($query) use ($FiltroPosicion ) {
+                            if ($FiltroPosicion) {
+                                $query->where('tb_posiciones_x_departamento.cod_posicion', '=', $FiltroPosicion);                                
+                            }
+                        })
+                        ->where(function ($query) use ($FiltroEstatus ) {
+                            if ($FiltroEstatus) {
+                                $query->where('tb_empleados_x_posicion.estatus', '=', $FiltroEstatus);                                
+                            }
+                        })
+                        ->orderBy('tb_empleados_x_posicion.nombres', 'ASC')->paginate($mostrar);
+
+                        
+
+        $coleccion = collect($resultados->items()); 
+
+        $empleados = $coleccion->map(function ($item, $key) {
+            $empleado = new EmpleadosXPosicion();
+
+            $empleado->cod_empleado = $item->cod_empleado;
+            $empleado->cod_empleado_empresa = $item->cod_empleado_empresa;
+            $empleado->cod_posicion = $item->cod_posicion;
+            $empleado->cod_supervisor = $item->cod_supervisor;
+            $empleado->nombres = $item->nombres;
+            $empleado->apellidos = $item->apellidos;
+            $empleado->documento = $item->documento;
+            $empleado->telefono_movil = $item->telefono_movil;
+            $empleado->telefono_institucional = $item->telefono_institucional;
+            $empleado->extencion = $item->extencion;
+            $empleado->correo_institucional = $item->correo_institucional;
+            $empleado->correo_personal = $item->correo_personal;
+            $empleado->fecha_nacimiento = $item->fecha_nacimiento;
+            $empleado->foto = $item->foto;
+            $empleado->estatus = $item->estatus;
+            $empleado->activo_hasta = $item->activo_hasta;
+            $empleado->created_at = $item->created_at;
+            $empleado->updated_at = $item->updated_at;
+
+            return $empleado;
+        });
+        
+        $objVice = new DireccionesVicepresidenciasController();
+        $vicepresidencias = $objVice->getVicepresidencias($FiltroEmpresa);
+
+        $depart = new DepartamentosXVicepresidenciasController();
+        $departamentos = $depart->getDepartamentos($FiltroVicepresidencia); 
+
+        $posicionesController = new PosicionesXDepartamentosController();
+        $posiciones = $posicionesController->getPosiciones($FiltroDepartamento);
+        
+        $pageConfigs = ['pageHeader' => true];
+
+        $empresas = $this->getEmpresas();
+
+        $totalEmpleados     = count($this->getEmpleados());
+        $empleadosActivos    = count($this->getEmpleados('A'));
+        $empleadosInactivos = count($this->getEmpleados('I'));
+        
+        return view('/content/apps/empleadosxposiciones.index', ['empleados' => $empleados, 
+                                                                'resultados' => $resultados,
+                                                                'empresas' => $empresas,
+                                                                'vicepresidencias' => $vicepresidencias,
+                                                                'FiltroEmpresa' => $FiltroEmpresa,
+                                                                'departamentos' => $departamentos,
+                                                                'posiciones' => $posiciones,
+                                                                'totalEmpleados' => $totalEmpleados,
+                                                                'empleadosActivos' => $empleadosActivos,
+                                                                'empleadosInactivos' => $empleadosInactivos,
+                                                                'FiltroVicepresidencia' => $FiltroVicepresidencia,
+                                                                'FiltroDepartamento' => $FiltroDepartamento,
+                                                                'FiltroPosicion' => $FiltroPosicion,
+                                                                'FiltroEstatus' => $FiltroEstatus,
+                                                                'pageConfigs' => $pageConfigs,
+                                                                'request'=>$request]);
     }
+
+    public function getEmpleados($estatus = '')
+    {
+        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+
+        $resultados = DB::table('tb_empleados_x_posicion')
+                        ->join('tb_posiciones_x_departamento', 'tb_empleados_x_posicion.cod_posicion', '=', 'tb_posiciones_x_departamento.cod_posicion' )
+                        ->join('tb_departamentos_x_vicepresidencia', 'tb_departamentos_x_vicepresidencia.cod_departamento', '=', 'tb_posiciones_x_departamento.cod_departamento' )
+                        ->join('tb_vicepresidencia_x_empresa', 'tb_departamentos_x_vicepresidencia.cod_vicepresidencia', '=', 'tb_vicepresidencia_x_empresa.cod_vicepresidencia' )
+                        ->join('tb_empresas_x_grupos_empresariales', 'tb_empresas_x_grupos_empresariales.cod_empresa', '=', 'tb_vicepresidencia_x_empresa.cod_empresa')
+                        ->select('tb_empleados_x_posicion.*')
+                        ->where([['tb_empresas_x_grupos_empresariales.cod_grupo_empresarial', '=', $codGrupoEmpresarial ]])
+                        ->where(function ($query) use ($estatus) {
+                            if ($estatus != '') {
+                                $query->where('tb_empleados_x_posicion.estatus', '=', $estatus);                                
+                            }
+                        })
+                        ->orderBy('nombres', 'ASC')->get();
+
+        $coleccion = collect($resultados); 
+
+        $empleados = $coleccion->map(function ($item, $key) {
+            $empleado = new EmpleadosXPosicion();
+
+            $empleado->cod_empleado = $item->cod_empleado;
+            $empleado->cod_empleado_empresa = $item->cod_empleado_empresa;
+            $empleado->cod_posicion = $item->cod_posicion;
+            $empleado->cod_supervisor = $item->cod_supervisor;
+            $empleado->nombres = ucwords($item->nombres);
+            $empleado->apellidos = ucwords($item->apellidos);
+            $empleado->documento = $item->documento;
+            $empleado->telefono_movil = $item->telefono_movil;
+            $empleado->telefono_institucional = $item->telefono_institucional;
+            $empleado->extencion = $item->extencion;
+            $empleado->correo_institucional = $item->correo_institucional;
+            $empleado->correo_personal = $item->correo_personal;
+            $empleado->fecha_nacimiento = $item->fecha_nacimiento;
+            $empleado->foto = $item->foto;
+            $empleado->estatus = $item->estatus;
+            $empleado->activo_hasta = $item->activo_hasta;
+            $empleado->created_at = $item->created_at;
+            $empleado->updated_at = $item->updated_at;
+
+            return $empleado;
+        });
+
+        return $empleados;
+    }
+
+    public function getEmpresas()
+    {
+        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+
+        $empresas = EmpresasXGruposEmpresariales::where([['cod_grupo_empresarial', '=', $codGrupoEmpresarial ]])
+                                                            ->orderBy('nombre', 'ASC')->get();
+
+        return $empresas;
+    }
+
 
     /**
      * Show the form for creating a new resource.

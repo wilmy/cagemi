@@ -30,4 +30,9 @@ class EmpresasXGruposEmpresariales extends Model
             'cod_vicepresidencia' // Local key on the DireccionesVicepresidencias table...
         );
     }
+
+    public function viceprecidencias()
+    {
+        return $this->hasMany(DireccionesVicepresidencias::class, 'cod_empresa', 'cod_empresa');
+    }   
 }
