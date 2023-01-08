@@ -289,14 +289,13 @@ else
                       <tr>
                         <th>
                           @if($valores->empresa != '')
-                            <input type="hidden" name="empresa[]" value="{{ $valores->empresa}}">
                             <input type="hidden" name="direccion_vp[]" value="{{ $valores->direccion_vp}}">
                             <input 
                               class="form-check-input" 
                               type="checkbox" 
                               name="departamentos[]" 
                               checked="checked"
-                              value="{{ $valores->direccion_vp.'||'.$valores->departamento }}"/>
+                              value="{{ $valores->empresa.'||'.$valores->direccion_vp.'||'.$valores->departamento }}"/>
                             @endif
                         </th>
                         <th>{{$valores->empresa}}</th>
@@ -355,15 +354,13 @@ else
                       <tr>
                         <th>
                           @if($valores->empresa != '')
-                            <input type="hidden" name="empresa[]" value="{{ $valores->empresa}}">
-                            <input type="hidden" name="direccion_vp[]" value="{{ $valores->direccion_vp}}">
-                            <input type="hidden" name="departamento[]" value="{{ $valores->departamento}}">
+                            <input type="hidden" name="departamento[]" value="{{ $valores->departamento }}">
                             <input 
                               class="form-check-input" 
                               type="checkbox" 
                               name="posiciones[]" 
                               checked="checked"
-                              value="{{ $valores->departamento.'||'.$valores->posicion }}"/>
+                              value="{{ $valores->empresa.'||'.$valores->direccion_vp.'||'.$valores->departamento.'||'.$valores->posicion }}"/>
                             @endif
                         </th>
                         <th>{{$valores->empresa}}</th>
@@ -518,9 +515,6 @@ else
                         <th>
                           @if($valores->empresa != '')
                             @if($no_check)
-                              <input type="hidden" name="empresa[]" value="{{ $valores->empresa}}">
-                              <input type="hidden" name="direccion_vp[]" value="{{ $valores->direccion_vp}}">
-                              <input type="hidden" name="departamento[]" value="{{ $valores->departamento}}">
                               <input type="hidden" name="posiciones[]" value="{{ $valores->posiciones}}">
                               <input 
                                 class="form-check-input" 
@@ -528,6 +522,9 @@ else
                                 name="empleados[]" 
                                 checked="checked"
                                 value="{{ 
+                                  $valores->empresa.'||'.
+                                  $valores->direccion_vp.'||'.
+                                  $valores->departamento.'||'.
                                   $valores->posicion.'||'.
                                   $valores->codigo_superfisor.'||'.
                                   $valores->nombres.'||'.

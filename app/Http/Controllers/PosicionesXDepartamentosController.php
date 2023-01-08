@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\PosicionesXDepartamentos;
 use Illuminate\Support\Facades\DB;
 use App\Models\DepartamentosXVicepresidencias;
+use App\Models\DireccionesVicepresidencias;
+use App\Models\EmpresasXGruposEmpresariales;
 
 class PosicionesXDepartamentosController extends Controller
 {
@@ -139,13 +141,22 @@ class PosicionesXDepartamentosController extends Controller
             'posiciones' => ['required'],
         ]);
 
-        $departamentos = $request->departamento;
         $nombre_posicion = $request->posiciones;
+
+        $departamentos = $request->departamento;
+        $empresa_arr = $request->empresa;
+        $direccion_vp = $request->direccion_vp;
+
         if(count($nombre_posicion) > 0)
         {
             for($x = 0; $x < count($departamentos); $x++)
             {
-                $depart = DepartamentosXVicepresidencias::where('nombre_departamento', $departamentos[$x])->first();
+                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr[$x])->first();
+                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $direccion_vp[$x]],
+                                                             ['cod_empresa', $empresa->cod_empresa]])->first();
+
+                $depart = DepartamentosXVicepresidencias::where([['nombre_departamento', $departamentos[$x]],
+                                                                ['cod_vicepresidencia', $vicep->cod_vicepresidencia]])->first();
                 if(isset($depart->cod_departamento))
                 {
                     //Eliminmos los datos para insertar de nuevo 
@@ -157,7 +168,13 @@ class PosicionesXDepartamentosController extends Controller
             {
                 $dda_arr = explode('||', $nombre_posicion[$x]);
                 $nombre_departamento = $dda_arr[0];
-                $depart = DepartamentosXVicepresidencias::where('nombre_departamento', $nombre_departamento)->first();
+
+                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr[$x])->first();
+                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $direccion_vp[$x]],
+                                                             ['cod_empresa', $empresa->cod_empresa]])->first();
+
+                $depart = DepartamentosXVicepresidencias::where([['nombre_departamento', $nombre_departamento],
+                                                                ['cod_vicepresidencia', $vicep->cod_vicepresidencia]])->first();
                 if(isset($depart->cod_departamento))
                 {
                     $data_in_posici = new PosicionesXDepartamentos();

@@ -65,7 +65,7 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function(){
         //GrupoEmpresarial 
         Route::resource('/grupoEmpresarial', GrupoEmpresarialController::class);
 
-        //Departamentos
+        //Departamentos 
         Route::resource('/departamentos', DepartamentosXVicepresidenciasController::class);
 
         

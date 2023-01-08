@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\EmpleadosXPosicion;
 use App\Models\PosicionesXDepartamentos;
+use App\Models\DepartamentosXVicepresidencias;
+use App\Models\DireccionesVicepresidencias;
+use App\Models\EmpresasXGruposEmpresariales;
 use App\Models\EmpresasXGruposEmpresariales;
 
 class EmpleadosXPosicionController extends Controller
@@ -221,17 +224,29 @@ class EmpleadosXPosicionController extends Controller
             'posiciones' => ['required'],
         ]);
 
-        $posiciones = $request->posiciones;
-        $empledos = $request->empleados;
+        $departamentos  = $request->departamento;
+        $empresa_arr    = $request->empresa;
+        $direccion_vp   = $request->direccion_vp;
+        $posiciones     = $request->posiciones;
+        $empledos       = $request->empleados;
+
         if(count($empledos) > 0)
         {
             for($x = 0; $x < count($posiciones); $x++)
             {
-                $depart = PosicionesXDepartamentos::where('nombre_posicion', $posiciones[$x])->first();
-                if(isset($depart->cod_departamento))
+                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr[$x])->first();
+                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $direccion_vp[$x]],
+                                                             ['cod_empresa', $empresa->cod_empresa]])->first();
+
+                $depart = DepartamentosXVicepresidencias::where([['nombre_departamento', $departamentos[$x]],
+                                                                ['cod_vicepresidencia', $vicep->cod_vicepresidencia]])->first();
+
+                $posicion = PosicionesXDepartamentos::where([['nombre_posicion', $posiciones[$x]],
+                                                          ['cod_departamento', $depart->cod_departamento]])->first();
+                if(isset($posicion->cod_departamento))
                 {
                     //Eliminmos los datos para insertar de nuevo 
-                    PosicionesXDepartamentos::where('cod_departamento', $depart->cod_departamento)->delete();
+                    PosicionesXDepartamentos::where('cod_departamento', $posicion->cod_departamento)->delete();
                 }
             }
             
@@ -253,9 +268,20 @@ class EmpleadosXPosicionController extends Controller
                 $estatus                = 'A';
                 $activo_hasta           = date('Y-m-d H:i:s');
                 
-                $posicion = PosicionesXDepartamentos::where('nombre_posicion', $nombre_posicion)->first();
+                //$posicion = PosicionesXDepartamentos::where('nombre_posicion', $nombre_posicion)->first();
+                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr[$x])->first();
+                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $direccion_vp[$x]],
+                                                             ['cod_empresa', $empresa->cod_empresa]])->first();
+
+                $depart = DepartamentosXVicepresidencias::where([['nombre_departamento', $departamentos[$x]],
+                                                                ['cod_vicepresidencia', $vicep->cod_vicepresidencia]])->first();
+
+                $posicion = PosicionesXDepartamentos::where([['nombre_posicion', $nombre_posicion],
+                                                             ['cod_departamento', $depart->cod_departamento]])->first();
+                                                  
                 if(isset($posicion->cod_posicion))
                 {
+                    
                     $data_in_emplead = new EmpleadosXPosicion();
                     $data_in_emplead->cod_empleado_empresa      = $cod_empleado;
                     $data_in_emplead->cod_posicion              = $posicion->cod_posicion;
