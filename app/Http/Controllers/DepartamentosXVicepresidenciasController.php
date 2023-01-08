@@ -71,7 +71,6 @@ class DepartamentosXVicepresidenciasController extends Controller
                                                           'resultados' => $resultados,
                                                             'pageConfigs' => $pageConfigs,
                                                             'request'=>$request]);
-        echo 'entros';
     }
 
     public function getDepartamentos($cod_vicepresidencia = '')

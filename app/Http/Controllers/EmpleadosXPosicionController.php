@@ -12,7 +12,6 @@ use App\Models\PosicionesXDepartamentos;
 use App\Models\DepartamentosXVicepresidencias;
 use App\Models\DireccionesVicepresidencias;
 use App\Models\EmpresasXGruposEmpresariales;
-use App\Models\EmpresasXGruposEmpresariales;
 
 class EmpleadosXPosicionController extends Controller
 {
