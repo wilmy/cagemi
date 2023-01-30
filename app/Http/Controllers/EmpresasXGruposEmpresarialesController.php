@@ -45,6 +45,16 @@ class EmpresasXGruposEmpresarialesController extends Controller
                                                             'request'=>$request]);
     }
 
+    public function getEmpresas()
+    {
+        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+
+        $empresas = EmpresasXGruposEmpresariales::where([['cod_grupo_empresarial', '=', $codGrupoEmpresarial ]])
+                                                            ->orderBy('nombre', 'ASC')->get();
+
+        return $empresas;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -69,7 +79,7 @@ class EmpresasXGruposEmpresarialesController extends Controller
 
         if(isset($request->esFormulario)){
             $validator = $request->validate([
-                'nombre' => ['required'],
+                'nombre' => ['required'],                
             ]);
 
             $logo = '';

@@ -4,11 +4,11 @@
 
 .picker__day--today:before,
 .picker__button--today:before {
-  border-top: 6px solid #7367f0;
+  border-top: 6px solid #D81159;
 }
 
 .picker__button--clear:before {
-  border-top: 2px solid #ea5455;
+  border-top: 2px solid #c20114;
 }
 
 .picker__day--highlighted,
@@ -17,7 +17,7 @@
 .picker__list-item--selected,
 .picker__list-item--selected:hover,
 .picker--focused .picker__list-item--selected {
-  background-color: #7367f0;
+  background-color: #D81159;
 }
 
 .picker__nav--prev:before,
@@ -41,7 +41,7 @@
 }
 
 .picker__button--close:before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ea5455' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-x'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c20114' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-x'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");
   height: 10px !important;
 }
 

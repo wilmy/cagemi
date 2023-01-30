@@ -66,9 +66,14 @@ class PosicionesXDepartamentosController extends Controller
                                                             'request'=>$request]);
     }
 
-    public function getPosiciones($cod_departamento = '')
+    public function getPosiciones($cod_departamento = '', $grupo = '')
     {
-        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+        if ($grupo =='') {
+            $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+
+        }else{
+            $codGrupoEmpresarial = $grupo;
+        }
         
         $resultados = DB::table('tb_posiciones_x_departamento')
                         ->join('tb_departamentos_x_vicepresidencia', 'tb_departamentos_x_vicepresidencia.cod_departamento', '=', 'tb_posiciones_x_departamento.cod_departamento' )
@@ -108,7 +113,7 @@ class PosicionesXDepartamentosController extends Controller
     {
         $pageConfigs = ['pageHeader' => false];  
         
-        $depart = new DepartamentosXVicepresidencias();
+        $depart = new DepartamentosXVicepresidenciasController();
 
         $departamentos = $depart->getDepartamentos(); 
 
@@ -217,7 +222,7 @@ class PosicionesXDepartamentosController extends Controller
 
         $pageConfigs = ['pageHeader' => true];
         
-        $depart = new DepartamentosXVicepresidencias();
+        $depart = new DepartamentosXVicepresidenciasController();
 
         $departamentos = $depart->getDepartamentos();  
         

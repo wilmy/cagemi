@@ -55,9 +55,9 @@
   font-size: 1.25rem;
 }
 .ecommerce-application .filled-star {
-  fill: #ff9f43;
-  stroke: #ff9f43;
-  color: #ff9f43;
+  fill: #f17300;
+  stroke: #f17300;
+  color: #f17300;
 }
 .ecommerce-application .unfilled-star {
   stroke: #babfc7;
@@ -151,7 +151,7 @@
 .ecommerce-application .ecommerce-card .btn-wishlist svg.text-danger,
 .ecommerce-application .ecommerce-card .btn-cart i.text-danger,
 .ecommerce-application .ecommerce-card .btn-cart svg.text-danger {
-  fill: #ea5455;
+  fill: #c20114;
 }
 .ecommerce-application .grid-view:not(.wishlist-items),
 .ecommerce-application .list-view:not(.wishlist-items) {
@@ -270,7 +270,7 @@
   position: relative;
 }
 .ecommerce-application .list-view .ecommerce-card .item-options .item-wrapper .item-cost .item-price {
-  color: #7367f0;
+  color: #D81159;
   margin-bottom: 0;
 }
 .ecommerce-application .list-view .ecommerce-card .item-options .shipping {

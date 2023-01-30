@@ -85,6 +85,11 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function(){
         
         //Empleados  por posiciones
         Route::resource('/empleadosxposiciones', EmpleadosXPosicionController::class);
+
+        //Route::post('/empleadosxposiciones/downloadExcel', [EmpleadosXPosicionController::class, 'downloadExcel'])->name('downloadExcel');
+        //Route::get('/empleadosxposiciones/{FiltroEmpresa}/{FiltroVicepresidencia}/{FiltroDepartamento}/{FiltroPosicion}', 
+        //[EmpleadosXPosicionController::class, 'downloadExcel']);
+        
         
 
         //Carga de datos temp
@@ -110,3 +115,10 @@ Route::group(['middleware' => 'auth:sanctum', 'verified'],function(){
     Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
     Route::get('/error', [MiscellaneousController::class, 'error'])->name('error');
 });
+
+Route::get('/empleadosxposiciones/export', [EmpleadosXPosicionController::class, 'export'])->name('empleadosxposiciones.export');
+
+//Route::post('/empleadosxposiciones/downloadExcel', [EmpleadosXPosicionController::class, 'downloadExcel']);
+
+//Route::get('/empleadosxposiciones/{FiltroEmpresa}/{FiltroVicepresidencia}/{FiltroDepartamento}/{FiltroPosicion}', [EmpleadosXPosicionController::class, 'downloadExcel']);
+        

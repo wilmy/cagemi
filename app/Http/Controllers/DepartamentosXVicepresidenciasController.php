@@ -73,9 +73,15 @@ class DepartamentosXVicepresidenciasController extends Controller
                                                             'request'=>$request]);
     }
 
-    public function getDepartamentos($cod_vicepresidencia = '')
+    public function getDepartamentos($cod_vicepresidencia = '', $grupo='')
     {
-        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+        
+        if ($grupo =='') {
+            $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+
+        }else{
+            $codGrupoEmpresarial = $grupo;
+        }
         
         $resultados = DB::table('tb_departamentos_x_vicepresidencia')
                     ->join('tb_vicepresidencia_x_empresa', 'tb_departamentos_x_vicepresidencia.cod_vicepresidencia', '=', 'tb_vicepresidencia_x_empresa.cod_vicepresidencia' )

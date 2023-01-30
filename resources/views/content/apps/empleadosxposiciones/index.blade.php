@@ -152,225 +152,148 @@
             <div class="card-datatable table-responsive pt-0">
                 <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
 
-                    <form id="addRoleForm-" method="GET" action="">
+                    <form id="addRoleForm-" method="POST" enctype="multipart/form-data" ">
 
-                        <div class="d-flex justify-content-between align-items-center header-actions mx-2 row mt-75">
-                            <div class="col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start">
-                                <div class="dataTables_length" id="DataTables_Table_0_length">
-                                    <label>{{__('To show')}}
-                                        <select name="mostrar" aria-controls="DataTables_Table_0" class="form-select">
-                                            <option value="100"
-                                                {{(isset($request->mostrar) ? ($request->mostrar == 100 ? 'selected' : '') : '')}}>
-                                                100</option>
-                                            <option value="50"
-                                                {{(isset($request->mostrar) ? ($request->mostrar == 50 ? 'selected' : '') : '')}}>
-                                                50</option>
-                                            <option value="25"
-                                                {{(isset($request->mostrar) ? ($request->mostrar == 25 ? 'selected' : '') : '')}}>
-                                                25</option>
-                                            <option value="10"
-                                                {{(isset($request->mostrar) ? ($request->mostrar == 10 ? 'selected' : '') : '')}}>
-                                                10</option>
-                                        </select>
-                                    </label>
-                                </div>
+                        <div class=" d-flex justify-content-between align-items-center header-actions mx-2 row mt-75">
+                        <div class="col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start">
+                            <div class="dataTables_length" id="DataTables_Table_0_length">
+                                <label>{{__('To show')}}
+                                    <select name="mostrar" aria-controls="DataTables_Table_0" class="form-select">
+                                        <option value="100"
+                                            {{(isset($request->mostrar) ? ($request->mostrar == 100 ? 'selected' : '') : '')}}>
+                                            100</option>
+                                        <option value="50"
+                                            {{(isset($request->mostrar) ? ($request->mostrar == 50 ? 'selected' : '') : '')}}>
+                                            50</option>
+                                        <option value="25"
+                                            {{(isset($request->mostrar) ? ($request->mostrar == 25 ? 'selected' : '') : '')}}>
+                                            25</option>
+                                        <option value="10"
+                                            {{(isset($request->mostrar) ? ($request->mostrar == 10 ? 'selected' : '') : '')}}>
+                                            10</option>
+                                    </select>
+                                </label>
                             </div>
-                            <div class="col-sm-12 col-lg-8 ps-0">
-                                <div
-                                    class="dt-action-buttons d-flex align-items-center justify-content-center- justify-content-lg-end flex-lg-nowrap flex-wrap">
+                        </div>
+                        <div class="col-sm-12 col-lg-8 ps-0">
+                            <div
+                                class="dt-action-buttons d-flex align-items-center justify-content-center- justify-content-lg-end flex-lg-nowrap flex-wrap">
+                                <div class="dt-buttons d-inline-flex mt-80">
+                                    @can('empleados.create')
 
-
-                                    <div class="dt-buttons d-inline-flex mt-80">
-                                        @can('empleados.create')
-                                        <a href="{{route('admin.empleadosxposiciones.create')}}">
-                                            <span class="btn btn-primary mb-1">{{__('New Employe')}}</span>
+                                    <div class="col-m-4">
+                                        <a onclick="exportData()">
+                                            <span class="btn btn-outline-success waves-effect waves-light mb-1"
+                                                style="margin: right 10em;">{{__('Excel')}}</span>
                                         </a>
-                                        @endcan
                                     </div>
+                                    <div class="col-m-4">
+                                        <a href="{{route('admin.empleadosxposiciones.create')}}">
+                                            <span
+                                                class="btn btn-primary waves-effect waves-light mb-1">{{__('New Employe')}}</span>
+                                        </a>
+                                    </div>
+
+                                    @endcan
                                 </div>
+
+
                             </div>
                         </div>
                 </div>
-                </form>
+            </div>
+            </form>
 
-                <table class="employe-list-table table">
-                    <thead class="table-light">
-                        <tr>
-                            <th>{{__('Name')}}</th>
-                            <th>{{__('Departament')}}</th>
-                            <th>{{__('Vicepresident')}}</th>
-                            <th>{{__('Company')}}</th>
-                            <th>{{__('Status')}}</th>
-                            @canany(['empleados.edit'])
-                            <th>{{__('Action')}}</th>
-                            @endcan
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($empleados as $empleado)
-                        <tr class="odd">
-                            <td class=" control" tabindex="0" style="display: none;"></td>
-                            <td class="sorting_1">
-                                <div class="d-flex justify-content-left align-items-center">
-                                    <div class="avatar-wrapper">
-                                        <div class="avatar  me-1"><img src="http://127.0.0.1:8000/images/avatars/2.png"
-                                                alt="Avatar" height="32" width="32"></div>
-                                    </div>
-                                    <div class="d-flex flex-column"><span
-                                            class="fw-bolder">{{ucwords($empleado->nombres).' '.ucwords($empleado->apellidos)}}</span><small
-                                            class="emp_post text-muted">{{$empleado->posicion->nombre_posicion}}</small>
-                                    </div>
+            <table class="employe-list-table table">
+                <thead class="table-light">
+                    <tr>
+                        <th>{{__('Name')}}</th>
+                        <th>{{__('Departament')}}</th>
+                        <th>{{__('Vicepresident')}}</th>
+                        <th>{{__('Company')}}</th>
+                        <th>{{__('Status')}}</th>
+                        @canany(['empleados.edit'])
+                        <th>{{__('Action')}}</th>
+                        @endcan
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($empleados as $empleado)
+                    <tr class="odd">
+                        <td class=" control" tabindex="0" style="display: none;"></td>
+                        <td class="sorting_1">
+                            <div class="d-flex justify-content-left align-items-center">
+                                <div class="avatar-wrapper">
+                                    <div class="avatar  me-1"><img src="http://127.0.0.1:8000/images/avatars/2.png"
+                                            alt="Avatar" height="32" width="32"></div>
                                 </div>
-                            </td>
-                            <td>
-                                <span class=" align-middle">
-                                    {{$empleado->posicion->departamento->nombre_departamento }}
-                                </span>
-                            </td>
-                            <td>{{$empleado->posicion->departamento->vicepresidencia->nombre_vicepresidencia }}</td>
-                            <td><span
-                                    class="text-nowrap">{{$empleado->posicion->departamento->vicepresidencia->empresa->nombre }}</span>
-                            </td>
-                            <td>
-                                @if($empleado->estatus == 'A')
-                                <span class="badge rounded-pill badge-light-success">{{__('Active')}}</span>
-                                @else
-                                <span class="badge rounded-pill badge-light-danger">{{__('Inactive')}}</span>
-                                @endif
-                            </td>
-                            @canany(['empleados.edit'])
-                            <td>
-                                <div class="btn-group">
-                                    <a class="btn btn-sm dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                <div class="d-flex flex-column"><span
+                                        class="fw-bolder">{{ucwords($empleado->nombres).' '.ucwords($empleado->apellidos)}}</span><small
+                                        class="emp_post text-muted">{{$empleado->posicion->nombre_posicion}}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class=" align-middle">
+                                {{$empleado->posicion->departamento->nombre_departamento }}
+                            </span>
+                        </td>
+                        <td>{{$empleado->posicion->departamento->vicepresidencia->nombre_vicepresidencia }}</td>
+                        <td><span
+                                class="text-nowrap">{{$empleado->posicion->departamento->vicepresidencia->empresa->nombre }}</span>
+                        </td>
+                        <td>
+                            @if($empleado->estatus == 'A')
+                            <span class="badge rounded-pill badge-light-success">{{__('Active')}}</span>
+                            @else
+                            <span class="badge rounded-pill badge-light-danger">{{__('Inactive')}}</span>
+                            @endif
+                        </td>
+                        @canany(['empleados.edit'])
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-sm dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-more-vertical font-small-4">
+                                        <circle cx="12" cy="12" r="1"></circle>
+                                        <circle cx="12" cy="5" r="1"></circle>
+                                        <circle cx="12" cy="19" r="1"></circle>
+                                    </svg>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a href="{{route('admin.empleadosxposiciones.edit', $empleado->cod_empleado)}}"
+                                        class="dropdown-item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-more-vertical font-small-4">
-                                            <circle cx="12" cy="12" r="1"></circle>
-                                            <circle cx="12" cy="5" r="1"></circle>
-                                            <circle cx="12" cy="19" r="1"></circle>
+                                            class="feather feather-file-text font-small-4 me-50">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                                            </path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
                                         </svg>
+                                        {{__('Edit')}}
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a href="" class="dropdown-item">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-file-text font-small-4 me-50">
-                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
-                                                </path>
-                                                <polyline points="14 2 14 8 20 8"></polyline>
-                                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                                                <polyline points="10 9 9 9 8 9"></polyline>
-                                            </svg>
-                                            {{__('Edit')}}
-                                        </a>
 
-                                    </div>
                                 </div>
-                            </td>
-                            @endcan
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+                            </div>
+                        </td>
+                        @endcan
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-        <div class="mb-5">
-            {{ $resultados->appends(['page' => $request->page, 
+    </div>
+    <div class="mb-5">
+        {{ $resultados->appends(['page' => $request->page, 
                                       'mostrar' => $request->mostrar, 
                                       'buscar'=> $request->buscar])->links() }}
-        </div>
-        <!-- Modal to add new user starts-->
-        <div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
-            <div class="modal-dialog">
-                <form class="add-new-user modal-content pt-0">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">×</button>
-                    <div class="modal-header mb-1">
-                        <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
-                    </div>
-                    <div class="modal-body flex-grow-1">
-                        <div class="mb-1">
-                            <label class="form-label" for="basic-icon-default-fullname">Full Name</label>
-                            <input type="text" class="form-control dt-full-name" id="basic-icon-default-fullname"
-                                placeholder="John Doe" name="user-fullname" />
-                        </div>
-                        <div class="mb-1">
-                            <label class="form-label" for="basic-icon-default-uname">Username</label>
-                            <input type="text" id="basic-icon-default-uname" class="form-control dt-uname"
-                                placeholder="Web Developer" name="user-name" />
-                        </div>
-                        <div class="mb-1">
-                            <label class="form-label" for="basic-icon-default-email">Email</label>
-                            <input type="text" id="basic-icon-default-email" class="form-control dt-email"
-                                placeholder="john.doe@example.com" name="user-email" />
-                        </div>
-                        <div class="mb-1">
-                            <label class="form-label" for="basic-icon-default-contact">Contact</label>
-                            <input type="text" id="basic-icon-default-contact" class="form-control dt-contact"
-                                placeholder="+1 (609) 933-44-22" name="user-contact" />
-                        </div>
-                        <div class="mb-1">
-                            <label class="form-label" for="basic-icon-default-company">Company</label>
-                            <input type="text" id="basic-icon-default-company" class="form-control dt-contact"
-                                placeholder="PIXINVENT" name="user-company" />
-                        </div>
-                        <div class="mb-1">
-                            <label class="form-label" for="country">Country</label>
-                            <select id="country" class="select2 form-select">
-                                <option value="Australia">USA</option>
-                                <option value="Bangladesh">Bangladesh</option>
-                                <option value="Belarus">Belarus</option>
-                                <option value="Brazil">Brazil</option>
-                                <option value="Canada">Canada</option>
-                                <option value="China">China</option>
-                                <option value="France">France</option>
-                                <option value="Germany">Germany</option>
-                                <option value="India">India</option>
-                                <option value="Indonesia">Indonesia</option>
-                                <option value="Israel">Israel</option>
-                                <option value="Italy">Italy</option>
-                                <option value="Japan">Japan</option>
-                                <option value="Korea">Korea, Republic of</option>
-                                <option value="Mexico">Mexico</option>
-                                <option value="Philippines">Philippines</option>
-                                <option value="Russia">Russian Federation</option>
-                                <option value="South Africa">South Africa</option>
-                                <option value="Thailand">Thailand</option>
-                                <option value="Turkey">Turkey</option>
-                                <option value="Ukraine">Ukraine</option>
-                                <option value="United Arab Emirates">United Arab Emirates</option>
-                                <option value="United Kingdom">United Kingdom</option>
-                                <option value="United States">United States</option>
-                            </select>
-                        </div>
-                        <div class="mb-1">
-                            <label class="form-label" for="user-role">User Role</label>
-                            <select id="user-role" class="select2 form-select">
-                                <option value="subscriber">Subscriber</option>
-                                <option value="editor">Editor</option>
-                                <option value="maintainer">Maintainer</option>
-                                <option value="author">Author</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
-                        <div class="mb-2">
-                            <label class="form-label" for="user-plan">Select Plan</label>
-                            <select id="user-plan" class="select2 form-select">
-                                <option value="basic">Basic</option>
-                                <option value="enterprise">Enterprise</option>
-                                <option value="company">Company</option>
-                                <option value="team">Team</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary me-1 data-submit">Submit</button>
-                        <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <!-- Modal to add new user Ends-->
+    </div>
+
     </div>
     <!-- list and filter end -->
 </section>
@@ -400,6 +323,67 @@
 {{-- Page js files --}}
 <script src="{{ asset(mix('js/scripts/pages/app-user-list.js')) }}"></script>
 <script>
+/*function downloadExcel() {
+    let params = {
+        // Aquí puedes agregar los parámetros que necesites enviar
+        // por ejemplo, un rango de fechas para filtrar los empleados
+        FiltroPosicion: document.getElementById('FiltroPosicion').value,
+        FiltroDepartamento: document.getElementById('FiltroDepartamento').value,
+        FiltroVicepresidencia: document.getElementById('FiltroVicepresidencia').value,
+        FiltroEmpresa: document.getElementById('FiltroEmpresa').value
+    }
+    let token = document.head.querySelector('meta[name="csrf-token"]');
+    console.log(token.content);
+    fetch('/admin/app/empleadosxposiciones/downloadExcel', {
+            method: 'POST',
+            body: JSON.stringify(params),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token.content
+            }
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = 'empleados.xlsx';
+            a.click();
+        });
+}*/
+
+function downloadExcel() {
+
+
+    var FiltroPosicion = document.getElementById('FiltroPosicion').value,
+        FiltroDepartamento = document.getElementById('FiltroDepartamento').value,
+        FiltroVicepresidencia = document.getElementById('FiltroVicepresidencia').value,
+        FiltroEmpresa = document.getElementById('FiltroEmpresa').value;
+
+    let token = document.head.querySelector('meta[name="csrf-token"]');
+    console.log(token.content);
+    fetch('/empleadosxposiciones/downloadExcel/' + FiltroEmpresa + '/' + FiltroVicepresidencia + '/' +
+            FiltroDepartamento + '/' + FiltroPosicion)
+        .then(response => response.blob())
+        .then(blob => {
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = 'empleados.xlsx';
+            a.click();
+        });
+}
+
+function exportData() {
+    var FiltroPosicion = document.getElementById('FiltroPosicion').value,
+        FiltroDepartamento = document.getElementById('FiltroDepartamento').value,
+        FiltroVicepresidencia = document.getElementById('FiltroVicepresidencia').value,
+        FiltroEmpresa = document.getElementById('FiltroEmpresa').value;
+    var url = "{{ route('empleadosxposiciones.export') }}?FiltroEmpresa=" + FiltroEmpresa + "&FiltroVicepresidencia=" +
+        FiltroVicepresidencia + "&FiltroDepartamento=" + FiltroDepartamento + "&FiltroPosicion=" + FiltroPosicion;
+    window.location.href = url;
+}
+
 document.getElementById('FiltroDepartamento').addEventListener('change', function(event) {
     // Obtenemos el elemento select        
     document.getElementById('FiltroPosicion').value = '';

@@ -36,7 +36,7 @@
 }
 .email-application .content-area-wrapper .sidebar .list-group .list-group-item:hover, .email-application .content-area-wrapper .sidebar .list-group .list-group-item:focus, .email-application .content-area-wrapper .sidebar .list-group .list-group-item.active {
   background: transparent;
-  color: #7367f0;
+  color: #D81159;
 }
 .email-application .content-area-wrapper .sidebar .list-group .list-group-item.active {
   border-color: #7367f0;
@@ -15117,7 +15117,7 @@
   background-color: #f8f8f8;
 }
 .email-application .content-area-wrapper .email-user-list .email-media-list li.selected-row-bg {
-  background-color: rgba(115, 103, 240, 0.06);
+  background-color: rgba(216, 17, 89, 0.06);
 }
 .email-application .content-area-wrapper .email-user-list .email-media-list li.selected-row-bg:not(:first-child) {
   border-color: #e4e1e8;
@@ -15150,8 +15150,8 @@
 }
 .email-application .content-area-wrapper .email-user-list .email-media-list .user-action .email-favorite i.favorite,
 .email-application .content-area-wrapper .email-user-list .email-media-list .user-action .email-favorite svg.favorite {
-  fill: #ff9f43;
-  stroke: #ff9f43;
+  fill: #f17300;
+  stroke: #f17300;
 }
 .email-application .content-area-wrapper .email-user-list .no-results {
   display: none;

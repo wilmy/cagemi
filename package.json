@@ -22,7 +22,7 @@
         "postcss": "^8.1.14",
         "resolve-url-loader": "5.0.0",
         "rtlcss": "^3.0",
-        "sass": "1.30.0",
+        "sass": "^1.30.0",
         "sass-loader": "12.1.0"
     }
 }

@@ -34,7 +34,7 @@
 .btn-gradient-primary {
   color: #fff;
   transition: all 0.2s ease;
-  background-image: linear-gradient(47deg, #7367f0, #9e95f5);
+  background-image: linear-gradient(47deg, #D81159, #ef2d73);
   background-repeat: repeat;
 }
 .bg-gradient-primary:hover, .bg-gradient-primary:active,
@@ -53,7 +53,7 @@
 .bg-gradient-primary:active, .bg-gradient-primary:focus,
 .btn-gradient-primary:active,
 .btn-gradient-primary:focus {
-  background-image: linear-gradient(47deg, #4839eb, #7367f0);
+  background-image: linear-gradient(47deg, #a90d46, #D81159);
   background-repeat: repeat;
 }
 
@@ -88,7 +88,7 @@
 .btn-gradient-success {
   color: #fff;
   transition: all 0.2s ease;
-  background-image: linear-gradient(47deg, #28c76f, #48da89);
+  background-image: linear-gradient(47deg, #2d9f64, #38c77d);
   background-repeat: repeat;
 }
 .bg-gradient-success:hover, .bg-gradient-success:active,
@@ -107,7 +107,7 @@
 .bg-gradient-success:active, .bg-gradient-success:focus,
 .btn-gradient-success:active,
 .btn-gradient-success:focus {
-  background-image: linear-gradient(47deg, #1f9d57, #28c76f);
+  background-image: linear-gradient(47deg, #22774b, #2d9f64);
   background-repeat: repeat;
 }
 
@@ -115,7 +115,7 @@
 .btn-gradient-info {
   color: #fff;
   transition: all 0.2s ease;
-  background-image: linear-gradient(47deg, #00cfe8, #1ce7ff);
+  background-image: linear-gradient(47deg, #0496FF, #37abff);
   background-repeat: repeat;
 }
 .bg-gradient-info:hover, .bg-gradient-info:active,
@@ -134,7 +134,7 @@
 .bg-gradient-info:active, .bg-gradient-info:focus,
 .btn-gradient-info:active,
 .btn-gradient-info:focus {
-  background-image: linear-gradient(47deg, #00a1b5, #00cfe8);
+  background-image: linear-gradient(47deg, #0079d0, #0496FF);
   background-repeat: repeat;
 }
 
@@ -142,7 +142,7 @@
 .btn-gradient-warning {
   color: #fff;
   transition: all 0.2s ease;
-  background-image: linear-gradient(47deg, #ff9f43, #ffb976);
+  background-image: linear-gradient(47deg, #f17300, #ff8d25);
   background-repeat: repeat;
 }
 .bg-gradient-warning:hover, .bg-gradient-warning:active,
@@ -161,7 +161,7 @@
 .bg-gradient-warning:active, .bg-gradient-warning:focus,
 .btn-gradient-warning:active,
 .btn-gradient-warning:focus {
-  background-image: linear-gradient(47deg, #ff8510, #ff9f43);
+  background-image: linear-gradient(47deg, #be5b00, #f17300);
   background-repeat: repeat;
 }
 
@@ -169,7 +169,7 @@
 .btn-gradient-danger {
   color: #fff;
   transition: all 0.2s ease;
-  background-image: linear-gradient(47deg, #ea5455, #f08182);
+  background-image: linear-gradient(47deg, #c20114, #f50119);
   background-repeat: repeat;
 }
 .bg-gradient-danger:hover, .bg-gradient-danger:active,
@@ -188,6 +188,6 @@
 .bg-gradient-danger:active, .bg-gradient-danger:focus,
 .btn-gradient-danger:active,
 .btn-gradient-danger:focus {
-  background-image: linear-gradient(47deg, #e42728, #ea5455);
+  background-image: linear-gradient(47deg, #8f010f, #c20114);
   background-repeat: repeat;
 }
