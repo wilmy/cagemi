@@ -31,14 +31,14 @@ class PublicacionesController extends Controller
         
         $data_public = DB::table('tb_publicaciones')
                             ->join('users' ,'tb_publicaciones.cod_usuario','=','users.id')
-                            ->select('tb_publicaciones.*','users.name','users.cod_empleado')
+                            ->select('tb_publicaciones.*','users.name','users.cod_empleado','users.profile_photo_path')
                             ->where([['tb_publicaciones.estatus', 'A']])
                             ->orderBy('tb_publicaciones.created_at','DESC')
                             ->get();
         
 
-        //$url_http = 'https://5a5c-152-166-159-138.ngrok.io';
-        $url_http =  'http://18.217.9.139/';
+        $url_http = 'https://fdbc-38-44-16-250.ngrok.io';
+        //$url_http =  'http://18.217.9.139/';
         
         if(count($data_public) > 0)
         {
@@ -89,7 +89,7 @@ class PublicacionesController extends Controller
                                 "estatus" => "success",
                                 "cod_publicacion" => $post->cod_publicacion,
                                 "nombre" =>  $post->name,
-                                "avatar" =>  $url_http.'/images/avatars/'.$rand.'.png',
+                                "avatar" =>  ($post->profile_photo_path != '' ? $url_http.'/images/avatars/'.$post->profile_photo_path : $url_http.'/images/logo/logo.png'),
                                 "tipo" =>  $nombre_posicion,
                                 "postImage" =>  $array_imagenes,
                                 "postComentario" =>  $post->texto,
@@ -98,6 +98,8 @@ class PublicacionesController extends Controller
                                 "postLikeUser" => $postLikeUser,
                                 "postComent" =>  $postComent,
                                 "comentario" =>  '',
+                                "permite_comentario" =>  $post->permite_comentario,
+                                "permite_reaccion" =>  $post->permite_reaccion,
                                 "activeInput" =>  false,
                                 "configPost" =>  false
                             );
@@ -175,6 +177,8 @@ class PublicacionesController extends Controller
         $tipo_publicacion       = (isset($request->tipo_publicacion) ? $request->tipo_publicacion : '');  
         $commentario            = (isset($request->commentario) ? $request->commentario : '');
         $grupos                 = (isset($request->grupos) ? $request->grupos : '');
+        $permiteReaccion        = (isset($request->permiteReaccion) ? $request->permiteReaccion : 'N');
+        $permitecomentario      = (isset($request->permitecomentario) ? $request->permitecomentario : 'N');
 
         
         if(empty($cod_usuario) && 
@@ -192,8 +196,8 @@ class PublicacionesController extends Controller
             $cod_comunidad          = $grupos;
             $cod_tipo_publicacion   = $tipo_publicacion;
             $texto                  = $commentario;
-            $permite_reaccion       = 'S';
-            $permite_comentario     = 'S';
+            $permite_reaccion       = $permiteReaccion; 
+            $permite_comentario     = $permitecomentario;
 
             $validate_input = new ValidacionesController;
             
