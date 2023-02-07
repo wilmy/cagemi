@@ -7,6 +7,10 @@ use App\Http\Controllers\Api\CargaDatosController;
 use App\Http\Controllers\Api\PublicacionesController;
 use App\Http\Controllers\Api\TiposPublicacionesController;
 use App\Http\Controllers\Api\EmpresasXGruposEmpresarialesController;
+use App\Http\Controllers\Api\DireccionesVicepresidenciasController;
+use App\Http\Controllers\Api\DepartamentosXVicepresidenciasApiController;
+use App\Http\Controllers\Api\EmpleadosXPosicionApiController;
+use App\Http\Controllers\Api\PosicionesXDepartamentosApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,3 +65,10 @@ Route::post('/likepublicacion', [PublicacionesController::class, 'likepublicacio
 Route::get('/tempdata', [CargaDatosController::class, 'index']);
 Route::get('/tempdata/{page}', [CargaDatosController::class, 'index']);
 
+Route::get('/vicepresidencias/{cod_empresa}', [DireccionesVicepresidenciasController::class, 'index']);
+
+Route::get('/departamentos/{cod_vicepresidencia}/{grupo}', [DepartamentosXVicepresidenciasApiController::class, 'index']);
+
+Route::get('/posiciones/{cod_departamento}/{grupo}', [PosicionesXDepartamentosApiController::class, 'index']);
+
+Route::get('/empleados/{pagina}/{grupo}', [EmpleadosXPosicionApiController::class, 'index']);

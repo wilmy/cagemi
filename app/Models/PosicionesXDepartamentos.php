@@ -15,4 +15,10 @@ class PosicionesXDepartamentos extends Model
         'cod_departamento',
         'nombre_posicion',
     ];
+
+    public function departamento()
+    {
+        return $this->belongsTo(DepartamentosXVicepresidencias::class, 'cod_departamento');
+    }
+
 }

@@ -44,12 +44,25 @@ class PantallasSeeder extends Seeder
                             'slug' => 'users', 
                             'url' => 'admin/app/users',
                             'descripcion' => 'Usuarios - pantalla para crear los usuarios del sistema',
-                            'orden' => 1,
+                            'orden' => 2,
                             'icono' => 'circle',
                             'ver' => 'users.index',
                             'crear' => 'users.create',
                             'editar' => 'users.edit',
                             'eliminar' => 'users.destroy',
+                            'estatus'  => 'A'
+                            ]);
+
+        Pantallas::create([ 'id_padre' => $result_new_pantalla->cod_pantalla,
+                            'nombre' => 'Empleados',
+                            'slug' => 'empleados', 
+                            'url' => 'admin/app/empleadosxposiciones',
+                            'descripcion' => 'Mantimiento de empleados',
+                            'orden' => 1,
+                            'icono' => 'circle',
+                            'ver' => 'users.index',
+                            'crear' => 'empleados.create',
+                            'editar' => 'empleados.edit',
                             'estatus'  => 'A'
                             ]);
 
@@ -69,7 +82,7 @@ class PantallasSeeder extends Seeder
                             'slug' => 'roles', 
                             'url' => 'admin/app/roles',
                             'descripcion' => 'Roles - pantalla para crear los roles de los usuarios del sistema',
-                            'orden' => 2,
+                            'orden' => 3,
                             'icono' => 'circle',
                             'ver' => 'roles.index',
                             'crear' => 'roles.create',
@@ -88,13 +101,59 @@ class PantallasSeeder extends Seeder
                                 'ver' => 'menu-empresa',
                                 'estatus'  => 'A'
                             ]);
+        Pantallas::create([
+                            'id_padre' => $result_new_pantalla1->cod_pantalla,
+                            'nombre' => 'Departamentos',
+                            'slug' => 'departamentos', 
+                            'url' => '/admin/app/departamentos',
+                            'descripcion' => 'Mantenimiento departamentos por vicepresidencias',
+                            'orden' => 3,
+                            'icono' => 'user-group',
+                            'ver' => 'departamentos.index',
+                            'estatus'  => 'A'
+                            ]);
+
+        Pantallas::create([
+                            'id_padre' => $result_new_pantalla1->cod_pantalla,
+                            'nombre' => 'Posiciones',
+                            'slug' => 'posiciones', 
+                            'url' => '/admin/app/posicionesxdepartamentos',
+                            'descripcion' => 'Mantenimiento de posiciones por departamentos',
+                            'orden' => 4,
+                            'icono' => 'user-group',
+                            'ver' => 'posiciones.index',
+                            'estatus'  => 'A'
+                            ]);
+
+        Pantallas::create([
+                            'id_padre' => $result_new_pantalla1->cod_pantalla,
+                            'nombre' => 'Vicepresidencias o Direcciones',
+                            'slug' => 'vicepresidencias', 
+                            'url' => '/admin/app/vicepresidencias',
+                            'descripcion' => 'Mantenimiento de vicepresidencias por empresa',
+                            'orden' => 2,
+                            'icono' => 'user-group',
+                            'ver' => 'vicepresidencias.index',
+                            'estatus'  => 'A'
+                            ]);
+        Pantallas::create([
+                            'id_padre' => $result_new_pantalla1->cod_pantalla,
+                            'nombre' => 'Empresas',
+                            'slug' => 'empresas', 
+                            'url' => '/admin/app/empresas',
+                            'descripcion' => 'Mantenimiento de empresas',
+                            'orden' => 1,
+                            'icono' => 'user-group',
+                            'ver' => 'empresas.index',
+                            'estatus'  => 'A'
+                            ]);
 
         Pantallas::create(['id_padre' => $result_new_pantalla1->cod_pantalla,
                             'nombre' => 'Grupos Empresariales',
                             'slug' => 'grupo-empresarial', 
                             'url' => '/admin/app/grupoEmpresarial',
                             'descripcion' => 'Grupos de Empresas',
-                            'orden' => 1,
+                            'orden' => 5,
                             'icono' => 'home',
                             'ver' => 'grupo_empresarial.index',
                             'estatus'  => 'A'
@@ -105,7 +164,7 @@ class PantallasSeeder extends Seeder
                             'slug' => 'carga-datos', 
                             'url' => '/admin/app/cargaDatos',
                             'descripcion' => 'Carga de datos temporales',
-                            'orden' => 2,
+                            'orden' => 6,
                             'icono' => 'download',
                             'ver' => 'cargadatos.index',
                             'estatus'  => 'A'
@@ -117,11 +176,13 @@ class PantallasSeeder extends Seeder
                         'slug' => 'validacion-datos', 
                         'url' => '/admin/app/validacionDatos',
                         'descripcion' => 'Validacion de datos temporales',
-                        'orden' => 3,
+                        'orden' => 7,
                         'icono' => 'home',
                         'ver' => 'validaciondatos.index',
                         'estatus'  => 'A'
                         ]);
+
+        
 
         $result_new_pantalla3 = Pantallas::create([ 
                                     'nombre' => 'Configuracion',

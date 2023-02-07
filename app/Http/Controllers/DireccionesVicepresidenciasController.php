@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CargaDatos;
 use Illuminate\Http\Request;
 use App\Models\DireccionesVicepresidencias;
+use Illuminate\Support\Facades\DB;
 use App\Models\EmpresasXGruposEmpresariales;
 
 class DireccionesVicepresidenciasController extends Controller
@@ -14,9 +15,85 @@ class DireccionesVicepresidenciasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $buscar         = (isset($request->buscar) ? $request->buscar : '');
+        $mostrar        = (isset($request->mostrar) ? $request->mostrar : 100);
+        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+
+        if($buscar != '')
+        {
+           
+            $resultados = DB::table('tb_vicepresidencia_x_empresa')
+                        ->join('tb_empresas_x_grupos_empresariales', 'tb_empresas_x_grupos_empresariales.cod_empresa', '=', 'tb_vicepresidencia_x_empresa.cod_empresa')
+                        ->select('tb_vicepresidencia_x_empresa.*')
+                        ->where([['tb_vicepresidencia_x_empresa.nombre_vicepresidencia', 'LIKE', '%'.$buscar.'%'], 
+                                 ['tb_empresas_x_grupos_empresariales.cod_grupo_empresarial', '=', $codGrupoEmpresarial ]])
+                        ->orderBy('nombre_vicepresidencia', 'ASC')->paginate($mostrar);
+        }
+        else
+        {
+            $resultados = DB::table('tb_vicepresidencia_x_empresa')
+                        ->join('tb_empresas_x_grupos_empresariales', 'tb_empresas_x_grupos_empresariales.cod_empresa', '=', 'tb_vicepresidencia_x_empresa.cod_empresa')
+                        ->select('tb_vicepresidencia_x_empresa.*')
+                        ->where([['tb_empresas_x_grupos_empresariales.cod_grupo_empresarial', '=', $codGrupoEmpresarial ]])
+                        ->orderBy('nombre_vicepresidencia', 'ASC')->paginate($mostrar);
+
+        }
+
+        $coleccion = collect($resultados->items()); 
+
+        $vicepresidencias = $coleccion->map(function ($item, $key) {
+            $vicepresidencia = new DireccionesVicepresidencias();
+
+            $vicepresidencia->cod_vicepresidencia = $item->cod_vicepresidencia;
+            $vicepresidencia->cod_empresa = $item->cod_empresa;
+            $vicepresidencia->nombre_vicepresidencia = $item->nombre_vicepresidencia;
+            $vicepresidencia->created_at = $item->created_at;
+            $vicepresidencia->updated_at = $item->updated_at;
+
+            return $vicepresidencia;
+        });    
+       
+        //dd($viceprecidencias);
+        $pageConfigs = ['pageHeader' => true];
+        
+        return view('/content/apps/vicepresidencias.index', ['vicepresidencias' => $vicepresidencias, 
+                                                          'resultados' => $resultados,
+                                                            'pageConfigs' => $pageConfigs,
+                                                            'request'=>$request]);
+    }
+
+    public function getVicepresidencias($cod_empresa = '')
+    {
+        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
+
+        $resultados = DB::table('tb_vicepresidencia_x_empresa')
+                        ->join('tb_empresas_x_grupos_empresariales', 'tb_empresas_x_grupos_empresariales.cod_empresa', '=', 'tb_vicepresidencia_x_empresa.cod_empresa')
+                        ->select('tb_vicepresidencia_x_empresa.*')
+                        ->where([['tb_empresas_x_grupos_empresariales.cod_grupo_empresarial', '=', $codGrupoEmpresarial ]])
+                        ->where(function ($query) use ($cod_empresa) {
+                            if ($cod_empresa != '') {
+                                $query->where('tb_vicepresidencia_x_empresa.cod_empresa', '=', $cod_empresa);                                
+                            }
+                        })
+                        ->orderBy('nombre_vicepresidencia', 'ASC')->get();
+
+        $coleccion = collect($resultados); 
+
+        $viceprecidencias = $coleccion->map(function ($item, $key) {
+            $viceprecidencia = new DireccionesVicepresidencias();
+
+            $viceprecidencia->cod_vicepresidencia = $item->cod_vicepresidencia;
+            $viceprecidencia->cod_empresa = $item->cod_empresa;
+            $viceprecidencia->nombre_vicepresidencia = $item->nombre_vicepresidencia;
+            $viceprecidencia->created_at = $item->created_at;
+            $viceprecidencia->updated_at = $item->updated_at;
+
+            return $viceprecidencia;
+        });  
+
+        return $viceprecidencias;
     }
 
     /**
@@ -26,7 +103,13 @@ class DireccionesVicepresidenciasController extends Controller
      */
     public function create()
     {
-        //
+        $pageConfigs = ['pageHeader' => false];  
+        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;      
+
+        $empresas = EmpresasXGruposEmpresariales::where('cod_grupo_empresarial', $codGrupoEmpresarial)->get(); 
+
+        return view('/content/apps/vicepresidencias/create', ['pageConfigs' => $pageConfigs,
+                                                            'empresas' =>  $empresas ]);
     }
 
     /**
@@ -37,6 +120,22 @@ class DireccionesVicepresidenciasController extends Controller
      */
     public function store(Request $request)
     {
+        if(isset($request->esFormulario)){
+            $validator = $request->validate([
+                'nombre' => ['required'],
+                'empresa' => ['required'],
+            ]);
+
+            DireccionesVicepresidencias::create([
+                                                'nombre_vicepresidencia' => $request->nombre,
+                                                'cod_empresa' => $request->empresa
+                                            ]);
+            
+            return redirect('admin/app/vicepresidencias/')
+            ->with(['message' => 'Vicepresicidencia o Direccion creada correctamente ', 
+                    'alert' => 'success']);
+        }
+       
         $validator = $request->validate([
             'vicepresidencias' => ['required'],
             'empresa' => ['required'],
@@ -105,9 +204,19 @@ class DireccionesVicepresidenciasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($cod_viceprsidencia)
     {
-        //
+        $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;  
+
+        $vicepresidencia = DireccionesVicepresidencias::where('cod_vicepresidencia', $cod_viceprsidencia)->first();
+
+        $pageConfigs = ['pageHeader' => true];
+        
+        $empresas = EmpresasXGruposEmpresariales::where('cod_grupo_empresarial', $codGrupoEmpresarial)->get();
+        
+        return view('/content/apps/vicepresidencias/edit', ['empresas' => $empresas, 
+                                                         'vicepresidencia' => $vicepresidencia,
+                                                         'pageConfigs' => $pageConfigs]);
     }
 
     /**
@@ -117,9 +226,22 @@ class DireccionesVicepresidenciasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $cod_vicepresidencia)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => ['required'],
+            'empresa' => ['required'],
+        ]);
+
+        DireccionesVicepresidencias::where('cod_vicepresidencia', $cod_vicepresidencia)
+                                        ->update([
+                                                'nombre_vicepresidencia' => $request->nombre,
+                                                'cod_empresa' => $request->empresa
+                                            ]);
+        
+        return redirect('admin/app/vicepresidencias/')
+        ->with(['message' => 'Vicepresidencia actulizada correctamente ', 
+                'alert' => 'success']);
     }
 
     /**

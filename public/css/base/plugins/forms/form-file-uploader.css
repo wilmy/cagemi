@@ -1,6 +1,6 @@
 .dropzone {
   min-height: 350px;
-  border: 2px dashed #7367f0;
+  border: 2px dashed #D81159;
   background: #f8f8f8;
   position: relative;
 }
@@ -19,7 +19,7 @@
 }
 .dropzone .dz-message:before {
   content: "";
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237367f0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-download'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'%3E%3C/path%3E%3Cpolyline points='7 10 12 15 17 10'%3E%3C/polyline%3E%3Cline x1='12' y1='15' x2='12' y2='3'%3E%3C/line%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D81159' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-download'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'%3E%3C/path%3E%3Cpolyline points='7 10 12 15 17 10'%3E%3C/polyline%3E%3Cline x1='12' y1='15' x2='12' y2='3'%3E%3C/line%3E%3C/svg%3E");
   font-size: 80px;
   position: absolute;
   top: 14rem;
@@ -28,7 +28,7 @@
   display: inline-block;
   line-height: 1;
   z-index: 2;
-  color: #7367f0;
+  color: #D81159;
   text-indent: 0px;
   font-weight: normal;
   -webkit-font-smoothing: antialiased;
@@ -47,19 +47,19 @@
   background: transparent !important;
 }
 .dropzone .dz-preview .dz-error-message {
-  background: #ea5455;
+  background: #c20114;
 }
 .dropzone .dz-preview .dz-error-message:after {
-  border-bottom: 6px solid #ea5455;
+  border-bottom: 6px solid #c20114;
 }
 .dropzone .dz-preview .dz-remove {
   font-size: 1.1rem;
-  color: #ea5455;
+  color: #c20114;
   line-height: 2rem;
 }
 .dropzone .dz-preview .dz-remove:before {
   content: "";
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ea5455' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-x'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c20114' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-x'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");
   display: inline-block;
   line-height: 1;
   z-index: 2;
@@ -69,7 +69,7 @@
 }
 .dropzone .dz-preview .dz-remove:hover {
   text-decoration: none;
-  color: #e42728;
+  color: #8f010f;
 }
 
 @media (max-width: 576px) {

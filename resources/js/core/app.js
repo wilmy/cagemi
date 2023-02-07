@@ -8,12 +8,12 @@
 ==========================================================================================*/
 window.colors = {
   solid: {
-    primary: '#7367F0',
+    primary: '#D81159',
     secondary: '#82868b',
-    success: '#28C76F',
-    info: '#00cfe8',
-    warning: '#FF9F43',
-    danger: '#EA5455',
+    success: '#2d9f64',
+    info: '#0496FF',
+    warning: '#f17300',
+    danger: '#C20114',
     dark: '#4b4b4b',
     black: '#000',
     white: '#fff',

@@ -50,7 +50,7 @@ body.dark-layout {
   border-color: #3b4253 !important;
 }
 .dark-layout a:hover {
-  color: #7367f0;
+  color: #D81159;
 }
 .dark-layout label {
   color: #d0d2d6;
@@ -249,7 +249,7 @@ body.dark-layout {
   background-color: #161d31;
 }
 .dark-layout .main-menu .collapse-toggle-icon {
-  color: #7367f0 !important;
+  color: #D81159 !important;
 }
 .dark-layout .ps__thumb-x,
 .dark-layout .ps__thumb-y {
@@ -378,7 +378,7 @@ body.dark-layout {
   background: #4b4b4b;
 }
 .dark-layout .btn-group label[class*=btn-outline-] {
-  color: #7367f0 !important;
+  color: #D81159 !important;
 }
 .dark-layout .dropdown-menu {
   background-color: #283046;
@@ -391,12 +391,12 @@ body.dark-layout {
   color: #b4b7bd;
 }
 .dark-layout .dropdown-menu .dropdown-item:hover, .dark-layout .dropdown-menu .dropdown-item:focus {
-  background: rgba(115, 103, 240, 0.12);
-  color: #7367f0;
+  background: rgba(216, 17, 89, 0.12);
+  color: #D81159;
 }
 .dark-layout .dropdown-menu .dropdown-item:active, .dark-layout .dropdown-menu .dropdown-item.active {
   color: #fff;
-  background-color: #7367f0;
+  background-color: #D81159;
 }
 .dark-layout .dropdown-menu .dropdown-item.disabled, .dark-layout .dropdown-menu .dropdown-item:disabled {
   color: #676d7d;
@@ -432,7 +432,7 @@ body.dark-layout {
   background-color: #242b3d;
 }
 .dark-layout .pagination:not([class*=pagination-]) .page-item.active .page-link {
-  background-color: #7367f0;
+  background-color: #D81159;
 }
 .dark-layout .pagination:not([class*=pagination-]) .page-item.active .page-link:hover {
   color: #fff;
@@ -442,7 +442,7 @@ body.dark-layout {
   color: #b4b7bd;
 }
 .dark-layout .pagination:not([class*=pagination-]) .page-item .page-link:hover {
-  color: #7367f0;
+  color: #D81159;
 }
 .dark-layout .pagination:not([class*=pagination-]) .page-item.prev-item .page-link:hover, .dark-layout .pagination:not([class*=pagination-]) .page-item.next-item .page-link:hover {
   color: #fff;
@@ -483,7 +483,7 @@ body.dark-layout {
 .dark-layout .nav-pills .nav-item .nav-link.active,
 .dark-layout .nav-tabs.nav-justified .nav-item .nav-link.active {
   background-color: #283046;
-  color: #7367f0;
+  color: #D81159;
 }
 .dark-layout .nav-tabs .nav-item .nav-link.disabled,
 .dark-layout .nav-pills .nav-item .nav-link.disabled,
@@ -495,7 +495,7 @@ body.dark-layout {
 }
 .dark-layout .nav-pills .nav-item .nav-link.active {
   color: #fff;
-  background-color: #7367f0;
+  background-color: #D81159;
 }
 .dark-layout .popover.bs-popover-top .popover-arrow:before {
   border-top-color: #3b4253;
@@ -624,7 +624,7 @@ body.dark-layout {
   background-color: #161d31;
 }
 .dark-layout .card-tiny-line-stats .apexcharts-series-markers .apexcharts-marker {
-  stroke: #00cfe8;
+  stroke: #0496FF;
 }
 .dark-layout .card-tiny-line-stats .apexcharts-series-markers:last-child .apexcharts-marker {
   fill: #283046;
@@ -693,7 +693,7 @@ body.dark-layout {
   color: #b4b7bd !important;
 }
 .dark-layout .char-textarea.max-limit {
-  color: #ea5455 !important;
+  color: #c20114 !important;
 }
 .dark-layout .form-check-input:not(:checked) {
   background-color: #283046;
@@ -728,7 +728,7 @@ body.dark-layout {
 .dark-layout .was-validated .form-check-input.is-invalid,
 .dark-layout .was-validated select.form-select:not(:focus):invalid,
 .dark-layout .was-validated select.form-select:not(:focus).is-valid {
-  border-color: #ea5455 !important;
+  border-color: #c20114 !important;
 }
 .dark-layout .was-validated .form-control:valid,
 .dark-layout .was-validated .form-control.is-valid,
@@ -736,7 +736,7 @@ body.dark-layout {
 .dark-layout .was-validated .form-check-input.is-valid,
 .dark-layout .was-validated select.form-select:not(:focus):valid,
 .dark-layout .was-validated select.form-select:not(:focus).is-valid {
-  border-color: #28c76f !important;
+  border-color: #2d9f64 !important;
 }
 .dark-layout .wizard .steps ul .disabled a,
 .dark-layout .wizard .steps ul .done a {
@@ -758,7 +758,7 @@ body.dark-layout {
 }
 .dark-layout .input-group:focus-within .form-control,
 .dark-layout .input-group:focus-within .input-group-text {
-  border-color: #7367f0;
+  border-color: #D81159;
   box-shadow: none;
 }
 .dark-layout .form-label-group > input:not(:focus):not(:-moz-placeholder-shown) ~ label, .dark-layout .form-label-group > textarea:not(:focus):not(:-moz-placeholder-shown) ~ label {
@@ -856,7 +856,7 @@ body.dark-layout {
 .dark-layout .dataTables_wrapper .dt-buttons .buttons-print:active,
 .dark-layout .dataTables_wrapper .dt-buttons .btn-secondary:active,
 .dark-layout .dataTables_wrapper .dt-buttons .dt-button-collection [class*=buttons-]:active {
-  background-color: #7367f0 !important;
+  background-color: #D81159 !important;
   color: #fff;
 }
 .dark-layout .dataTables_wrapper .dt-button-collection > div[role=menu] {
@@ -954,7 +954,7 @@ body.dark-layout {
   box-shadow: 0 3px 10px 0 #283046;
 }
 .dark-layout .email-application .content-area-wrapper .email-app-list .email-user-list .user-mail.selected-row-bg {
-  background-color: rgba(115, 103, 240, 0.06);
+  background-color: rgba(216, 17, 89, 0.06);
   border-color: #3b4253;
 }
 .dark-layout .email-application .content-area-wrapper .email-app-list .email-user-list .user-mail .user-details p,
@@ -1344,7 +1344,7 @@ body.dark-layout {
   background-color: #283046;
 }
 .dark-layout .app-user-view .plan-card {
-  border-color: #7367f0 !important;
+  border-color: #D81159 !important;
 }
 .dark-layout .customizer {
   background-color: #283046;
@@ -1408,7 +1408,7 @@ body.dark-layout {
   color: #b4b7bd;
 }
 .dark-layout .horizontal-layout .main-menu-content .navbar-nav > li.active .dropdown-menu li.active > a:hover {
-  color: #7367f0 !important;
+  color: #D81159 !important;
 }
 .dark-layout .horizontal-layout .main-menu-content .navbar-nav > li.active .dropdown-menu li.open.active > a {
   color: #b4b7bd !important;

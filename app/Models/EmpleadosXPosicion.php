@@ -27,4 +27,10 @@ class EmpleadosXPosicion extends Model
         'estatus', 
         'activo_hasta'
     ];
+
+    public function posicion()
+    {
+        return $this->belongsTo(PosicionesXDepartamentos::class, 'cod_posicion');
+    }
+
 }

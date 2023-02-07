@@ -18,4 +18,21 @@ class EmpresasXGruposEmpresariales extends Model
         'estatus', 
         'logo'
     ];
+
+    public function departamentos()
+    {
+        return $this->hasManyThrough(
+            DepartamentosXVicepresidencias::class,
+            DireccionesVicepresidencias::class,
+            'cod_empresa', // Foreign key on the DireccionesVicepresidencias table...
+            'cod_vicepresidencia', // Foreign key on the DepartamentosXVicepresidencias table...
+            'cod_empresa', // Local key on the EmpresasXGruposEmpresariales table...
+            'cod_vicepresidencia' // Local key on the DireccionesVicepresidencias table...
+        );
+    }
+
+    public function viceprecidencias()
+    {
+        return $this->hasMany(DireccionesVicepresidencias::class, 'cod_empresa', 'cod_empresa');
+    }   
 }
