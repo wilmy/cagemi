@@ -37,8 +37,8 @@ class PublicacionesController extends Controller
                             ->get();
         
 
-        $url_http = 'https://4952-38-44-16-250.ngrok.io';
-        //$url_http =  'http://18.217.9.139/';
+        //$url_http = 'https://4952-38-44-16-250.ngrok.io';
+        $url_http =  'http://18.217.9.139/';
         
         if(count($data_public) > 0)
         {
