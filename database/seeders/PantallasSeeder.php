@@ -108,7 +108,7 @@ class PantallasSeeder extends Seeder
                             'url' => '/admin/app/departamentos',
                             'descripcion' => 'Mantenimiento departamentos por vicepresidencias',
                             'orden' => 3,
-                            'icono' => 'user-group',
+                            'icono' => 'circle',
                             'ver' => 'departamentos.index',
                             'estatus'  => 'A'
                             ]);
@@ -120,7 +120,7 @@ class PantallasSeeder extends Seeder
                             'url' => '/admin/app/posicionesxdepartamentos',
                             'descripcion' => 'Mantenimiento de posiciones por departamentos',
                             'orden' => 4,
-                            'icono' => 'user-group',
+                            'icono' => 'circle',
                             'ver' => 'posiciones.index',
                             'estatus'  => 'A'
                             ]);
@@ -132,7 +132,7 @@ class PantallasSeeder extends Seeder
                             'url' => '/admin/app/vicepresidencias',
                             'descripcion' => 'Mantenimiento de vicepresidencias por empresa',
                             'orden' => 2,
-                            'icono' => 'user-group',
+                            'icono' => 'circle',
                             'ver' => 'vicepresidencias.index',
                             'estatus'  => 'A'
                             ]);
@@ -143,7 +143,7 @@ class PantallasSeeder extends Seeder
                             'url' => '/admin/app/empresas',
                             'descripcion' => 'Mantenimiento de empresas',
                             'orden' => 1,
-                            'icono' => 'user-group',
+                            'icono' => 'circle',
                             'ver' => 'empresas.index',
                             'estatus'  => 'A'
                             ]);
