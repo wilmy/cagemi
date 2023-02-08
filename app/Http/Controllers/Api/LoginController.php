@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use App\Models\CargaDatos;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\EmpleadosXPosicion;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +22,7 @@ class LoginController extends Controller
      */
     public function index(Request $request)
     {
+        $token = (isset($request->token) ? $request->token  : '');
         $data = array();
         $dataUser = DB::table('users')
                         ->leftjoin('tb_empleados_x_posicion', 'users.cod_empleado', '=','tb_empleados_x_posicion.cod_empleado_empresa')
@@ -28,11 +30,30 @@ class LoginController extends Controller
                                 ['users.cod_grupo_empresarial', '=', $request->empresa],
                                 ['users.cod_empleado', '=', $request->user]
                             ])
-                        ->select('tb_empleados_x_posicion.*', 'users.password', 'users.cambio_password', 'users.id', 'users.cod_grupo_empresarial', 'users.email_verified_at')
+                        ->select('tb_empleados_x_posicion.*', 'users.token_autentication', 'users.password', 'users.cambio_password', 'users.id', 'users.cod_grupo_empresarial', 'users.email_verified_at')
                         ->first();
         if($dataUser)
         {
             if(Hash::check($request->password, $dataUser->password))
+            {
+                $completar_datos = false;
+                $cambio_password = $dataUser->cambio_password;
+
+                if($dataUser->correo_personal == '' ||
+                    $dataUser->fecha_nacimiento == '' ||
+                    $dataUser->telefono_movil  == '' ||
+                    $dataUser->telefono_institucional == '' ||
+                    $dataUser->extencion == '') 
+                { 
+                    $completar_datos = true;
+                }
+
+                array_push($data, array("estatus" => 'success',
+                                        'cambio_pass' => $cambio_password,
+                                        'completar_datos' => $completar_datos,
+                                        "dataUser" => $dataUser));
+            }
+            else if(($token == $dataUser->token_autentication))
             {
                 $completar_datos = false;
                 $cambio_password = $dataUser->cambio_password;
@@ -160,6 +181,36 @@ class LoginController extends Controller
         }
     }
 
+
+    public function generate_token(Request $request)
+    { 
+        $data = array();
+       
+        $id_user                    = (isset($request->id_user) ? $request->id_user : '');   
+
+        if(empty($id_user))
+        {
+            array_push($data, array("estatus" => 'error', "message" => "No hay datos para generar el token"));
+        }
+        else
+        {
+            $data_in_emplead = User::find($id_user);
+            $token = Str::uuid();
+            $this->validateValue($data_in_emplead, 'token_autentication', $token);
+
+            if($data_in_emplead->save())
+            {
+               array_push($data, array("estatus" => 'success', "token"=> $token, "message" => "Token generado correctamente"));
+            }
+            else
+            {
+                array_push($data, array("estatus" => 'error', "message" => "Error, al generrar el token."));
+            }
+        }
+
+        return response()->json($data); 
+    }
+    
     /**
      * Show the form for creating a new resource.
      *

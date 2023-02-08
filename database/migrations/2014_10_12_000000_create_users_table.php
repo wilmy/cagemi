@@ -27,6 +27,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->string('tipo_usuario', 1)->nullable();
             $table->string('token_dispositivo')->nullable();
+            $table->string('token_autentication')->nullable();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();

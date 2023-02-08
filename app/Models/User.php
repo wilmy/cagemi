@@ -37,6 +37,7 @@ class User extends Authenticatable
         'email', 
         'password', 
         'cambio_password', 
+        'token_autentication',
         'estatus',
     ];
 

@@ -39,6 +39,10 @@ Route::get('/empresas', [EmpresasXGruposEmpresarialesController::class, 'index']
 Route::post('/login', [LoginController::class, 'index']);
 
 
+//Para generar el token de acceso
+Route::post('/generate_token', [LoginController::class, 'generate_token']);
+
+
 //Completar los datos del usuario
 Route::post('/completarDatos', [LoginController::class, 'completarDatos']);
 Route::post('/cambioPassword', [LoginController::class, 'cambioPassword']);
