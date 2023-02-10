@@ -38,7 +38,7 @@ class PublicacionesController extends Controller
         
 
         //$url_http = 'https://4952-38-44-16-250.ngrok.io';
-        $url_http =  'http://18.217.9.139/';
+        $url_http =  'http://18.217.5.208/';
         
         if(count($data_public) > 0)
         {
@@ -120,7 +120,7 @@ class PublicacionesController extends Controller
         $cod_publicacion = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
         $posts = array();
 
-        $url_http =  'http://18.217.9.139/';
+        $url_http =  'http://18.217.5.208/';
 
         $data_public = DB::table('tb_comentarios_x_publicaciones')
                             ->join('users' ,'tb_comentarios_x_publicaciones.cod_usuario','=','users.id')
