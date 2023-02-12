@@ -5,12 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\CargaDatosController;
 use App\Http\Controllers\Api\PublicacionesController;
+use App\Http\Controllers\Api\UsuariosXEmpresaController;
 use App\Http\Controllers\Api\TiposPublicacionesController;
-use App\Http\Controllers\Api\EmpresasXGruposEmpresarialesController;
-use App\Http\Controllers\Api\DireccionesVicepresidenciasController;
-use App\Http\Controllers\Api\DepartamentosXVicepresidenciasApiController;
 use App\Http\Controllers\Api\EmpleadosXPosicionApiController;
+use App\Http\Controllers\Api\DireccionesVicepresidenciasController;
 use App\Http\Controllers\Api\PosicionesXDepartamentosApiController;
+use App\Http\Controllers\Api\EmpresasXGruposEmpresarialesController;
+use App\Http\Controllers\Api\DepartamentosXVicepresidenciasApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,10 @@ Route::get('/empresas', [EmpresasXGruposEmpresarialesController::class, 'index']
 
 //Login de inicio y validacion de usuario 
 Route::post('/login', [LoginController::class, 'index']);
+
+
+Route::post('/usuariosEmpresa', [UsuariosXEmpresaController::class, 'index']);
+
 
 
 //Para generar el token de acceso
