@@ -26,11 +26,19 @@ class LoginController extends Controller
         $data = array();
         $dataUser = DB::table('users')
                         ->leftjoin('tb_empleados_x_posicion', 'users.cod_empleado', '=','tb_empleados_x_posicion.cod_empleado_empresa')
+                        ->leftjoin('tb_posiciones_x_departamento', 'tb_empleados_x_posicion.cod_posicion', '=','tb_posiciones_x_departamento.cod_posicion')
                         ->where([
                                 ['users.cod_grupo_empresarial', '=', $request->empresa],
                                 ['users.cod_empleado', '=', $request->user]
                             ])
-                        ->select('tb_empleados_x_posicion.*', 'users.token_autentication', 'users.password', 'users.cambio_password', 'users.id', 'users.cod_grupo_empresarial', 'users.email_verified_at')
+                        ->select('tb_empleados_x_posicion.*', 
+                                 'tb_posiciones_x_departamento.nombre_posicion', 
+                                 'users.token_autentication', 
+                                 'users.password', 
+                                 'users.cambio_password', 
+                                 'users.id', 
+                                 'users.cod_grupo_empresarial', 
+                                 'users.email_verified_at')
                         ->first();
         if($dataUser)
         {
