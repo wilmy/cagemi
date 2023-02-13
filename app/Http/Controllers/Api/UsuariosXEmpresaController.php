@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuariosXEmpresaController extends Controller
 {
-
-    /*Zaret121519*/
     /**
      * Display a listing of the resource.
      *
