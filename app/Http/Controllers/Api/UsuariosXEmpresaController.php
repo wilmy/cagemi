@@ -22,6 +22,7 @@ class UsuariosXEmpresaController extends Controller
      */
     public function index(Request $request)
     { 
+        $pageLimit = (isset($request->pageLimit) ? $request->pageLimit : 15);
         $data = array();
         $dataUser = DB::table('users')
                         ->leftjoin('tb_empleados_x_posicion', 'users.cod_empleado', '=','tb_empleados_x_posicion.cod_empleado_empresa')
@@ -38,7 +39,7 @@ class UsuariosXEmpresaController extends Controller
                                  'users.cod_grupo_empresarial', 
                                  'users.profile_photo_path', 
                                  'users.email_verified_at')
-                        ->paginate(20);
+                        ->paginate($pageLimit);
         if(count($dataUser) > 0)
         {
             array_push($data, array("estatus" => 'success', 
