@@ -50,8 +50,8 @@ class PublicacionesController extends Controller
         }
         
 
-        //$url_http = 'https://69a5-38-44-16-250.ngrok.io';
-        $url_http =  'http://18.217.5.208/';
+        $url_http = 'https://a9f2-38-44-16-250.ngrok.io';
+        //$url_http =  'http://18.217.5.208/';
         
         if(count($data_public) > 0)
         {
@@ -97,9 +97,14 @@ class PublicacionesController extends Controller
                     $postLikeUser = ReaccionesXPublicaciones::where([['cod_publicacion', $post->cod_publicacion],['cod_usuario', $id_usuario]])->count();
                 }
 
+                $offset = ($data_public->currentPage() - 1) * $pageLimit;
+                $total_pages = ceil($data_public->total() / $pageLimit);
+
                 $rand = rand(1,9);
                 $list_popst = array(
                                 "estatus" => "success",
+                                "offset" => $offset,
+                                "totalPage" => $total_pages,
                                 "cod_publicacion" => $post->cod_publicacion,
                                 "nombre" =>  $post->name,
                                 "avatar" =>  ($post->profile_photo_path != '' ? $url_http.'/images/avatars/'.$post->profile_photo_path : $url_http.'/images/logo/logo.png'),
