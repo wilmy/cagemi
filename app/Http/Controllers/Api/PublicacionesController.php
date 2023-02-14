@@ -35,7 +35,7 @@ class PublicacionesController extends Controller
 
             $data_public = DB::table('tb_publicaciones')
                                 ->join('users','tb_publicaciones.cod_usuario','=','users.id')
-                                ->select('tb_publicaciones.*','users.name','users.cod_empleado','users.profile_photo_path')
+                                ->select('tb_publicaciones.*','users.id','users.name','users.cod_empleado','users.profile_photo_path')
                                 ->where([['tb_publicaciones.cod_usuario', $id_usuario]])
                                 ->orderBy('tb_publicaciones.created_at','DESC')
                                 ->paginate($pageLimit);
@@ -43,15 +43,17 @@ class PublicacionesController extends Controller
         else {
             $data_public = DB::table('tb_publicaciones')
                             ->join('users','tb_publicaciones.cod_usuario','=','users.id')
-                            ->select('tb_publicaciones.*','users.name','users.cod_empleado','users.profile_photo_path')
+                            ->select('tb_publicaciones.*','users.id',
+                                    'users.name','users.cod_empleado','users.profile_photo_path'
+                                )
                             ->where([['tb_publicaciones.estatus', 'A']])
                             ->orderBy('tb_publicaciones.created_at','DESC')
                             ->paginate($pageLimit);
         }
         
 
-        //$url_http = 'https://a9f2-38-44-16-250.ngrok.io';
-        $url_http =  'http://18.217.5.208/';
+        $url_http = 'https://a9f2-38-44-16-250.ngrok.io';
+        //$url_http =  'http://18.217.5.208/';
         
         if(count($data_public) > 0)
         {
@@ -105,6 +107,7 @@ class PublicacionesController extends Controller
                                 "estatus" => "success",
                                 "offset" => $offset,
                                 "totalPage" => $total_pages,
+                                "id" => $post->id,
                                 "cod_publicacion" => $post->cod_publicacion,
                                 "nombre" =>  $post->name,
                                 "avatar" =>  ($post->profile_photo_path != '' ? $url_http.'/images/avatars/'.$post->profile_photo_path : $url_http.'/images/logo/logo.png'),

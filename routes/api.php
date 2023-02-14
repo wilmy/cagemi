@@ -39,9 +39,12 @@ Route::get('/empresas', [EmpresasXGruposEmpresarialesController::class, 'index']
 //Login de inicio y validacion de usuario 
 Route::post('/login', [LoginController::class, 'index']);
 
-
+//Usuarios por grupo empresarial
 Route::post('/usuariosEmpresa', [UsuariosXEmpresaController::class, 'index']);
 
+
+//Datos del usuario
+Route::post('/dataUser', [UsuariosXEmpresaController::class, 'dataUser']);
 
 
 //Para generar el token de acceso
