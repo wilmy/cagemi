@@ -22,8 +22,10 @@ class PublicacionesController extends Controller
 {
     public function index(Request $request)
     {
-        $cod_publicacion = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
-        $id_usuario = (isset($request->id_usuario) ? $request->id_usuario : '');
+        $cod_publicacion        = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
+        $id_usuario             = (isset($request->id_usuario) ? $request->id_usuario : '');
+        $cod_grupo_empresarial  = (isset($request->cod_grupo_empresarial) ? $request->cod_grupo_empresarial : '');
+        
         $perfil = (isset($request->perfil) ? $request->perfil : false);
         $pageLimit = (isset($request->pageLimit) ? $request->pageLimit : 5);
 
@@ -32,8 +34,8 @@ class PublicacionesController extends Controller
         if($perfil){
             $data_public = DB::table('tb_publicaciones as p')
                                 ->join('users as u','p.cod_usuario','=','u.id')
-                                ->select('p.*','u.id','u.name','u.cod_empleado','u.profile_photo_path')
-                                ->where([['p.cod_usuario', $id_usuario]])
+                                ->select('p.*','u.id','u.cod_grupo_empresarial','u.name','u.cod_empleado','u.profile_photo_path')
+                                ->where([['p.cod_usuario', $id_usuario], ['u.cod_grupo_empresarial', '=', $cod_grupo_empresarial]])
                                 ->orderBy('u.prioridad_publicacion', 'DESC')
                                 ->orderBy('p.created_at','DESC')
                                 ->paginate($pageLimit);
@@ -45,8 +47,9 @@ class PublicacionesController extends Controller
                                     $join->on('p.cod_publicacion', '=', 'v.cod_publicacion')
                                         ->where('v.cod_usuario', '=', $id_usuario);
                                 })
-                                ->select('p.*','u.id','u.name','u.cod_empleado','u.profile_photo_path')
+                                ->select('p.*','u.id','u.cod_grupo_empresarial','u.name','u.cod_empleado','u.profile_photo_path')
                                 ->whereNull('v.cod_publicacion')
+                                ->where([['u.cod_grupo_empresarial', '=', $cod_grupo_empresarial]])
                                 ->orderByDesc('u.prioridad_publicacion')
                                 ->orderByDesc('p.created_at')
                                 ->paginate($pageLimit);
@@ -73,7 +76,7 @@ class PublicacionesController extends Controller
                 {
                     foreach($data_image_publ as $valore_img)
                     {
-                        $nombre_ima = $url_http.'/images/gruposEmpresariales/post/multimedia/'.$valore_img->nombre_archivo;
+                        $nombre_ima = $url_http.'/images/gruposEmpresariales/'.$post->cod_grupo_empresarial.'/post/multimedia/'.$valore_img->nombre_archivo;
                         array_push($array_imagenes, $nombre_ima);
                     }
                 }
@@ -195,10 +198,12 @@ class PublicacionesController extends Controller
        
         $cod_padre_publicacion  = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
         $cod_usuario            = (isset($request->cod_usuario) ? $request->cod_usuario : '');
+        $cod_grupo_empresarial  = (isset($request->cod_grupo_empresarial) ? $request->cod_grupo_empresarial : '');
+        
         $cod_empleado           = (isset($request->cod_empleado) ? $request->cod_empleado : '');
         $tipo_publicacion       = (isset($request->tipo_publicacion) ? $request->tipo_publicacion : '');  
         $commentario            = (isset($request->commentario) ? $request->commentario : '');
-        $grupos                 = (isset($request->grupos) ? $request->grupos : '');
+        $cod_comunidad          = (isset($request->cod_comunidad) ? $request->cod_comunidad : '');
         $permiteReaccion        = (isset($request->permiteReaccion) ? $request->permiteReaccion : 'N');
         $permitecomentario      = (isset($request->permitecomentario) ? $request->permitecomentario : 'N');
 
@@ -215,16 +220,15 @@ class PublicacionesController extends Controller
         {
             $data_public = new Publicaciones; 
 
-            $cod_comunidad          = $grupos;
+            //$cod_comunidad          = $grupos;
             $cod_tipo_publicacion   = $tipo_publicacion;
             $texto                  = $commentario;
             $permite_reaccion       = $permiteReaccion; 
             $permite_comentario     = $permitecomentario;
 
             $validate_input = new ValidacionesController;
-            
-            
-            $validate_input->validateValue($data_public, 'cod_usuario', $cod_usuario);
+
+            $validate_input->validateValue($data_public, 'cod_usuario', $cod_usuario);            
             $validate_input->validateValue($data_public, 'cod_comunidad', $cod_comunidad);
             $validate_input->validateValue($data_public, 'cod_tipo_publicacion', $cod_tipo_publicacion);
             $validate_input->validateValue($data_public, 'texto', $texto);
@@ -242,7 +246,11 @@ class PublicacionesController extends Controller
                         {
                             $imagen         = $array_imagenes[$x];
                             $nombreimagen   = uniqid().".".$imagen->guessExtension();
-                            $ruta           = public_path("images/gruposEmpresariales/post/multimedia/");
+                            $ruta           = public_path("images/gruposEmpresariales/".$cod_grupo_empresarial."/post/multimedia/");
+
+                            if (!is_dir($ruta)) {
+                                mkdir($ruta, 0775, true);
+                            }
 
                             if(copy($imagen->getRealPath(),$ruta.$nombreimagen))
                             {
