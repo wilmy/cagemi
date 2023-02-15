@@ -65,7 +65,7 @@ class PublicacionesController extends Controller
         {
             foreach($data_public as $post)
             {
-                $ruta_img = $url_http.'/images/gruposEmpresariales/'.$post->cod_grupo_empresarial;
+                $ruta_img = $url_http.'/images/gruposEmpresariales/grupo'.$post->cod_grupo_empresarial;
                 $reacciones_publ = ReaccionesXPublicaciones::where('cod_publicacion', $post->cod_publicacion)->count();
                 //$grupo_empresarial = EmpresasXGruposEmpresariales::find($post->cod_comunidad);
                 //$nombre_grupo = ($grupo_empresarial != '' ? $grupo_empresarial->nombre : '');
@@ -117,7 +117,7 @@ class PublicacionesController extends Controller
                                 "id" => $post->id,
                                 "cod_publicacion" => $post->cod_publicacion,
                                 "nombre" =>  $post->name,
-                                "avatar" =>  ($post->foto != '' ? $ruta_img.'/fotosEmpleados/'.$post->foto : $url_http.'/images/logo/logo.png'),
+                                "avatar" =>  ($post->foto != '' ? $ruta_img.'/fotoEmpleados/'.$post->foto : $url_http.'/images/logo/logo.png'),
                                 "tipo" =>  $nombre_posicion,
                                 "postImage" =>  $array_imagenes,
                                 "postComentario" =>  $post->texto,
@@ -148,11 +148,12 @@ class PublicacionesController extends Controller
         $cod_publicacion = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
         $posts = array();
 
-        $url_http =  'http://18.217.5.208/';
+        $url_http =  'http://18.217.5.208';
 
         $data_public = DB::table('tb_comentarios_x_publicaciones')
                             ->join('users' ,'tb_comentarios_x_publicaciones.cod_usuario','=','users.id')
-                            ->select('tb_comentarios_x_publicaciones.*','users.name','users.cod_empleado')
+                            ->leftjoin('tb_empleados_x_posicion as e', 'e.cod_empleado_empresa', '=', 'u.cod_empleado')
+                            ->select('tb_comentarios_x_publicaciones.*','users.name','users.cod_empleado', 'e.foto')
                             ->where([['cod_publicacion', '=', $cod_publicacion]])
                             ->orderBy('tb_comentarios_x_publicaciones.created_at','DESC')
                             ->get();
@@ -172,12 +173,12 @@ class PublicacionesController extends Controller
                     }
                 }
 
-                $rand = rand(1,9);
+                $ruta_img = $url_http.'/images/gruposEmpresariales/grupo'.$post->cod_grupo_empresarial;
                 $list_popst = array(
                                 "estatus" => "success",
                                 "cod_publicacion" => $post->cod_publicacion,
                                 "nombre" =>  $post->name,
-                                "avatar" =>  $url_http.'/images/avatars/'.$rand.'.png',
+                                "avatar" =>  ($post->foto != '' ? $ruta_img.'/fotoEmpleados/'.$post->foto : $url_http.'/images/logo/logo.png'),
                                 "tipo" =>  $nombre_posicion,
                                 "postComentario" =>  $post->comentario
                             );
@@ -249,7 +250,7 @@ class PublicacionesController extends Controller
                         {
                             $imagen         = $array_imagenes[$x];
                             $nombreimagen   = uniqid().".".$imagen->guessExtension();
-                            $ruta           = public_path("images/gruposEmpresariales/".$cod_grupo_empresarial."/post/multimedia/");
+                            $ruta           = public_path("images/gruposEmpresariales/grupo".$cod_grupo_empresarial."/post/multimedia/");
 
                             if (!is_dir($ruta)) {
                                 mkdir($ruta, 0775, true);
