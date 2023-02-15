@@ -117,7 +117,7 @@ class PublicacionesController extends Controller
                                 "id" => $post->id,
                                 "cod_publicacion" => $post->cod_publicacion,
                                 "nombre" =>  $post->name,
-                                "avatar" =>  ($post->foto != '' ? $ruta_img.'/fotoEmpleados/'.$post->foto : $url_http.'/images/logo/logo.png'),
+                                "avatar" =>   $ruta_img.'/fotoEmpleados/'.$post->foto,
                                 "tipo" =>  $nombre_posicion,
                                 "postImage" =>  $array_imagenes,
                                 "postComentario" =>  $post->texto,
@@ -178,7 +178,7 @@ class PublicacionesController extends Controller
                                 "estatus" => "success",
                                 "cod_publicacion" => $post->cod_publicacion,
                                 "nombre" =>  $post->name,
-                                "avatar" =>  ($post->foto != '' ? $ruta_img.'/fotoEmpleados/'.$post->foto : $url_http.'/images/logo/logo.png'),
+                                "avatar" =>   $ruta_img.'/fotoEmpleados/'.$post->foto,
                                 "tipo" =>  $nombre_posicion,
                                 "postComentario" =>  $post->comentario
                             );
