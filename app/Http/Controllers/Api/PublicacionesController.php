@@ -34,7 +34,8 @@ class PublicacionesController extends Controller
         if($perfil){
             $data_public = DB::table('tb_publicaciones as p')
                                 ->join('users as u','p.cod_usuario','=','u.id')
-                                ->select('p.*','u.id','u.cod_grupo_empresarial','u.name','u.cod_empleado','u.profile_photo_path')
+                                ->leftjoin('tb_empleados_x_posicion as e', 'e.cod_empleado_empresa', '=', 'u.cod_empleado')
+                                ->select('p.*','u.id','u.cod_grupo_empresarial','u.name','u.cod_empleado','e.foto')
                                 ->where([['p.cod_usuario', $id_usuario], ['u.cod_grupo_empresarial', '=', $cod_grupo_empresarial]])
                                 ->orderBy('u.prioridad_publicacion', 'DESC')
                                 ->orderBy('p.created_at','DESC')
@@ -43,11 +44,12 @@ class PublicacionesController extends Controller
         else{
             $data_public = DB::table('tb_publicaciones as p')
                                 ->join('users as u', 'p.cod_usuario', '=', 'u.id')
+                                ->leftjoin('tb_empleados_x_posicion as e', 'e.cod_empleado_empresa', '=', 'u.cod_empleado')
                                 ->leftJoin('tb_visitas_x_publicaciones as v', function ($join) use ($id_usuario) {
                                     $join->on('p.cod_publicacion', '=', 'v.cod_publicacion')
                                         ->where('v.cod_usuario', '=', $id_usuario);
                                 })
-                                ->select('p.*','u.id','u.cod_grupo_empresarial','u.name','u.cod_empleado','u.profile_photo_path')
+                                ->select('p.*','u.id','u.cod_grupo_empresarial','u.name','u.cod_empleado','e.foto')
                                 ->whereNull('v.cod_publicacion')
                                 ->where([['u.cod_grupo_empresarial', '=', $cod_grupo_empresarial]])
                                 ->orderByDesc('u.prioridad_publicacion')
@@ -63,6 +65,7 @@ class PublicacionesController extends Controller
         {
             foreach($data_public as $post)
             {
+                $ruta_img = $url_http.'/images/gruposEmpresariales/'.$post->cod_grupo_empresarial;
                 $reacciones_publ = ReaccionesXPublicaciones::where('cod_publicacion', $post->cod_publicacion)->count();
                 //$grupo_empresarial = EmpresasXGruposEmpresariales::find($post->cod_comunidad);
                 //$nombre_grupo = ($grupo_empresarial != '' ? $grupo_empresarial->nombre : '');
@@ -76,7 +79,7 @@ class PublicacionesController extends Controller
                 {
                     foreach($data_image_publ as $valore_img)
                     {
-                        $nombre_ima = $url_http.'/images/gruposEmpresariales/'.$post->cod_grupo_empresarial.'/post/multimedia/'.$valore_img->nombre_archivo;
+                        $nombre_ima = $ruta_img.'/post/multimedia/'.$valore_img->nombre_archivo;
                         array_push($array_imagenes, $nombre_ima);
                     }
                 }
@@ -114,7 +117,7 @@ class PublicacionesController extends Controller
                                 "id" => $post->id,
                                 "cod_publicacion" => $post->cod_publicacion,
                                 "nombre" =>  $post->name,
-                                "avatar" =>  ($post->profile_photo_path != '' ? $url_http.'/images/avatars/'.$post->profile_photo_path : $url_http.'/images/logo/logo.png'),
+                                "avatar" =>  ($post->foto != '' ? $ruta_img.'/fotosEmpleados/'.$post->foto : $url_http.'/images/logo/logo.png'),
                                 "tipo" =>  $nombre_posicion,
                                 "postImage" =>  $array_imagenes,
                                 "postComentario" =>  $post->texto,
