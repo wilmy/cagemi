@@ -20,8 +20,6 @@ use App\Http\Controllers\ValidacionesController;
 
 class PublicacionesController extends Controller
 {
-    //Index
-
     public function index(Request $request)
     {
         $cod_publicacion = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
@@ -32,27 +30,30 @@ class PublicacionesController extends Controller
         $posts = array();
         
         if($perfil){
-
-            $data_public = DB::table('tb_publicaciones')
-                                ->join('users','tb_publicaciones.cod_usuario','=','users.id')
-                                ->select('tb_publicaciones.*','users.id','users.name','users.cod_empleado','users.profile_photo_path')
-                                ->where([['tb_publicaciones.cod_usuario', $id_usuario]])
-                                ->orderBy('tb_publicaciones.created_at','DESC')
+            $data_public = DB::table('tb_publicaciones as p')
+                                ->join('users as u','p.cod_usuario','=','u.id')
+                                ->select('p.*','u.id','u.name','u.cod_empleado','u.profile_photo_path')
+                                ->where([['p.cod_usuario', $id_usuario]])
+                                ->orderBy('u.prioridad_publicacion', 'DESC')
+                                ->orderBy('p.created_at','DESC')
                                 ->paginate($pageLimit);
         }
-        else {
-            $data_public = DB::table('tb_publicaciones')
-                            ->join('users','tb_publicaciones.cod_usuario','=','users.id')
-                            ->select('tb_publicaciones.*','users.id',
-                                    'users.name','users.cod_empleado','users.profile_photo_path'
-                                )
-                            ->where([['tb_publicaciones.estatus', 'A']])
-                            ->orderBy('tb_publicaciones.created_at','DESC')
-                            ->paginate($pageLimit);
+        else{
+            $data_public = DB::table('tb_publicaciones as p')
+                                ->join('users as u', 'p.cod_usuario', '=', 'u.id')
+                                ->leftJoin('tb_visitas_x_publicaciones as v', function ($join) use ($id_usuario) {
+                                    $join->on('p.cod_publicacion', '=', 'v.cod_publicacion')
+                                        ->where('v.cod_usuario', '=', $id_usuario);
+                                })
+                                ->select('p.*','u.id','u.name','u.cod_empleado','u.profile_photo_path')
+                                ->whereNull('v.cod_publicacion')
+                                ->orderByDesc('u.prioridad_publicacion')
+                                ->orderByDesc('p.created_at')
+                                ->paginate($pageLimit);
         }
         
 
-        //$url_http = 'https://a9f2-38-44-16-250.ngrok.io';
+        //$url_http = 'https://0c24-38-44-16-250.ngrok.io';
         $url_http =  'http://18.217.5.208/';
         
         if(count($data_public) > 0)

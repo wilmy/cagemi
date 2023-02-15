@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('super_usuario', 1)->nullable();
             $table->foreignId('cod_grupo_empresarial')->nullable();
+            $table->integer('prioridad_publicacion')->nullable()->default(1);
             $table->foreignId('cod_empleado')->nullable();
             $table->string('name');
             $table->string('surname')->nullable();
