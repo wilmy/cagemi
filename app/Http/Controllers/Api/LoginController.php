@@ -24,21 +24,23 @@ class LoginController extends Controller
     {
         $token = (isset($request->token) ? $request->token  : '');
         $data = array();
-        $dataUser = DB::table('users')
-                        ->leftjoin('tb_empleados_x_posicion', 'users.cod_empleado', '=','tb_empleados_x_posicion.cod_empleado_empresa')
-                        ->leftjoin('tb_posiciones_x_departamento', 'tb_empleados_x_posicion.cod_posicion', '=','tb_posiciones_x_departamento.cod_posicion')
+        $dataUser = DB::table('users as u')
+                        ->join('tb_empleados_x_posicion as p', 'u.cod_empleado', '=','p.cod_empleado_empresa')
+                        ->join('tb_posiciones_x_departamento as pd', 'p.cod_posicion', '=','pd.cod_posicion')
+                        ->join('tb_departamentos_x_vicepresidencia as dv', 'dv.cod_departamento', '=','pd.cod_departamento')
+                        ->join('tb_vicepresidencia_x_empresa as v', 'v.cod_vicepresidencia', '=','dv.cod_vicepresidencia')
                         ->where([
-                                ['users.cod_grupo_empresarial', '=', $request->empresa],
-                                ['users.cod_empleado', '=', $request->user]
+                                ['v.cod_empresa', '=', $request->empresa],
+                                ['u.cod_empleado', '=', $request->user]
                             ])
-                        ->select('tb_empleados_x_posicion.*', 
-                                 'tb_posiciones_x_departamento.nombre_posicion', 
-                                 'users.token_autentication', 
-                                 'users.password', 
-                                 'users.cambio_password', 
-                                 'users.id', 
-                                 'users.cod_grupo_empresarial', 
-                                 'users.email_verified_at')
+                        ->select('p.*', 
+                                 'pd.nombre_posicion', 
+                                 'u.token_autentication', 
+                                 'u.password', 
+                                 'u.cambio_password', 
+                                 'u.id', 
+                                 'u.cod_grupo_empresarial', 
+                                 'u.email_verified_at')
                         ->first();
         if($dataUser)
         {
