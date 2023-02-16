@@ -150,12 +150,12 @@ class PublicacionesController extends Controller
 
         $url_http =  'http://18.217.5.208';
 
-        $data_public = DB::table('tb_comentarios_x_publicaciones')
-                            ->join('users' ,'tb_comentarios_x_publicaciones.cod_usuario','=','users.id')
+        $data_public = DB::table('tb_comentarios_x_publicaciones as c')
+                            ->join('users as u' ,'c.cod_usuario','=','u.id')
                             ->leftjoin('tb_empleados_x_posicion as e', 'e.cod_empleado_empresa', '=', 'u.cod_empleado')
-                            ->select('tb_comentarios_x_publicaciones.*','users.name','users.cod_empleado', 'e.foto')
-                            ->where([['cod_publicacion', '=', $cod_publicacion]])
-                            ->orderBy('tb_comentarios_x_publicaciones.created_at','DESC')
+                            ->select('c.*','u.name','u.cod_empleado', 'e.foto', 'u.cod_grupo_empresarial')
+                            ->where([['c.cod_publicacion', '=', $cod_publicacion]])
+                            ->orderBy('c.created_at','DESC')
                             ->get();
        
         if(count($data_public) > 0)
@@ -188,7 +188,7 @@ class PublicacionesController extends Controller
         }
         else
         {
-            array_push($posts, array("estatus" => "error"));
+            array_push($posts, array("estatus" => "error". count($data_public)));
         }
 
         return response()->json($posts); 
