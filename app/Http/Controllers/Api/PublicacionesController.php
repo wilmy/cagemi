@@ -109,12 +109,13 @@ class PublicacionesController extends Controller
                 $offset = ($data_public->currentPage() - 1) * $pageLimit;
                 $total_pages = ceil($data_public->total() / $pageLimit);
 
-                $rand = rand(1,9);
+                $key = rand(1,9);
                 $list_popst = array(
                                 "estatus" => "success",
                                 "offset" => $offset,
                                 "totalPage" => $total_pages,
                                 "id" => $post->id,
+                                "key" => $key,
                                 "cod_publicacion" => $post->cod_publicacion,
                                 "nombre" =>  $post->name,
                                 "avatar" =>  ($post->foto != '' ? $ruta_img.'/fotoEmpleados/'.$post->foto : null),
