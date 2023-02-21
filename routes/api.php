@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\WebSocketController;
 use App\Http\Controllers\Api\CargaDatosController;
 use App\Http\Controllers\Api\PublicacionesController;
 use App\Http\Controllers\Api\UsuariosXEmpresaController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\Api\DepartamentosXVicepresidenciasApiController;
 |
 */
 
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -31,6 +33,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => 'auth:sanctum'], function(){
 
 });
+
+
+Route::get('websocket', [WebSocketController::class, 'handle']);
+
+//Route::get('/websocket', 'WebSocketController@handle');
 
 //Empresas activas 
 Route::get('/empresas', [EmpresasXGruposEmpresarialesController::class, 'index']);

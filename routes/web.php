@@ -11,6 +11,7 @@ use App\Http\Controllers\ChartsController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExtensionController;
+use App\Http\Controllers\WebSocketController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\CargaDatosController;
 use App\Http\Controllers\ComponentsController;
@@ -40,6 +41,9 @@ use App\Http\Controllers\DepartamentosXVicepresidenciasController;
 |
 */
 
+
+//Route::get('/websocket', 'WebSocketController@handle');
+Route::get('websocket', [WebSocketController::class, 'handle']);
 
 // locale Route
 Route::get('lang/{locale}', [LanguageController::class, 'swap']);
