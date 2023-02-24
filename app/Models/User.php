@@ -31,6 +31,7 @@ class User extends Authenticatable
         'id',
         'super_usuario',
         'cod_grupo_empresarial',
+        'prioridad_publicacion',
         'cod_empleado',
         'name', 
         'surname', 

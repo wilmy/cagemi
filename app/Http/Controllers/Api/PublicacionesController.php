@@ -20,30 +20,52 @@ use App\Http\Controllers\ValidacionesController;
 
 class PublicacionesController extends Controller
 {
-    //Index
-
     public function index(Request $request)
     {
-        $cod_publicacion = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
-        $id_usuario = (isset($request->id_usuario) ? $request->id_usuario : '');
+        $cod_publicacion        = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
+        $id_usuario             = (isset($request->id_usuario) ? $request->id_usuario : '');
+        $cod_grupo_empresarial  = (isset($request->cod_grupo_empresarial) ? $request->cod_grupo_empresarial : '');
+        
+        $perfil = (isset($request->perfil) ? $request->perfil : false);
+        $pageLimit = (isset($request->pageLimit) ? $request->pageLimit : 5);
 
         $posts = array();
         
-        $data_public = DB::table('tb_publicaciones')
-                            ->join('users' ,'tb_publicaciones.cod_usuario','=','users.id')
-                            ->select('tb_publicaciones.*','users.name','users.cod_empleado','users.profile_photo_path')
-                            ->where([['tb_publicaciones.estatus', 'A']])
-                            ->orderBy('tb_publicaciones.created_at','DESC')
-                            ->get();
+        if($perfil){
+            $data_public = DB::table('tb_publicaciones as p')
+                                ->join('users as u','p.cod_usuario','=','u.id')
+                                ->leftjoin('tb_empleados_x_posicion as e', 'e.cod_empleado_empresa', '=', 'u.cod_empleado')
+                                ->select('p.*','u.id','u.cod_grupo_empresarial','u.name','u.cod_empleado','e.foto')
+                                ->where([['p.cod_usuario', $id_usuario], ['u.cod_grupo_empresarial', '=', $cod_grupo_empresarial]])
+                                ->orderBy('u.prioridad_publicacion', 'DESC')
+                                ->orderBy('p.created_at','DESC')
+                                ->paginate($pageLimit);
+        }
+        else{
+            $data_public = DB::table('tb_publicaciones as p')
+                                ->join('users as u', 'p.cod_usuario', '=', 'u.id')
+                                ->leftjoin('tb_empleados_x_posicion as e', 'e.cod_empleado_empresa', '=', 'u.cod_empleado')
+                                ->leftJoin('tb_visitas_x_publicaciones as v', function ($join) use ($id_usuario) {
+                                    $join->on('p.cod_publicacion', '=', 'v.cod_publicacion')
+                                        ->where('v.cod_usuario', '=', $id_usuario);
+                                })
+                                ->select('p.*','u.id','u.cod_grupo_empresarial','u.name','u.cod_empleado','e.foto')
+                                ->whereNull('v.cod_publicacion')
+                                ->where([['u.cod_grupo_empresarial', '=', $cod_grupo_empresarial]])
+                                ->orderByDesc('u.prioridad_publicacion')
+                                ->orderByDesc('p.created_at')
+                                ->paginate($pageLimit);
+        }
         
 
-        //$url_http = 'https://4952-38-44-16-250.ngrok.io';
-        $url_http =  'http://18.217.9.139/';
+        //$url_http = 'https://0c24-38-44-16-250.ngrok.io';
+        $url_http =  'http://18.217.5.208';
         
         if(count($data_public) > 0)
         {
             foreach($data_public as $post)
             {
+                $ruta_img = $url_http.'/images/gruposEmpresariales/grupo'.$post->cod_grupo_empresarial;
                 $reacciones_publ = ReaccionesXPublicaciones::where('cod_publicacion', $post->cod_publicacion)->count();
                 //$grupo_empresarial = EmpresasXGruposEmpresariales::find($post->cod_comunidad);
                 //$nombre_grupo = ($grupo_empresarial != '' ? $grupo_empresarial->nombre : '');
@@ -57,7 +79,7 @@ class PublicacionesController extends Controller
                 {
                     foreach($data_image_publ as $valore_img)
                     {
-                        $nombre_ima = $url_http.'/images/gruposEmpresariales/post/multimedia/'.$valore_img->nombre_archivo;
+                        $nombre_ima = $ruta_img.'/post/multimedia/'.$valore_img->nombre_archivo;
                         array_push($array_imagenes, $nombre_ima);
                     }
                 }
@@ -84,12 +106,19 @@ class PublicacionesController extends Controller
                     $postLikeUser = ReaccionesXPublicaciones::where([['cod_publicacion', $post->cod_publicacion],['cod_usuario', $id_usuario]])->count();
                 }
 
-                $rand = rand(1,9);
+                $offset = ($data_public->currentPage() - 1) * $pageLimit;
+                $total_pages = ceil($data_public->total() / $pageLimit);
+
+                $key = rand(1,9);
                 $list_popst = array(
                                 "estatus" => "success",
+                                "offset" => $offset,
+                                "totalPage" => $total_pages,
+                                "id" => $post->id,
+                                "key" => $key,
                                 "cod_publicacion" => $post->cod_publicacion,
                                 "nombre" =>  $post->name,
-                                "avatar" =>  ($post->profile_photo_path != '' ? $url_http.'/images/avatars/'.$post->profile_photo_path : $url_http.'/images/logo/logo.png'),
+                                "avatar" =>  ($post->foto != '' ? $ruta_img.'/fotoEmpleados/'.$post->foto : null),
                                 "tipo" =>  $nombre_posicion,
                                 "postImage" =>  $array_imagenes,
                                 "postComentario" =>  $post->texto,
@@ -120,13 +149,14 @@ class PublicacionesController extends Controller
         $cod_publicacion = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
         $posts = array();
 
-        $url_http =  'http://18.217.9.139/';
+        $url_http =  'http://18.217.5.208';
 
-        $data_public = DB::table('tb_comentarios_x_publicaciones')
-                            ->join('users' ,'tb_comentarios_x_publicaciones.cod_usuario','=','users.id')
-                            ->select('tb_comentarios_x_publicaciones.*','users.name','users.cod_empleado')
-                            ->where([['cod_publicacion', '=', $cod_publicacion]])
-                            ->orderBy('tb_comentarios_x_publicaciones.created_at','DESC')
+        $data_public = DB::table('tb_comentarios_x_publicaciones as c')
+                            ->join('users as u' ,'c.cod_usuario','=','u.id')
+                            ->leftjoin('tb_empleados_x_posicion as e', 'e.cod_empleado_empresa', '=', 'u.cod_empleado')
+                            ->select('c.*','u.name','u.cod_empleado', 'e.foto', 'u.cod_grupo_empresarial')
+                            ->where([['c.cod_publicacion', '=', $cod_publicacion]])
+                            ->orderBy('c.created_at','DESC')
                             ->get();
        
         if(count($data_public) > 0)
@@ -144,12 +174,12 @@ class PublicacionesController extends Controller
                     }
                 }
 
-                $rand = rand(1,9);
+                $ruta_img = $url_http.'/images/gruposEmpresariales/grupo'.$post->cod_grupo_empresarial;
                 $list_popst = array(
                                 "estatus" => "success",
                                 "cod_publicacion" => $post->cod_publicacion,
                                 "nombre" =>  $post->name,
-                                "avatar" =>  $url_http.'/images/avatars/'.$rand.'.png',
+                                "avatar" =>  ($post->foto != '' ? $ruta_img.'/fotoEmpleados/'.$post->foto : null),
                                 "tipo" =>  $nombre_posicion,
                                 "postComentario" =>  $post->comentario
                             );
@@ -159,7 +189,7 @@ class PublicacionesController extends Controller
         }
         else
         {
-            array_push($posts, array("estatus" => "error"));
+            array_push($posts, array("estatus" => "error". count($data_public)));
         }
 
         return response()->json($posts); 
@@ -173,10 +203,12 @@ class PublicacionesController extends Controller
        
         $cod_padre_publicacion  = (isset($request->cod_publicacion) ? $request->cod_publicacion : '');
         $cod_usuario            = (isset($request->cod_usuario) ? $request->cod_usuario : '');
+        $cod_grupo_empresarial  = (isset($request->cod_grupo_empresarial) ? $request->cod_grupo_empresarial : '');
+        
         $cod_empleado           = (isset($request->cod_empleado) ? $request->cod_empleado : '');
         $tipo_publicacion       = (isset($request->tipo_publicacion) ? $request->tipo_publicacion : '');  
         $commentario            = (isset($request->commentario) ? $request->commentario : '');
-        $grupos                 = (isset($request->grupos) ? $request->grupos : '');
+        $cod_comunidad          = (isset($request->cod_comunidad) ? $request->cod_comunidad : '');
         $permiteReaccion        = (isset($request->permiteReaccion) ? $request->permiteReaccion : 'N');
         $permitecomentario      = (isset($request->permitecomentario) ? $request->permitecomentario : 'N');
 
@@ -193,16 +225,15 @@ class PublicacionesController extends Controller
         {
             $data_public = new Publicaciones; 
 
-            $cod_comunidad          = $grupos;
+            //$cod_comunidad          = $grupos;
             $cod_tipo_publicacion   = $tipo_publicacion;
             $texto                  = $commentario;
             $permite_reaccion       = $permiteReaccion; 
             $permite_comentario     = $permitecomentario;
 
             $validate_input = new ValidacionesController;
-            
-            
-            $validate_input->validateValue($data_public, 'cod_usuario', $cod_usuario);
+
+            $validate_input->validateValue($data_public, 'cod_usuario', $cod_usuario);            
             $validate_input->validateValue($data_public, 'cod_comunidad', $cod_comunidad);
             $validate_input->validateValue($data_public, 'cod_tipo_publicacion', $cod_tipo_publicacion);
             $validate_input->validateValue($data_public, 'texto', $texto);
@@ -220,7 +251,11 @@ class PublicacionesController extends Controller
                         {
                             $imagen         = $array_imagenes[$x];
                             $nombreimagen   = uniqid().".".$imagen->guessExtension();
-                            $ruta           = public_path("images/gruposEmpresariales/post/multimedia/");
+                            $ruta           = public_path("images/gruposEmpresariales/grupo".$cod_grupo_empresarial."/post/multimedia/");
+
+                            if (!is_dir($ruta)) {
+                                mkdir($ruta, 0775, true);
+                            }
 
                             if(copy($imagen->getRealPath(),$ruta.$nombreimagen))
                             {
@@ -292,17 +327,16 @@ class PublicacionesController extends Controller
         $likepublicacion   = (isset($request->likepublicacion) ? $request->likepublicacion : 0);  
         $cod_publicacion   = (isset($request->cod_publicacion) ? $request->cod_publicacion : ''); 
 
-        if(empty($id_usuario) && 
-            empty($likepublicacion) && 
-            empty($cod_publicacion))
+        if(empty($id_usuario) && empty($likepublicacion) && empty($cod_publicacion))
         {
             array_push($data, array("estatus" => 'error', "message" => "Todos los campos son obligatorios"));
         }
 
-        $postLikeUser = ReaccionesXPublicaciones::where([['cod_publicacion', $cod_publicacion],['cod_usuario', $id_usuario]])->count();
-
-        if(ReaccionesXPublicaciones::where([['cod_publicacion', $cod_publicacion], ['cod_usuario', $id_usuario]])->delete())
-        {}
+        $postLikeUser = ReaccionesXPublicaciones::where([
+                                                            ['cod_publicacion', $cod_publicacion],
+                                                            ['cod_usuario', $id_usuario]
+                                                        ])->count();
+        
 
         if($postLikeUser <= 0)
         {
@@ -316,7 +350,7 @@ class PublicacionesController extends Controller
             {
                 $postLikeUser = ReaccionesXPublicaciones::where([['cod_publicacion', $cod_publicacion],['cod_usuario', $id_usuario]])->count();
                 $totalLikes = ReaccionesXPublicaciones::where('cod_publicacion', $cod_publicacion)->count();
-                array_push($data, array("estatus" => 'success', "totalLikes" => $totalLikes, "message" => "Me gusta", "postLikeUser"=>$postLikeUser)); 
+                array_push($data, array("estatus" => 'success', "totalLikes" => $totalLikes, "message" => "Me gusta", "postLikeUser" => $postLikeUser)); 
             }
             else
             {
@@ -325,8 +359,9 @@ class PublicacionesController extends Controller
         }
         else
         {
+            ReaccionesXPublicaciones::where([['cod_publicacion', $cod_publicacion], ['cod_usuario', $id_usuario]])->delete();
             $totalLikes = ReaccionesXPublicaciones::where('cod_publicacion', $cod_publicacion)->count();
-            array_push($data, array("estatus" => 'success', "totalLikes" => $totalLikes, "message" => "Me gusta")); 
+            array_push($data, array("estatus" => 'success', "totalLikes" => $totalLikes, "postLikeUser" => 0, "message" => "Me gusta")); 
         }
 
         return response()->json($data); 

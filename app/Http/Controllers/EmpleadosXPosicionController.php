@@ -426,9 +426,9 @@ class EmpleadosXPosicionController extends Controller
      */
     public function store(Request $request)
     {
-        if(isset($request->esFormulario)){
+        
             $codGrupoEmpresarial = auth()->user()->cod_grupo_empresarial;
-            
+            //dd($request);
             
             if(isset($request->esFormulario)){
                 $validator = $request->validate([
@@ -505,71 +505,83 @@ class EmpleadosXPosicionController extends Controller
                                     'alert' => 'success']);
         }
         
-        
+        //COdigo de carga macima de las validaciones de los datos
         $validator = $request->validate([
             'empleados' => ['required'],
-            'posiciones' => ['required'],
+            //'posiciones' => ['required'],
         ]);
 
-        $departamentos  = $request->departamento;
+        
+        /*$departamentos  = $request->departamento;
         $empresa_arr    = $request->empresa;
         $direccion_vp   = $request->direccion_vp;
-        $posiciones     = $request->posiciones;
+        $posiciones     = $request->posiciones;*/
         $empledos       = $request->empleados;
 
         if(count($empledos) > 0)
         {
-            dd("entro");
-            for($x = 0; $x < count($posiciones); $x++)
+            for($x = 0; $x < count($empledos); $x++)
             {
-                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr[$x])->first();
-                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $direccion_vp[$x]],
+                $dda_arr  = explode('||', $empledos[$x]);
+                $empresa_arr            = trim($dda_arr[0]);
+                $direccion_vp           = $dda_arr[1];
+                $departamentos          = $dda_arr[2];
+                $nombre_posicion        = $dda_arr[3];
+
+                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr)->first();
+                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $direccion_vp],
                                                              ['cod_empresa', $empresa->cod_empresa]])->first();
 
-                $depart = DepartamentosXVicepresidencias::where([['nombre_departamento', $departamentos[$x]],
+                $depart = DepartamentosXVicepresidencias::where([['nombre_departamento', $departamentos],
                                                                 ['cod_vicepresidencia', $vicep->cod_vicepresidencia]])->first();
 
-                $posicion = PosicionesXDepartamentos::where([['nombre_posicion', $posiciones[$x]],
+                /*$posicion = PosicionesXDepartamentos::where([['nombre_posicion', $nombre_posicion],
                                                           ['cod_departamento', $depart->cod_departamento]])->first();
                 if(isset($posicion->cod_departamento))
                 {
                     //Eliminmos los datos para insertar de nuevo 
                     PosicionesXDepartamentos::where('cod_departamento', $posicion->cod_departamento)->delete();
-                }
+                }*/
             }
+
+
+            $activo_hasta  = date('Y-m-d H:i:s');
             
             for($x = 0; $x < count($empledos); $x++)
             {
-                $dda_arr                = explode('||', $empledos[$x]);
-                $nombre_posicion        = $dda_arr[0];
-                $cod_supervisor         = $dda_arr[1];
-                $nombres                = $dda_arr[2];
-                $apellidos              = $dda_arr[3];
-                $documento              = trim($dda_arr[4]);
-                $extencion              = $dda_arr[5];
-                $correo_instutucional   = $dda_arr[6];
-                $correo_personal        = $dda_arr[7];
-                $cod_empleado           = $dda_arr[8];
-                $fecha_nacimiento       = $dda_arr[9];
-                $telefono_movil         = $dda_arr[10];
-                $telefono_institucional = $dda_arr[11];
+                $dda_arr  = explode('||', $empledos[$x]);
+
+                $empresa_arr            = trim($dda_arr[0]);
+                $direccion_vp           = $dda_arr[1];
+                $departamentos          = $dda_arr[2];
+                $nombre_posicion        = $dda_arr[3];
+
+                $cod_supervisor         = $dda_arr[4];
+                $nombres                = $dda_arr[5];
+                $apellidos              = $dda_arr[6];
+                $documento              = trim($dda_arr[7]);
+                $extencion              = $dda_arr[8];
+                $correo_instutucional   = $dda_arr[9];
+                $correo_personal        = $dda_arr[10];
+                $cod_empleado           = $dda_arr[11];
+                $fecha_nacimiento       = $dda_arr[12];
+                $telefono_movil         = $dda_arr[13];
+                $telefono_institucional = $dda_arr[14];
                 $estatus                = 'A';
-                $activo_hasta           = date('Y-m-d H:i:s');
-                
+                                
                 //$posicion = PosicionesXDepartamentos::where('nombre_posicion', $nombre_posicion)->first();
-                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr[$x])->first();
-                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $direccion_vp[$x]],
+                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr)->first();
+                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $direccion_vp],
                                                              ['cod_empresa', $empresa->cod_empresa]])->first();
 
-                $depart = DepartamentosXVicepresidencias::where([['nombre_departamento', $departamentos[$x]],
+                $depart = DepartamentosXVicepresidencias::where([['nombre_departamento', $departamentos],
                                                                 ['cod_vicepresidencia', $vicep->cod_vicepresidencia]])->first();
 
                 $posicion = PosicionesXDepartamentos::where([['nombre_posicion', $nombre_posicion],
                                                              ['cod_departamento', $depart->cod_departamento]])->first();
-                                                  
+                               
                 if(isset($posicion->cod_posicion))
                 {
-                    
                     $data_in_emplead = new EmpleadosXPosicion();
                     $data_in_emplead->cod_empleado_empresa      = $cod_empleado;
                     $data_in_emplead->cod_posicion              = $posicion->cod_posicion;
@@ -618,7 +630,6 @@ class EmpleadosXPosicionController extends Controller
                                 'alert' => 'danger']);
         }
     }
-}
 
     public function validateValue($model, $input, $dataImput)
     {

@@ -140,27 +140,32 @@ class PosicionesXDepartamentosController extends Controller
                     'alert' => 'success']);
         }
         
-        
+        //Validacionde de la carga de los datos
         $validator = $request->validate([
-            'departamento' => ['required'],
             'posiciones' => ['required'],
         ]);
 
         $nombre_posicion = $request->posiciones;
 
-        $departamentos = $request->departamento;
+        /*$departamentos = $request->departamento;
         $empresa_arr = $request->empresa;
-        $direccion_vp = $request->direccion_vp;
+        $direccion_vp = $request->direccion_vp;*/
 
         if(count($nombre_posicion) > 0)
         {
-            for($x = 0; $x < count($departamentos); $x++)
+            for($x = 0; $x < count($nombre_posicion); $x++)
             {
-                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr[$x])->first();
-                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $direccion_vp[$x]],
+                $dda_arr = explode('||', $nombre_posicion[$x]);
+                $empresa_arr    = $dda_arr[0];
+                $direccion_vp   = $dda_arr[1];
+                $departamentos  = $dda_arr[2];
+                
+                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr)->first();
+                
+                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $direccion_vp],
                                                              ['cod_empresa', $empresa->cod_empresa]])->first();
 
-                $depart = DepartamentosXVicepresidencias::where([['nombre_departamento', $departamentos[$x]],
+                $depart = DepartamentosXVicepresidencias::where([['nombre_departamento', $departamentos],
                                                                 ['cod_vicepresidencia', $vicep->cod_vicepresidencia]])->first();
                 if(isset($depart->cod_departamento))
                 {
@@ -172,23 +177,28 @@ class PosicionesXDepartamentosController extends Controller
             for($x = 0; $x < count($nombre_posicion); $x++)
             {
                 $dda_arr = explode('||', $nombre_posicion[$x]);
-                $nombre_departamento = $dda_arr[0];
 
-                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr[$x])->first();
-                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $direccion_vp[$x]],
+                $empresa_arr    = $dda_arr[0];
+                $direccion_vp   = $dda_arr[1];
+                $departamentos  = $dda_arr[2];
+                $nombre_departamento = $dda_arr[3];
+
+                $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr)->first();
+                $vicep = DireccionesVicepresidencias::where([['nombre_vicepresidencia', $direccion_vp],
                                                              ['cod_empresa', $empresa->cod_empresa]])->first();
 
-                $depart = DepartamentosXVicepresidencias::where([['nombre_departamento', $nombre_departamento],
+                $depart = DepartamentosXVicepresidencias::where([['nombre_departamento', $departamentos],
                                                                 ['cod_vicepresidencia', $vicep->cod_vicepresidencia]])->first();
+                
                 if(isset($depart->cod_departamento))
                 {
                     $data_in_posici = new PosicionesXDepartamentos();
                     $data_in_posici->cod_departamento = $depart->cod_departamento;
-                    $data_in_posici->nombre_posicion = $dda_arr[1];
+                    $data_in_posici->nombre_posicion = $nombre_departamento;
                     $data_in_posici->save();
 
                     //Actualizamos el registro de dato temporal en S
-                    $data_temp = CargaDatos::where('posicion', $dda_arr[1])
+                    $data_temp = CargaDatos::where('posicion', $nombre_departamento)
                                             ->update(['validacion_posicon' => 'S',
                                                       'posicion_agregada' => 'S']);
                 }
