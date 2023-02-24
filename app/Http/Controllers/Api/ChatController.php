@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Chat;
+
 
 class ChatController extends Controller
 {
@@ -13,7 +16,7 @@ class ChatController extends Controller
      */
     public function index()
     {
-        $chats = Chat::orderBy('createdAt', 'desc')->get();
+        $chats = Chat::orderBy('created_at', 'desc')->get();
 
         return response()->json($chats);
     }
