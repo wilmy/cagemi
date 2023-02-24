@@ -519,6 +519,7 @@ class EmpleadosXPosicionController extends Controller
 
         if(count($empledos) > 0)
         {
+            dd("entro");
             for($x = 0; $x < count($posiciones); $x++)
             {
                 $empresa = EmpresasXGruposEmpresariales::where('nombre', $empresa_arr[$x])->first();
