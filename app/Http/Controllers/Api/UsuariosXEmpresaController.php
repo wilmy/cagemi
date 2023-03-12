@@ -92,6 +92,7 @@ class UsuariosXEmpresaController extends Controller
         $dataUser = DB::table('users')
                         ->leftjoin('tb_empleados_x_posicion', 'users.cod_empleado', '=','tb_empleados_x_posicion.cod_empleado_empresa')
                         ->leftjoin('tb_posiciones_x_departamento', 'tb_empleados_x_posicion.cod_posicion', '=','tb_posiciones_x_departamento.cod_posicion')
+                        ->leftjoin('tb_grupos_empresariales as g', 'g.cod_grupo_empresarial', '=','users.cod_grupo_empresarial')
                         ->where([
                                 ['users.id', '=', $request->id_usuario]
                             ])
@@ -104,7 +105,8 @@ class UsuariosXEmpresaController extends Controller
                                  'users.id', 
                                  'users.cod_grupo_empresarial', 
                                  'users.profile_photo_path', 
-                                 'users.email_verified_at')
+                                 'users.email_verified_at', 
+                                 'g.nombre as nombreGrupo')
                         ->get();
         if(count($dataUser) > 0)
         {
