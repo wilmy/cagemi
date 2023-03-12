@@ -273,7 +273,7 @@ class PublicacionesController extends Controller
 
                 $dataUser = DB::table('users')->find($cod_usuario); 
                 $nombre_usu = $dataUser->name;
-                $nombre_usu = $dataUser->prioridad_publicacion;
+                $prioridad_publicacion = $dataUser->prioridad_publicacion;
 
                 if($prioridad_publicacion >= 3)
                 {
