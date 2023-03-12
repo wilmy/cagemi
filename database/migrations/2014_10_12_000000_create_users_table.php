@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('tipo_usuario', 1)->nullable();
             $table->string('token_dispositivo')->nullable();
             $table->string('token_autentication')->nullable();
+            $table->string('token_app')->nullable();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();

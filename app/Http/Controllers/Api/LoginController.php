@@ -35,7 +35,8 @@ class LoginController extends Controller
                             ])
                         ->select('p.*', 
                                  'pd.nombre_posicion', 
-                                 'u.token_autentication', 
+                                 'u.token_autentication',  
+                                 'u.token_app', 
                                  'u.password', 
                                  'u.cambio_password', 
                                  'u.id', 
@@ -196,7 +197,7 @@ class LoginController extends Controller
     { 
         $data = array();
        
-        $id_user                    = (isset($request->id_user) ? $request->id_user : '');   
+        $id_user = (isset($request->id_user) ? $request->id_user : '');
 
         if(empty($id_user))
         {
@@ -205,12 +206,15 @@ class LoginController extends Controller
         else
         {
             $data_in_emplead = User::find($id_user);
-            $token = Str::uuid();
+             
+            $token = Str::uuid(); 
             $this->validateValue($data_in_emplead, 'token_autentication', $token);
+            $mesas = "Token generado correctamente";
+          
 
             if($data_in_emplead->save())
             {
-               array_push($data, array("estatus" => 'success', "token"=> $token, "message" => "Token generado correctamente"));
+               array_push($data, array("estatus" => 'success', "token"=> $token, "message" => $mesas));
             }
             else
             {
@@ -221,6 +225,36 @@ class LoginController extends Controller
         return response()->json($data); 
     }
     
+    public function generate_token_app(Request $request)
+    { 
+        $data = array();
+       
+        $id_user = (isset($request->id_user) ? $request->id_user : '');   
+        $token = (isset($request->token) ? $request->token : ''); 
+        $tokenApp = (isset($request->tokenApp) ? $request->tokenApp : false); 
+ 
+        if(empty($id_user))
+        {
+            array_push($data, array("estatus" => 'error', "message" => "No hay datos para generar el token"));
+        }
+        else
+        {
+            $data_in_emplead = User::find($id_user); 
+            $data_in_emplead->token_app = $token; 
+
+            if($data_in_emplead->save())
+            {
+               array_push($data, array("estatus" => 'success', "message" => "Token guardado correctamente"));
+            }
+            else
+            {
+                array_push($data, array("estatus" => 'error', "message" => "Error, al guardar el token."));
+            }
+        }
+
+        return response()->json($data); 
+    }
+
     /**
      * Show the form for creating a new resource.
      *
