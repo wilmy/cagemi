@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\DireccionesVicepresidenciasController;
 use App\Http\Controllers\Api\PosicionesXDepartamentosApiController;
 use App\Http\Controllers\Api\EmpresasXGruposEmpresarialesController;
 use App\Http\Controllers\Api\DepartamentosXVicepresidenciasApiController;
+use App\Http\Controllers\Api\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,3 +99,6 @@ Route::get('/departamentos/{cod_vicepresidencia}/{grupo}', [DepartamentosXVicepr
 Route::get('/posiciones/{cod_departamento}/{grupo}', [PosicionesXDepartamentosApiController::class, 'index']);
 
 Route::get('/empleados/{pagina}/{grupo}', [EmpleadosXPosicionApiController::class, 'index']);
+
+Route::get('/chats', [ChatController::class, 'index']);
+Route::post('/chats', [ChatController::class, 'store']);
