@@ -28,6 +28,7 @@ use App\Http\Controllers\PosicionesXDepartamentosController;
 use App\Http\Controllers\DireccionesVicepresidenciasController;
 use App\Http\Controllers\EmpresasXGruposEmpresarialesController;
 use App\Http\Controllers\DepartamentosXVicepresidenciasController;
+use App\Http\Controllers\PushNotificationController;
 
 
 /*
@@ -106,6 +107,9 @@ Route::middleware(['auth'])->name('admin.')->prefix('admin')->group(function(){
 
         //Validacion de datos temporales
         Route::resource('/validacionDatos', ValidacionDatosController::class);
+
+        Route::resource('/push', PushNotificationController::class);
+
     });
 });
 
