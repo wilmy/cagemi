@@ -275,7 +275,7 @@ class PublicacionesController extends Controller
                 $nombre_usu = $dataUser->name;
                 $nombre_usu = $dataUser->prioridad_publicacion;
 
-                if($prioridad_publicacion == 2)
+                if($prioridad_publicacion >= 3)
                 {
                     /**
                      * Lista de los usuarios con token para envio
