@@ -17,6 +17,7 @@ use App\Models\ReaccionesXPublicaciones;
 use App\Models\ComentariosXPublicaciones;
 use App\Models\EmpresasXGruposEmpresariales;
 use App\Http\Controllers\ValidacionesController;
+use App\Http\Controllers\Notifications\NewNotifications;
 
 class PublicacionesController extends Controller
 {
@@ -57,7 +58,7 @@ class PublicacionesController extends Controller
                                 ->paginate($pageLimit);
         }
         
-
+       
         //$url_http = 'https://0c24-38-44-16-250.ngrok.io';
         $url_http =  'http://18.217.5.208';
         
@@ -138,7 +139,7 @@ class PublicacionesController extends Controller
         }
         else
         {
-            array_push($posts, array("estatus" => "error"));
+            array_push($posts, array("estatus" => "error".$cod_grupo_empresarial));
         }
 
         return response()->json($posts); 
@@ -268,6 +269,31 @@ class PublicacionesController extends Controller
                             }
                         }
                     }
+                }
+
+                $dataUser = DB::table('users')->find($cod_usuario); 
+                $nombre_usu = $dataUser->name;
+                $nombre_usu = $dataUser->prioridad_publicacion;
+
+                if($prioridad_publicacion == 2)
+                {
+                    /**
+                     * Lista de los usuarios con token para envio
+                     */ 
+                    $dataUserTokens = DB::table('users')
+                                        ->where([['token_app','<>',''], ['cod_grupo_empresarial','=', 1]])
+                                        ->pluck('token_app')->toArray();
+                    /**
+                     * Para las notificaciones de push notification
+                     */
+                    $notifications = new NewNotifications;
+                    $datas = [
+                        'channelName' => 'grupos',
+                        'tokens' =>  $dataUserTokens,
+                        'bodyMessage' => 'Hey!! '.$nombre_usu.' acaba de hacer una publicación, mira que dice!',
+                    ];
+        
+                    $notifications->notificacion($datas);
                 }
 
                 array_push($data, array("estatus" => 'success', "message" => "Publicaciones realizada")); 

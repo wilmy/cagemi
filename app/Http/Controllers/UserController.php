@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Events\PlaygroundEvent;
 use App\Models\GrupoEmpresarial;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
@@ -84,6 +85,9 @@ class UserController extends Controller
         $total_user_acti = User::where('estatus', 'A')->count();
         $total_user_inac = User::where('estatus', 'I')->count();
         $pageConfigs = ['pageHeader' => true];
+
+
+        event(new PlaygroundEvent('hello world'));
         
         return view('/content/apps/user/app-user-list', ['users' => $users, 
                                                         'total_user_acti' => $total_user_acti, 

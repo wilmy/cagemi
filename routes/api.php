@@ -7,6 +7,7 @@ use App\Http\Controllers\WebSocketController;
 use App\Http\Controllers\Api\CargaDatosController;
 use App\Http\Controllers\Api\PublicacionesController;
 use App\Http\Controllers\Api\UsuariosXEmpresaController;
+use App\Http\Controllers\Notifications\NewNotifications;
 use App\Http\Controllers\Api\TiposPublicacionesController;
 use App\Http\Controllers\Api\EmpleadosXPosicionApiController;
 use App\Http\Controllers\Api\DireccionesVicepresidenciasController;
@@ -42,6 +43,8 @@ Route::get('websocket', [WebSocketController::class, 'handle']);
 //Empresas activas 
 Route::get('/empresas', [EmpresasXGruposEmpresarialesController::class, 'index']);
 
+Route::get('/notificacion', [NewNotifications::class, 'index']);
+
 
 //Login de inicio y validacion de usuario 
 Route::post('/login', [LoginController::class, 'index']);
@@ -56,6 +59,10 @@ Route::post('/dataUser', [UsuariosXEmpresaController::class, 'dataUser']);
 
 //Para generar el token de acceso
 Route::post('/generate_token', [LoginController::class, 'generate_token']);
+
+
+//Token generado para las notificaciones
+Route::post('/generate_token_app', [LoginController::class, 'generate_token_app']);
 
 
 //Completar los datos del usuario

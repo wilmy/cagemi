@@ -2,13 +2,14 @@
 
 namespace App\Events;
 
+use Log;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class PlaygroundEvent implements ShouldBroadcast
 {
@@ -19,9 +20,12 @@ class PlaygroundEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct()
+
+     public $message;
+
+    public function __construct($message)
     {
-        //
+        $this->message = $message;
     }
 
     /**
@@ -31,6 +35,12 @@ class PlaygroundEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('public.playground.1');
+        Log::debug('Broadcasting');
+        return new Channel('chat');
+    }
+
+    public function broadcastAs()
+    {
+        return 'event';
     }
 }
