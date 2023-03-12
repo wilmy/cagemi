@@ -281,7 +281,9 @@ class PublicacionesController extends Controller
                      * Lista de los usuarios con token para envio
                      */ 
                     $dataUserTokens = DB::table('users')
-                                        ->where([['token_app','<>',''], ['cod_grupo_empresarial','=', 1]])
+                                        ->where([['id','<>',$cod_usuario], 
+                                                ['token_app','<>',''], 
+                                                ['cod_grupo_empresarial','=', 1]])
                                         ->pluck('token_app')->toArray();
                     /**
                      * Para las notificaciones de push notification
