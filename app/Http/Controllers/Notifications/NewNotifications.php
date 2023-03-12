@@ -7,9 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-//use ExpoSDK\Expo;
-use ExpoSDK\ExpoMessage;
-
 class NewNotifications extends Controller
 {
     public function index()
