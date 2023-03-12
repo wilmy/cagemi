@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\DireccionesVicepresidenciasController;
 use App\Http\Controllers\Api\PosicionesXDepartamentosApiController;
 use App\Http\Controllers\Api\EmpresasXGruposEmpresarialesController;
 use App\Http\Controllers\Api\DepartamentosXVicepresidenciasApiController;
+use App\Http\Controllers\Api\ChatController;
 
 /*
 |--------------------------------------------------------------------------
