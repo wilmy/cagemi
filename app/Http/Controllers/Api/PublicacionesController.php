@@ -281,7 +281,8 @@ class PublicacionesController extends Controller
                      * Lista de los usuarios con token para envio
                      */ 
                     $dataUserTokens = DB::table('users')
-                                        ->where([['id','<>',$cod_usuario], 
+                                        ->where([
+                                                ['id','<>',$cod_usuario], 
                                                 ['token_app','<>',''], 
                                                 ['cod_grupo_empresarial','=', 1]])
                                         ->pluck('token_app')->toArray();
@@ -290,7 +291,7 @@ class PublicacionesController extends Controller
                      */
                     $notifications = new NewNotifications;
                     $datas = [
-                        'channelName' => 'grupos',
+                        'channelName' => 'grupos_'.$cod_usuario,
                         'tokens' =>  $dataUserTokens,
                         'bodyMessage' => 'Hey!! '.$nombre_usu.' acaba de hacer una publicación, mira que dice!',
                     ];
