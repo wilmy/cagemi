@@ -53,6 +53,10 @@ Route::post('/login', [LoginController::class, 'index']);
 //Usuarios por grupo empresarial
 Route::post('/usuariosEmpresa', [UsuariosXEmpresaController::class, 'index']);
 
+//Cumpleanos de los usuarios 
+Route::post('/usuariosEmpresaCumpleAn', [UsuariosXEmpresaController::class, 'cumpleanos_x_usuarios']);
+
+
 
 //Datos del usuario
 Route::post('/dataUser', [UsuariosXEmpresaController::class, 'dataUser']);
