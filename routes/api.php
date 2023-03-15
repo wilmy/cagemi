@@ -55,7 +55,7 @@ Route::post('/usuariosEmpresa', [UsuariosXEmpresaController::class, 'index']);
 
 //Cumpleanos de los usuarios 
 Route::post('/usuariosEmpresaCumpleAn', [UsuariosXEmpresaController::class, 'cumpleanos_x_usuarios']);
-
+Route::post('/felicitaciones_empleados', [UsuariosXEmpresaController::class, 'felicitaciones_empleados']);  
 
 
 //Datos del usuario
