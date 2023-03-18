@@ -39,7 +39,7 @@ $configData = Helper::applClasses();
           </g>
         </g>
       </svg>
-      <h2 class="brand-text text-primary ms-1">Cintrapp</h2>
+      <h2 class="brand-text text-primary ms-1">{{env('APP_NAME')}}</h2>
     </a>
     <!-- /Brand logo-->
 
@@ -59,7 +59,7 @@ $configData = Helper::applClasses();
     <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
       <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
 
-        <h4 class="card-title mb-1">{{ __('Welcome to')}} Cintrapp! 👋</h4>
+        <h4 class="card-title mb-1">{{ __('Welcome to')}} {{env('APP_NAME')}}! 👋</h4>
         <p class="card-text mb-2">
           {{ __('Log in to your account and start the adventure')}}
         </p>
@@ -112,17 +112,7 @@ $configData = Helper::applClasses();
           </div>--}}
           <button type="submit" class="btn btn-primary w-100" tabindex="4">{{__('Login')}}</button>
         </form>
-
-        
-        <div class="divider my-2">
-          <div class="divider-text">or</div>
-        </div>
-        <div class="auth-footer-btn d-flex justify-content-center">
-          <a class="btn btn-facebook" href="#"><i data-feather="facebook"></i></a>
-          <a class="btn btn-twitter white" href="#"><i data-feather="twitter"></i></a>
-          <a class="btn btn-google" href="#"><i data-feather="mail"></i></a>
-          <a class="btn btn-github" href="#"><i data-feather="github"></i></a>
-        </div>
+ 
       </div>
     </div>
     <!-- /Login-->

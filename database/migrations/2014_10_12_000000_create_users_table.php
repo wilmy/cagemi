@@ -16,11 +16,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('super_usuario', 1)->nullable();
-            $table->foreignId('cod_grupo_empresarial')->nullable();
-            $table->integer('prioridad_publicacion')->nullable()->default(1);
-            $table->foreignId('cod_empleado')->nullable();
-            $table->string('name');
-            $table->string('surname')->nullable();
+            $table->foreignId('cod_empresa');  
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -31,9 +27,13 @@ return new class extends Migration
             $table->string('token_autentication')->nullable();
             $table->string('token_app')->nullable();
             $table->foreignId('current_team_id')->nullable();
-            $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
-            $table->string('estatus', 1)->nullable()->default('A');
+            $table->foreignId('usuario_creacion')->nullable();  
+            $table->foreignId('usuario_modificacion')->nullable();  
+            $table->datetime('fecha_hora_inicio')->nullable(); 
+            $table->datetime('fecha_hora_fin')->nullable();  
+            $table->integer('confirmar_cuenta')->nullable();
+            $table->string('estatus', 1)->nullable()->default('A'); 
         });
     }
 
